@@ -14,30 +14,8 @@ NC='\033[0m' # No Color
 echo -e "${BLUE}Deploying site to GitHub Pages...${NC}"
 echo ""
 
-# Get base path from environment or auto-detect
-if [ -z "$BASE_PATH" ]; then
-    # Try to detect repository name from git remote
-    REPO_NAME=$(git remote get-url origin 2>/dev/null | sed -E 's/.*\/([^\/]+)\.git$/\1/' || echo "")
-    
-    # Check if it's a user/org page (repo name ends with .github.io)
-    if [[ "$REPO_NAME" == *.github.io ]]; then
-        BASE_PATH="/"
-    # Check if repo name looks like a custom domain (contains dot but not .github.io)
-    elif [[ "$REPO_NAME" == *.* ]] && [[ "$REPO_NAME" != *.github.io ]]; then
-        # Likely a custom domain - use root path
-        BASE_PATH="/"
-    # Check if CNAME file exists (indicates custom domain = root path)
-    elif [ -f "static/CNAME" ] || [ -f "CNAME" ] || git show origin/gh-pages:CNAME >/dev/null 2>&1; then
-        # Custom domain detected - use root path
-        BASE_PATH="/"
-    elif [ -n "$REPO_NAME" ]; then
-        # It's a project page, use repo name as base path
-        BASE_PATH="/$REPO_NAME/"
-    else
-        # Fallback to root if we can't detect
-        BASE_PATH="/"
-    fi
-fi
+# Get base path from environment or default to "/" for custom domain
+BASE_PATH="${BASE_PATH:-/}"
 
 # Ensure BASE_PATH ends with / (unless it's just "/")
 if [ "$BASE_PATH" != "/" ] && [ "${BASE_PATH: -1}" != "/" ]; then
@@ -129,6 +107,11 @@ fi
 # Copy files from temp directory to root
 cp -r "$TEMP_DIR"/* .
 rm -rf "$TEMP_DIR"
+
+# Create CNAME file for custom domain
+REPO_NAME=$(git remote get-url origin 2>/dev/null | sed -E 's/.*\/([^\/]+)\.git$/\1/' || echo "thisiskarthik.com")
+echo "$REPO_NAME" > CNAME
+echo -e "${GREEN}✓${NC} Created CNAME file for custom domain"
 
 # Add all files
 git add -A
