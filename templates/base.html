@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" type="image/svg+xml" href="{{.BasePath}}favicon.svg" />
   <meta name="viewport"
     content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0, viewport-fit=cover" />
   <meta name="mobile-web-app-capable" content="yes" />
@@ -12,13 +12,13 @@
   <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
   <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
   <meta name="color-scheme" content="light dark" />
-  <!-- Local fonts - IM Fell DW Pica loaded from /fonts/ directory -->
+  <!-- Local fonts - IM Fell DW Pica loaded from {{.BasePath}}fonts/ directory -->
   <!-- Preload fonts to prevent FOUT (Flash of Unstyled Text) -->
-  <link rel="preload" as="font" href="/fonts/IMFellDWPica-Regular.woff2" type="font/woff2" crossorigin="anonymous">
-  <link rel="preload" as="font" href="/fonts/IMFellDWPica-Italic.woff2" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" as="font" href="{{.BasePath}}fonts/IMFellDWPica-Regular.woff2" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" as="font" href="{{.BasePath}}fonts/IMFellDWPica-Italic.woff2" type="font/woff2" crossorigin="anonymous">
   <!-- Preload sidebar image to prevent layout shifts -->
-  <link rel="preload" as="image" href="/images/Bow 1.png" fetchpriority="high">
-  <link rel="stylesheet" href="/css/main.css">
+  <link rel="preload" as="image" href="{{.BasePath}}images/Bow 1.png" fetchpriority="high">
+  <link rel="stylesheet" href="{{.BasePath}}css/main.css">
   <title>{{if .Title}}{{.Title}} - {{end}}On Matters Local and Otherwise</title>
 </head>
 
@@ -41,9 +41,9 @@
 {{define "sidebar"}}
 <aside class="home-sidebar">
   <div class="sidebar-widget">
-    <a href="/" class="sidebar-brand">
+    <a href="{{.BasePath}}" class="sidebar-brand">
       <div class="brand-logo">
-        <img src="/images/Bow 1.png" alt="Vintage bow" class="brand-bow-icon" loading="eager" decoding="sync"
+        <img src="{{.BasePath}}images/Bow 1.png" alt="Vintage bow" class="brand-bow-icon" loading="eager" decoding="sync"
           fetchpriority="high" width="120" height="120" />
       </div>
     </a>
@@ -51,8 +51,8 @@
 
   <div class="sidebar-widget">
     <nav class="sidebar-nav">
-      <a class="sidebar-link" href="/writings">Writings</a>
-      <a class="sidebar-link" href="/about">About</a>
+      <a class="sidebar-link" href="{{.BasePath}}writings">Writings</a>
+      <a class="sidebar-link" href="{{.BasePath}}about">About</a>
     </nav>
   </div>
 
@@ -66,16 +66,16 @@
 <footer class="footer">
   <div class="footer-container">
     <div class="hero-decorative-divider">
-      <img src="/images/Border 2.png" alt="" class="hero-decorative-element"
+      <img src="{{.BasePath}}images/Border 2.png" alt="" class="hero-decorative-element"
 />
     </div>
     <p class="footer-closing">Stories straight from my dungeon!</p>
     <nav class="footer-nav">
-      <a href="/index">Index</a>
+      <a href="{{.BasePath}}index">Index</a>
       <span class="footer-separator">·</span>
-      <a href="/colophon">Colophon</a>
+      <a href="{{.BasePath}}colophon">Colophon</a>
       <span class="footer-separator">·</span>
-      <a href="/rss.xml" target="_blank" rel="noreferrer">RSS</a>
+      <a href="{{.BasePath}}rss.xml" target="_blank" rel="noreferrer">RSS</a>
     </nav>
   </div>
 </footer>

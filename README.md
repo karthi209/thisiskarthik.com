@@ -50,6 +50,7 @@ All operations go through `make`:
 - `make build` - Alias for `generate`
 - `make serve` - Generate and serve site locally on http://localhost:5173
 - `make clean` - Remove generated public directory
+- `make deploy` - Build and deploy to GitHub Pages
 - `make help` - Show all available commands
 
 ## Development
@@ -69,4 +70,43 @@ This site uses **IM Fell DW Pica** font by Igino Marini, licensed under the SIL 
 - **License FAQ**: https://openfontlicense.org
 
 The font files and license are included in the `static/fonts/` directory and are automatically copied to the output during generation, ensuring compliance with the license requirements.
+
+## Deployment to GitHub Pages
+
+### First-time Setup
+
+1. Go to your repository on GitHub
+2. Navigate to **Settings** → **Pages**
+3. Under **Source**, select **Deploy from a branch**
+4. Choose **gh-pages** branch and **/ (root)** folder
+5. Click **Save**
+
+### Deploying
+
+For **user/organization pages** (e.g., `username.github.io`):
+```bash
+make deploy
+```
+
+For **project pages** (e.g., `username.github.io/repo-name`), set the base path:
+```bash
+BASE_PATH="/repo-name/" make deploy
+```
+
+Or run the script directly:
+```bash
+BASE_PATH="/repo-name/" ./scripts/deploy.sh
+```
+
+**Note:** 
+- The `BASE_PATH` environment variable sets the base path for all assets and links
+- For user/organization pages, use `BASE_PATH="/"` (default)
+- For project pages, use `BASE_PATH="/repo-name/"` (replace `repo-name` with your repository name)
+- The script will build the site, create/update the `gh-pages` branch, and push to GitHub
+
+Your site will be available at:
+- User/org pages: `https://<username>.github.io/`
+- Project pages: `https://<username>.github.io/<repo-name>/`
+
+(It may take a few minutes for GitHub Pages to update after deployment)
 

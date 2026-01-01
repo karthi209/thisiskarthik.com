@@ -27,7 +27,26 @@ var (
 	templatesDir    = "templates"
 	staticDir       = "static"
 	publicImagesDir = filepath.Join(outputDir, "images")
+	basePath        = getBasePath()
 )
+
+// getBasePath returns the base path for assets and links
+// Reads from BASE_PATH environment variable, defaults to "/"
+// For GitHub Pages project sites, set BASE_PATH="/repo-name/"
+func getBasePath() string {
+	path := os.Getenv("BASE_PATH")
+	if path == "" {
+		return "/"
+	}
+	// Ensure it starts and ends with /
+	if !strings.HasPrefix(path, "/") {
+		path = "/" + path
+	}
+	if !strings.HasSuffix(path, "/") {
+		path = path + "/"
+	}
+	return path
+}
 
 // Post represents a writing
 type Post struct {
@@ -54,6 +73,7 @@ type Frontmatter struct {
 type HomePageData struct {
 	PageType    string
 	Title       string
+	BasePath    string
 	RecentItems []RecentItem
 }
 
@@ -67,6 +87,7 @@ type RecentItem struct {
 type WritingsPageData struct {
 	PageType      string
 	Title         string
+	BasePath      string
 	Writings      []PostTemplateData
 	GroupedWritings []YearGroup
 }
@@ -93,6 +114,7 @@ type PostTemplateData struct {
 type PostPageData struct {
 	PageType string
 	Title    string
+	BasePath string
 	Post     PostTemplateData
 }
 
@@ -100,11 +122,13 @@ type PostPageData struct {
 type AboutPageData struct {
 	PageType string
 	Title    string
+	BasePath string
 }
 
 type ColophonPageData struct {
 	PageType    string
 	Title       string
+	BasePath    string
 	LinesOfCode int
 	PageCount   int
 	ImageCount  int
@@ -115,6 +139,7 @@ type ColophonPageData struct {
 type IndexPageData struct {
 	PageType       string
 	Title          string
+	BasePath       string
 	Writings      []PostTemplateData
 	GroupedWritings []YearGroup
 	WritingCount   int
@@ -337,7 +362,7 @@ func generateHomePage(templates *template.Template, posts []PostTemplateData) er
 		recentItems = append(recentItems, RecentItem{
 			Title:     posts[i].Title,
 			DateLabel: posts[i].DateLabel,
-			Path:      "/writings/" + posts[i].Slug,
+			Path:      basePath + "writings/" + posts[i].Slug,
 			IsDraft:   posts[i].IsDraft,
 		})
 	}
@@ -345,6 +370,7 @@ func generateHomePage(templates *template.Template, posts []PostTemplateData) er
 	data := HomePageData{
 		PageType:    "home",
 		Title:       "Home",
+		BasePath:    basePath,
 		RecentItems: recentItems,
 	}
 
@@ -355,6 +381,7 @@ func generateWritingsPage(templates *template.Template, posts []PostTemplateData
 	data := WritingsPageData{
 		PageType:       "writings",
 		Title:          "Writings",
+		BasePath:       basePath,
 		Writings:       posts,
 		GroupedWritings: grouped,
 	}
@@ -372,6 +399,7 @@ func generatePostPage(templates *template.Template, post PostTemplateData) error
 	data := PostPageData{
 		PageType: "post",
 		Title:    post.Title,
+		BasePath: basePath,
 		Post:     post,
 	}
 
@@ -382,6 +410,7 @@ func generateAboutPage(templates *template.Template) error {
 	data := AboutPageData{
 		PageType: "about",
 		Title:    "About",
+		BasePath: basePath,
 	}
 
 	aboutDir := filepath.Join(outputDir, "about")
@@ -400,6 +429,7 @@ func generateColophonPage(templates *template.Template, buildDuration time.Durat
 	data := ColophonPageData{
 		PageType:    "colophon",
 		Title:       "Colophon",
+		BasePath:    basePath,
 		LinesOfCode: 0,
 		PageCount:   0,
 		ImageCount:  0,
@@ -532,6 +562,7 @@ func generateIndexPage(templates *template.Template, posts []PostTemplateData, g
 	data := IndexPageData{
 		PageType:      "index",
 		Title:         "Index",
+		BasePath:      basePath,
 		Writings:         posts,
 		GroupedWritings:  grouped,
 		WritingCount:     len(posts),

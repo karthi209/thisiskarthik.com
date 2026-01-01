@@ -1,11 +1,8 @@
-.PHONY: generate build clean serve setup optimize-images optimize help
+.PHONY: generate clean serve setup optimize-images optimize deploy help
 
 generate:
 	@echo "Generating static site..."
-	@go run generate.go
-
-build: generate
-	@echo "Build complete! Output in ./public/"
+	@BASE_PATH="$${BASE_PATH:-/}" go run generate.go
 
 clean:
 	@echo "Cleaning public directory..."
@@ -25,13 +22,17 @@ optimize-images:
 
 optimize: optimize-images
 
+deploy:
+	@echo "Deploying to GitHub Pages..."
+	@./scripts/deploy.sh
+
 help:
 	@echo "Available commands:"
 	@echo "  make setup          - Install all dependencies (Go, WebP tools, ImageMagick)"
 	@echo "  make optimize       - Optimize all images in content/images/ to WebP"
 	@echo "  make generate       - Generate the static site"
-	@echo "  make build          - Alias for generate"
 	@echo "  make serve          - Generate, serve, and watch for changes (auto-rebuild)"
 	@echo "  make clean          - Remove generated public directory"
+	@echo "  make deploy         - Build and deploy to GitHub Pages"
 	@echo "  make help           - Show this help message"
 
