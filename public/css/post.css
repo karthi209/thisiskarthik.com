@@ -1,0 +1,335 @@
+/* ============================================
+   POST - Post Display Styles
+   Minimal, maintainable CSS
+   ============================================ */
+
+.post-header {
+  margin-top: 0;
+  margin-bottom: clamp(2.5rem, 6vw, 4rem);
+  text-align: left;
+  padding-top: clamp(1rem, 3vw, 2rem);
+  padding-bottom: 0;
+  border-bottom: none;
+  max-width: min(65ch, 100%);
+  margin-left: 0;
+  margin-right: auto;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.post-running-head {
+  display: block;
+  font-family: var(--font-body);
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--color-accent);
+  text-decoration: none;
+  margin-bottom: 0.75rem;
+  margin-top: 0;
+  letter-spacing: var(--spacing-body);
+  opacity: 0.75;
+}
+
+.post-running-head:hover,
+.post-running-head:focus {
+  opacity: 1;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  color: var(--color-accent);
+}
+
+.post-title {
+  font-family: var(--font-heading);
+  font-size: clamp(2.5rem, 5vw, 3rem);
+  font-weight: 600;
+  line-height: 1.2;
+  margin-bottom: 1.5rem;
+  margin-top: 0;
+  color: var(--color-text-dark);
+  letter-spacing: -0.02em;
+  text-align: left;
+  margin-left: 0;
+  margin-right: auto;
+}
+
+.post-meta {
+  display: flex;
+  justify-content: flex-start;
+  align-items: baseline;
+  gap: 0.5rem;
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: 1.125rem;
+  letter-spacing: 0.02em;
+  flex-wrap: wrap;
+  font-variant-numeric: oldstyle-nums;
+  margin-bottom: 0;
+  opacity: 0.9;
+  line-height: 1.6;
+}
+
+.meta-group {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  color: var(--color-text);
+}
+
+.meta-separator {
+  color: var(--color-text-muted);
+  opacity: 0.5;
+  user-select: none;
+  font-size: 0.8125rem;
+  margin: 0 0.25rem;
+}
+
+
+.post-body {
+  font-family: var(--font-body);
+  font-size: var(--size-body);
+  line-height: 1.65;
+  color: var(--color-text);
+  letter-spacing: var(--spacing-body);
+  max-width: min(60ch, 100%);
+  margin-left: 0;
+  margin-right: auto;
+  padding: 0;
+  text-align: left;
+}
+
+.post-body p:first-of-type {
+  margin-top: 0;
+  margin-bottom: var(--paragraph-spacing);
+  padding: 0;
+}
+
+.post-body p {
+  margin-block: var(--paragraph-spacing);
+  padding: 0;
+}
+
+.post-body p:last-child {
+  margin-bottom: 0;
+}
+
+.post-body h2 {
+  font-family: var(--font-heading);
+  font-size: clamp(1.375rem, 3vw, 1.75rem);
+  font-weight: 600;
+  line-height: var(--line-height-heading);
+  margin-top: var(--section-spacing);
+  margin-bottom: 1em;
+  color: var(--color-text-dark);
+  letter-spacing: var(--spacing-heading);
+  text-align: left;
+}
+
+.post-body h3 {
+  font-family: var(--font-heading);
+  font-size: clamp(1.125rem, 2.5vw, 1.375rem);
+  font-weight: 500;
+  line-height: var(--line-height-heading);
+  margin-top: var(--section-spacing);
+  margin-bottom: 0.875em;
+  color: var(--color-text-dark);
+  letter-spacing: var(--spacing-heading);
+  text-align: left;
+}
+
+.post-body ul,
+.post-body ol {
+  margin: 1.5em 0;
+  padding-left: 2em;
+  line-height: 1.8;
+  text-align: left;
+}
+
+.post-body li {
+  padding: 0;
+  margin-bottom: 0.5em;
+  line-height: 1.8;
+  text-align: left;
+}
+
+/* Images - book-like plates, subordinate to text */
+.post-body img {
+  display: block;
+  max-width: 85%;
+  width: 85%;
+  height: auto;
+  margin: 1.25em auto;
+  padding: 0 clamp(1rem, 3vw, 2rem);
+}
+
+/* Ensure images scale properly on very small screens */
+@media (max-width: 480px) {
+  .post-body img {
+    max-width: 100%;
+    width: 100%;
+    padding: 0 0.5rem;
+  }
+}
+
+/* Paragraphs containing only images - remove extra spacing */
+.post-body p:has(img:only-child) {
+  margin: 1.25em 0;
+  padding: 0;
+}
+
+/* Paragraphs with images followed by text - maintain flow */
+.post-body p:has(img) + p {
+  margin-top: 1.25em;
+}
+
+/* Caption styling - subtle, footnote-like */
+.post-body figcaption {
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: var(--color-text-muted);
+  margin-top: 0.625em;
+  margin-bottom: 1.25em;
+  padding: 0;
+  font-style: normal;
+  font-weight: 400;
+  text-align: left;
+  opacity: 0.7;
+  letter-spacing: var(--spacing-body);
+}
+
+/* Figure container - maintains text column alignment */
+.post-body figure {
+  margin: 1.25em 0;
+  padding: 0;
+}
+
+.post-body figure img {
+  margin: 0 0 0.625em 0;
+}
+
+.post-body blockquote {
+  font-style: italic;
+  border-left: 2px solid var(--color-accent);
+  padding-left: 1rem;
+  margin: 1.5rem 0;
+  color: var(--color-text-light);
+}
+
+.post-body pre {
+  font-family: var(--font-mono);
+  font-size: clamp(0.8125rem, 2vw, 0.875rem);
+  line-height: 1.5;
+  padding: clamp(0.75rem, 2vw, 1rem);
+  margin: 1.5rem 0;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  overflow-x: auto;
+  max-width: 100%;
+  /* Improve touch scrolling on mobile */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-body code {
+  font-family: var(--font-mono);
+  background: var(--color-surface);
+  padding: 0.15em 0.35em;
+  border-radius: 3px;
+  font-size: 0.875em;
+  color: var(--color-accent);
+}
+
+.post-body pre code {
+  background: none;
+  padding: 0;
+  color: var(--color-text);
+}
+
+/* Decorative Elements */
+.post-content .hero-decorative-divider {
+  margin: 3rem auto 0 auto;
+  padding: 0;
+  width: 100%;
+  max-width: 850px;
+  text-align: center;
+}
+
+.post-content .hero-decorative-element {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  opacity: 0.7;
+  border: none;
+  outline: none;
+  box-shadow: none;
+}
+
+
+/* Mobile */
+@media (max-width: 768px) {
+  .post-title {
+    font-size: clamp(2.4rem, 6vw, 4rem);
+  }
+  
+  .post-running-head {
+    font-size: clamp(1.25rem, 2.5vw, 1.25rem);
+  }
+  
+  .post-header {
+    margin-bottom: clamp(1rem, 3vw, 1.5rem);
+    padding-top: clamp(1rem, 3vw, 1.5rem);
+    padding-bottom: 0;
+    border-bottom: none;
+    padding-left: clamp(1rem, 4vw, 1.5rem);
+    padding-right: clamp(1rem, 4vw, 1.5rem);
+    max-width: 100%;
+  }
+  
+  .post-body {
+    font-size: clamp(1.25rem, 3vw, 1.7rem);
+    padding-left: clamp(1rem, 4vw, 1.5rem);
+    padding-right: clamp(1rem, 4vw, 1.5rem);
+    max-width: 100%;
+  }
+  
+  .post-meta {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    gap: 0.75rem;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    white-space: nowrap;
+  }
+  
+  .post-meta::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .meta-group {
+    flex-wrap: nowrap;
+    gap: 0.25rem;
+    min-width: fit-content;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  
+  .meta-item-read-time,
+  .meta-separator-read-time {
+    display: none;
+  }
+  
+  .meta-separator {
+    font-size: 0.5rem;
+    flex-shrink: 0;
+  }
+}
