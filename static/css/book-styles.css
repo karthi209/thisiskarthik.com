@@ -1,0 +1,207 @@
+/* ============================================
+   BOOK STYLES - Vintage Book Aesthetic
+   Minimal, maintainable CSS
+   ============================================ */
+
+/* Post Content Styles */
+.post-content {
+  margin: 0 0 clamp(1.5rem, 4vw, 2rem) 0;
+  font-family: var(--font-body);
+  font-size: var(--size-body);
+  line-height: var(--line-height-body);
+  color: var(--color-text-light);
+  letter-spacing: var(--spacing-body);
+  text-align: left;
+  padding: 0;
+}
+
+.post-content p {
+  margin: 0 0 var(--paragraph-spacing) 0;
+  text-align: left;
+  hyphens: none;
+}
+
+.post-content h2 {
+  font-family: var(--font-heading);
+  font-size: clamp(1.25rem, 3vw, 1.375rem);
+  font-weight: 600;
+  margin-top: 2em;
+  margin-bottom: 0.75em;
+  color: var(--color-text);
+  line-height: var(--line-height-title);
+  letter-spacing: var(--spacing-heading);
+}
+
+.post-content h3 {
+  font-family: var(--font-heading);
+  font-size: clamp(1rem, 2.5vw, 1.125rem);
+  font-weight: 600;
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+  color: var(--color-text);
+  line-height: var(--line-height-title);
+  letter-spacing: var(--spacing-heading);
+}
+
+.post-content blockquote {
+  font-style: italic;
+  border-left: 2px solid var(--color-accent);
+  padding-left: 1rem;
+  margin: 1.5rem 0;
+  color: var(--color-text-light);
+}
+
+.post-content ul,
+.post-content ol {
+  margin: 0.75rem 0 var(--paragraph-spacing) 1.5rem;
+}
+
+.post-content li {
+  margin-bottom: 0.5rem;
+  line-height: var(--line-height-body);
+}
+
+.post-content pre {
+  font-family: var(--font-mono);
+  font-size: clamp(0.8125rem, 2vw, 0.875rem);
+  line-height: 1.5;
+  padding: clamp(0.75rem, 2vw, 1rem);
+  margin: 1.5rem 0;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  overflow-x: auto;
+  /* Improve touch scrolling on mobile */
+  -webkit-overflow-scrolling: touch;
+  max-width: 100%;
+}
+
+.post {
+  padding-bottom: 2rem;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.post:last-child {
+  border-bottom: none;
+}
+
+/* Vintage Book Aesthetic - Remove Digital Feel */
+.home-main > *:not(.home-homepage-grid):not(.home-homepage-main):not(.home-homepage-rail) {
+  border-radius: 0;
+  box-shadow: none;
+  background: transparent;
+}
+
+.home-main * {
+  box-shadow: none;
+  text-shadow: none;
+  animation: none;
+}
+
+.home-main a:hover {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transform: none;
+}
+
+/* Typography - Bold and Opaque */
+.home-main strong,
+.home-main b,
+.home-main h1,
+.home-main h2,
+.home-main h3,
+.home-main h4,
+.home-main h5,
+.home-main h6 {
+  color: var(--color-text);
+  opacity: 1;
+  font-weight: 700;
+}
+
+/* Date Styling - Oldstyle Numerals */
+.home-list-date,
+.comment-date,
+.post-meta .meta-item span,
+.meta-detail,
+[class*="date"] {
+  font-variant-numeric: oldstyle-nums;
+  font-family: var(--font-body);
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  opacity: 1;
+}
+
+.home-list-date {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  margin-bottom: 0.2em;
+}
+
+.comment-date {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Tables */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  max-width: min(850px, 100%);
+  margin: 1.5rem auto;
+  border: 1px solid var(--color-border);
+  overflow-x: auto;
+  /* Improve touch scrolling on mobile */
+  -webkit-overflow-scrolling: touch;
+  display: block;
+}
+
+th, td {
+  border: 1px solid var(--color-border);
+  padding: 0.5rem;
+  text-align: left;
+}
+
+th {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  background: var(--color-surface);
+}
+
+/* Code Blocks */
+.home-main pre,
+.home-main code {
+  border-radius: 0;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  font-family: var(--font-mono);
+}
+
+/* Quotes */
+.post-quote {
+  font-style: italic;
+  font-family: var(--font-body);
+  font-size: var(--size-body);
+  line-height: var(--line-height-body);
+  color: var(--color-text-muted);
+  margin: 1.5rem 0;
+  padding-left: 1.5rem;
+  border-left: 2px solid var(--color-accent);
+  text-align: left;
+}
+
+.post-quote-attribution {
+  font-family: var(--font-body);
+  font-size: 0.9em;
+  color: var(--color-text-muted);
+  font-style: italic;
+  margin-top: -0.5rem;
+  margin-bottom: 1.5rem;
+  text-align: left;
+  padding-left: 1.5rem;
+}

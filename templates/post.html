@@ -1,0 +1,79 @@
+{{define "post.html"}}
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
+  <meta name="color-scheme" content="light dark" />
+  <!-- Local fonts - IM Fell DW Pica loaded from /fonts/ directory -->
+  <!-- Preload fonts to prevent FOUT (Flash of Unstyled Text) -->
+  <link rel="preload" as="font" href="/fonts/IMFellDWPica-Regular.woff2" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" as="font" href="/fonts/IMFellDWPica-Italic.woff2" type="font/woff2" crossorigin="anonymous">
+    <link rel="preload" as="image" href="/images/Bow 1.png" fetchpriority="high">
+  <link rel="stylesheet" href="/css/main.css">
+  <title>{{if .Title}}{{.Title}} - {{end}}On Matters Local and Otherwise</title>
+</head>
+
+<body>
+  <div class="app-container" data-page="{{.PageType}}">
+    <main class="main-content">
+      <div class="home-layout">
+        {{template "sidebar" .}}
+        <div class="home-main">
+          <div class="post-container">
+            <div class="post-layout">
+              <div class="post-main">
+                <article class="post-content">
+                  <header class="post-header">
+                    <a href="/" class="post-running-head">On Matters Local and Otherwise</a>
+                    <h1 class="post-title">{{.Post.Title}}</h1>
+
+                    <div class="post-meta">
+                      <div class="meta-group">
+                        <div class="meta-item">
+                          <span>{{.Post.DateLabel}}</span>
+                        </div>
+                        {{if .Post.Category}}
+                        <span class="meta-separator">•</span>
+                        <div class="meta-item">
+                          <span>{{.Post.Category}}</span>
+                        </div>
+                        {{end}}
+                        <span class="meta-separator meta-separator-read-time">•</span>
+                        <div class="meta-item meta-item-read-time">
+                          <span>{{.Post.ReadingTime}} min read</span>
+                        </div>
+                      </div>
+                    </div>
+                  </header>
+
+                  {{if .Post.Content}}
+                  <div class="post-body">
+                    {{.Post.Content}}
+                  </div>
+                  {{else}}
+                  <div class="post-body">
+                    <p>Content not available.</p>
+                  </div>
+                  {{end}}
+                </article>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    {{template "footer" .}}
+  </div>
+</body>
+
+</html>
+{{end}}

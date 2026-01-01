@@ -1,0 +1,170 @@
+.library-notes-content {
+  display: none;
+}
+
+.list-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.list-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: start;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--color-border);
+  cursor: pointer;
+}
+
+.list-row:hover .list-row-title {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+@media (max-width: 768px) {
+  .list-row {
+    padding: 0.75rem 0;
+    gap: 0.5rem;
+  }
+
+  .list-row-title {
+    font-size: 1.05rem;
+  }
+
+  .list-row-meta {
+    gap: 0.5rem;
+    font-size: 0.85rem;
+  }
+
+  .meta-tag,
+  .meta-detail {
+    font-size: 0.75rem;
+  }
+}
+
+
+
+@media (max-width: 768px) {
+  .list-section-title {
+    font-size: 1.1rem;
+  }
+
+  .meta-small {
+    font-size: 0.65rem;
+  }
+}
+
+/* Tablet optimizations - iPad Air and similar */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .list-section-title {
+    font-size: 1.1rem;
+  }
+
+  .list-stack {
+    gap: 1.75rem;
+  }
+
+  .list-section-header {
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.3rem;
+  }
+
+  .meta-small {
+    font-size: 0.65rem;
+  }
+}
+
+
+.list-row a {
+  color: var(--color-text);
+  text-decoration: underline;
+  text-decoration-color: var(--underline-color);
+  text-underline-offset: 3px;
+  text-decoration-thickness: 2px;
+  /* Improve touch targets on mobile */
+  -webkit-tap-highlight-color: transparent;
+  tap-highlight-color: transparent;
+}
+
+@media (max-width: 768px) {
+  .list-row a {
+    padding: 0.5em 0;
+    margin: -0.5em 0;
+    display: inline-block;
+    min-height: 1.5em;
+  }
+}
+  
+}
+
+.list-row a:hover {
+  text-decoration-color: var(--color-accent);
+  text-decoration-style: wavy;
+}
+
+.list-row .date {
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+}
+
+.list-row:hover {
+  border-color: var(--color-border-light);
+  color: var(--color-accent);
+}
+
+
+.list-section-title {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--color-text);
+}
+
+.list-row-title {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.list-row-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0.35rem;
+  color: var(--color-text-muted);
+  align-items: center;
+}
+
+.list-row-right {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+
+.meta-tag {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.05em;
+  color: var(--color-accent);
+  font-weight: 500;
+}
+
+.meta-detail {
+  font-family: var(--font-meta);
+  font-size: 0.8125rem; /* 13px - degraded meta text */
+  letter-spacing: var(--spacing-body); /* -0.03em - applied across everything */
+  color: var(--color-text-muted);
+  opacity: 0.75; /* Degrade meta text - historical simulation */
+}
+
+.meta-item {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+
+/* Games Library search */

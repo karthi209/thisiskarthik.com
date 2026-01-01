@@ -1,0 +1,112 @@
+{{define "index.html"}}
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
+  <meta name="color-scheme" content="light dark" />
+  <!-- Local fonts - IM Fell DW Pica loaded from /fonts/ directory -->
+  <!-- Preload fonts to prevent FOUT (Flash of Unstyled Text) -->
+  <link rel="preload" as="font" href="/fonts/IMFellDWPica-Regular.woff2" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" as="font" href="/fonts/IMFellDWPica-Italic.woff2" type="font/woff2" crossorigin="anonymous">
+    <link rel="preload" as="image" href="/images/Bow 1.png" fetchpriority="high">
+  <link rel="stylesheet" href="/css/main.css">
+  <title>{{if .Title}}{{.Title}} - {{end}}On Matters Local and Otherwise</title>
+</head>
+
+<body>
+  <div class="app-container" data-page="{{.PageType}}">
+    <main class="main-content">
+      <div class="home-layout">
+        {{template "sidebar" .}}
+        <div class="home-main">
+          <div class="page-header">
+            <div>
+              <h1 class="page-title">Index</h1>
+              <p class="page-meta">Complete site map and contents.</p>
+            </div>
+          </div>
+
+          <div class="notes-content">
+            <div class="list-stack">
+              <!-- Homepage -->
+              <section class="list-section">
+                <div class="list-section-header">
+                  <h3 class="list-section-title">Home</h3>
+                </div>
+                <div class="home-list-rows">
+                  <div class="home-list-row">
+                    <span class="home-list-date"></span>
+                    <a href="/" class="home-list-link">Homepage</a>
+                  </div>
+                </div>
+              </section>
+
+              <!-- Writings Section -->
+              {{if .Writings}}
+              <section class="list-section">
+                <div class="list-section-header">
+                  <h3 class="list-section-title">Writings</h3>
+                  <span class="meta-small">{{.WritingCount}} {{if eq .WritingCount 1}}ENTRY{{else}}ENTRIES{{end}}</span>
+                </div>
+                {{if .GroupedWritings}}
+                {{range .GroupedWritings}}
+                <div class="home-list-year-group">
+                  <div class="home-list-year-label">
+                    {{.Year}}
+                  </div>
+                  <div class="home-list-rows">
+                    {{range .Posts}}
+                    <div class="home-list-row">
+                      <span class="home-list-date">{{.DateLabel}}</span>
+                      <a href="/writings/{{.Slug}}" class="home-list-link">
+                        {{.Title}}
+                      </a>
+                    </div>
+                    {{end}}
+                  </div>
+                </div>
+                {{end}}
+                {{else}}
+                <div class="home-list-rows">
+                  <div class="home-list-row">
+                    <span class="home-list-date"></span>
+                    <span class="home-list-link empty-state">No writings yet</span>
+                  </div>
+                </div>
+                {{end}}
+              </section>
+              {{end}}
+
+
+              <!-- Other Pages -->
+              <section class="list-section">
+                <div class="list-section-header">
+                  <h3 class="list-section-title">Pages</h3>
+                </div>
+                <div class="home-list-rows">
+                  <div class="home-list-row">
+                    <span class="home-list-date"></span>
+                    <a href="/about" class="home-list-link">About</a>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    {{template "footer" .}}
+  </div>
+</body>
+
+</html>
+{{end}}

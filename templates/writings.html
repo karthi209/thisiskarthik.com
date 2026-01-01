@@ -1,0 +1,77 @@
+{{define "writings.html"}}
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
+  <meta name="color-scheme" content="light dark" />
+  <!-- Local fonts - IM Fell DW Pica loaded from /fonts/ directory -->
+  <!-- Preload fonts to prevent FOUT (Flash of Unstyled Text) -->
+  <link rel="preload" as="font" href="/fonts/IMFellDWPica-Regular.woff2" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" as="font" href="/fonts/IMFellDWPica-Italic.woff2" type="font/woff2" crossorigin="anonymous">
+    <link rel="preload" as="image" href="/images/Bow 1.png" fetchpriority="high">
+  <link rel="stylesheet" href="/css/main.css">
+  <title>{{if .Title}}{{.Title}} - {{end}}On Matters Local and Otherwise</title>
+</head>
+
+<body>
+  <div class="app-container" data-page="{{.PageType}}">
+    <main class="main-content">
+      <div class="home-layout">
+        {{template "sidebar" .}}
+        <div class="home-main">
+          <a href="/" class="page-brand-logo-mobile">
+            <img src="/images/Bow 1.png" alt="Vintage bow" class="page-brand-image" />
+          </a>
+          <div class="page-header">
+            <div>
+              <h1 class="page-title">Writings</h1>
+              <p class="page-meta">All my Writings in one place</p>
+            </div>
+          </div>
+
+          {{if .Writings}}
+          <div class="list-stack">
+            {{range .GroupedWritings}}
+            <section class="list-section">
+              <div class="list-section-header">
+                <h3 class="list-section-title">{{.Year}}</h3>
+                <span class="meta-small">{{.Count}} {{if eq .Count 1}}POST{{else}}POSTS{{end}}</span>
+              </div>
+              <div class="home-list-rows">
+                {{range .Posts}}
+                <div class="home-list-row" onclick="window.location.href='/writings/{{.Slug}}'">
+                  <span class="home-list-date">{{.DateLabel}}</span>
+                  <a href="/writings/{{.Slug}}" class="home-list-link" onclick="event.stopPropagation();">
+                    {{.Title}}
+                    {{if .IsDraft}}<span class="draft-tag">DRAFT</span>{{end}}
+                  </a>
+                </div>
+                {{end}}
+              </div>
+            </section>
+            {{end}}
+          </div>
+          {{else}}
+          <div class="blog-card-empty">
+            <p>No entries found in this volume.</p>
+            <p class="empty-message-subtle">Return in time to find new writings.</p>
+          </div>
+          {{end}}
+        </div>
+      </div>
+    </main>
+    {{template "footer" .}}
+  </div>
+</body>
+
+</html>
+{{end}}

@@ -1,0 +1,4 @@
+# Images directory
+# Store images here: covers/, blog-images/, etc.
+# Images will be copied to public/images/ during build
+

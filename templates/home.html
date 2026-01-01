@@ -1,0 +1,110 @@
+{{define "home.html"}}
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
+  <meta name="color-scheme" content="light dark" />
+  <!-- Local fonts - IM Fell DW Pica loaded from /fonts/ directory -->
+  <!-- Preload fonts to prevent FOUT (Flash of Unstyled Text) -->
+  <link rel="preload" as="font" href="/fonts/IMFellDWPica-Regular.woff2" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" as="font" href="/fonts/IMFellDWPica-Italic.woff2" type="font/woff2" crossorigin="anonymous">
+    <link rel="preload" as="image" href="/images/Bow 1.png" fetchpriority="high">
+  <link rel="stylesheet" href="/css/main.css">
+  <title>{{if .Title}}{{.Title}} - {{end}}On Matters Local and Otherwise</title>
+</head>
+
+<body>
+  <div class="app-container" data-page="{{.PageType}}">
+    <main class="main-content">
+      <div class="home-layout">
+        {{template "sidebar" .}}
+        <div class="home-main">
+          <div class="home-homepage-grid">
+            <div class="home-homepage-main">
+              <div class="hero-section">
+                <div class="hero-header">
+                  <div class="hero-content">
+                    <div class="hero-brand">
+                      <a href="/" class="hero-brand-logo-mobile">
+                        <img src="/images/Bow 1.png" alt="Vintage bow" class="hero-brand-image" />
+                      </a>
+                      <div class="hero-brand-main">On Matters Local and Otherwise</div>
+                      <div class="hero-brand-byline"><span class="hero-brand-by">by</span> <span
+                          class="hero-brand-name">Karthik</span></div>
+                    </div>
+                    <div class="hero-intro">
+                      <p>
+                        Welcome, reader. I'll be your host for however long you linger on this website.
+                      </p>
+                      <p>
+                        I write about whatever haunts me at night: like that one time I willingly attended a party where
+                        I knew exactly one person, and they vanished within five minutes, among other minor horrors. I
+                        commit them to this website so I can spread the horror a little more democratically.
+                      </p>
+                      <p>
+                        If you are interested in such affairs, <a href="/writings">check out more here</a>.
+                      </p>
+                      <p>
+                        Comments or feedback, should you feel so inclined, may reach me via my Twitter/X handle <a
+                          href="https://x.com/karthi9003" target="_blank" rel="noreferrer">@karthi9003</a> (for the
+                        brave souls still there) or by <a
+                          href="mailto:hello@thisiskarthik.com">hello@thisiskarthik.com</a>, if you'd rather skip the
+                        accompanying chaos.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <aside class="home-homepage-rail">
+              <div class="latest-section">
+                <h2 class="section-title">Recent Writing</h2>
+                {{if .RecentItems}}
+                {{if eq (len .RecentItems) 0}}
+                <div class="blog-card-empty">
+                  <p>No entries in this section yet.</p>
+                  <p class="empty-message-subtle">Return in time to find new additions.</p>
+                </div>
+                {{else}}
+                <div class="home-list-rows">
+                  {{range .RecentItems}}
+                  <div class="home-list-row" onclick="window.location.href='{{.Path}}'">
+                    <div class="home-list-item">
+                      <div class="home-list-date">{{.DateLabel}}</div>
+                      <a href="{{.Path}}" class="home-list-link" onclick="event.stopPropagation();">
+                        {{.Title}}
+                        {{if .IsDraft}}<span class="draft-tag-inline">DRAFT</span>{{end}}
+                      </a>
+                    </div>
+                  </div>
+                  {{end}}
+                </div>
+                {{end}}
+                {{else}}
+                <div class="blog-card-empty">
+                  <p>No entries in this section yet.</p>
+                  <p class="empty-message-subtle">Return in time to find new additions.</p>
+                </div>
+                {{end}}
+              </div>
+            </aside>
+          </div>
+        </div>
+      </div>
+    </main>
+    {{template "footer" .}}
+  </div>
+</body>
+
+</html>
+{{end}}
