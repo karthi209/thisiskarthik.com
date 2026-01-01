@@ -1,0 +1,41 @@
+:root {
+  --font-heading: "IM Fell DW Pica", serif;
+  --font-body: "IM Fell DW Pica", serif;
+  --font-mono: "IM Fell DW Pica", serif;
+  --font-meta: "IM Fell DW Pica", serif;
+
+  --weight-normal: 400;
+  --weight-bold: 700;
+
+  --size-title: clamp(1.75rem, 3.2vw, 2.125rem);
+  --size-body: clamp(1.125rem, 2.5vw, 1.3125rem);
+
+  --line-height-title: 1.15;
+  --line-height-heading: 1.15;
+  --line-height-body: 1.5;
+  --paragraph-spacing: 0.6em;
+  --section-spacing: 2.5em;
+
+  --spacing-title: -0.04em;
+  --spacing-heading: -0.04em;
+  --spacing-body: -0.01rem;
+
+  --color-text: #2b2723;
+  --color-text-light: #2b2723;
+  --color-text-muted: #4A4A45;
+  --color-text-dark: #1a1612;
+
+  --color-border: #D4D4CF;
+  --color-border-light: #C4C4BF;
+
+  --color-background: #fbf9f4;
+  --color-surface: #f7f5f0;
+
+  --color-accent: #8B6F47;
+  --color-rubric: #C62828;
+
+  --content-max: 1200px;
+  --content-gutter: clamp(1rem, 4vw, 2rem);
+
+  --underline-color: color-mix(in srgb, var(--color-accent) 55%, transparent);
+}
