@@ -11,9 +11,9 @@
 
 @font-face {
   font-family: 'IM Fell DW Pica';
-  src: url('/fonts/IMFellDWPica-Regular.woff2') format('woff2'),
-       url('/fonts/IMFellDWPica-Regular.woff') format('woff'),
-       url('/fonts/IMFellDWPica-Regular.ttf') format('truetype');
+  src: url('../fonts/IMFellDWPica-Regular.woff2') format('woff2'),
+       url('../fonts/IMFellDWPica-Regular.woff') format('woff'),
+       url('../fonts/IMFellDWPica-Regular.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
   font-display: fallback; /* Short block period, then swap - prevents FOUT while keeping text visible */
@@ -21,9 +21,9 @@
 
 @font-face {
   font-family: 'IM Fell DW Pica';
-  src: url('/fonts/IMFellDWPica-Italic.woff2') format('woff2'),
-       url('/fonts/IMFellDWPica-Italic.woff') format('woff'),
-       url('/fonts/IMFellDWPica-Italic.ttf') format('truetype');
+  src: url('../fonts/IMFellDWPica-Italic.woff2') format('woff2'),
+       url('../fonts/IMFellDWPica-Italic.woff') format('woff'),
+       url('../fonts/IMFellDWPica-Italic.ttf') format('truetype');
   font-weight: 400;
   font-style: italic;
   font-display: fallback; /* Short block period, then swap - prevents FOUT while keeping text visible */
