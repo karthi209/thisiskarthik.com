@@ -34,7 +34,7 @@
 
 @media (max-width: 768px) {
   .main-content {
-    padding: clamp(0.75rem, 3vw, 1rem);
+    padding: clamp(1rem, 3vw, 1.25rem);
   }
 
   .app-container[data-page="post"] .main-content {

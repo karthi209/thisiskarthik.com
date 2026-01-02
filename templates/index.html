@@ -29,78 +29,88 @@
       <div class="home-layout">
         {{template "sidebar" .}}
         <div class="home-main">
-          <div class="page-header">
-            <div>
-              <h1 class="page-title">Index</h1>
-              <p class="page-meta">Complete site map and contents.</p>
-            </div>
-          </div>
+          <div class="home-homepage-grid">
+            <div class="home-homepage-main">
+              <a href="{{.BasePath}}" class="page-brand-logo-mobile">
+                <img src="{{.BasePath}}images/Bow 1.webp" alt="Vintage bow" class="page-brand-image" width="315"
+                  height="282" fetchpriority="high" />
+              </a>
+              <div class="page-header">
+                <div>
+                  <h1 class="page-title">Index</h1>
+                  <p class="page-meta">Complete site map and contents.</p>
+                </div>
+              </div>
 
-          <div class="notes-content">
-            <div class="list-stack">
-              <!-- Homepage -->
-              <section class="list-section">
-                <div class="list-section-header">
-                  <h3 class="list-section-title">Home</h3>
-                </div>
-                <div class="home-list-rows">
-                  <div class="home-list-row">
-                    <span class="home-list-date"></span>
-                    <a href="{{.BasePath}}" class="home-list-link">Homepage</a>
-                  </div>
-                </div>
-              </section>
+              <div class="notes-content">
+                <div class="list-stack">
+                  <!-- Homepage -->
+                  <section class="list-section">
+                    <div class="list-section-header">
+                      <h3 class="list-section-title">Home</h3>
+                    </div>
+                    <div class="home-list-rows">
+                      <div class="home-list-row">
+                        <span class="home-list-date"></span>
+                        <a href="{{.BasePath}}" class="home-list-link">Homepage</a>
+                      </div>
+                    </div>
+                  </section>
 
-              <!-- Writings Section -->
-              {{if .Writings}}
-              <section class="list-section">
-                <div class="list-section-header">
-                  <h3 class="list-section-title">Writings</h3>
-                  <span class="meta-small">{{.WritingCount}} {{if eq .WritingCount 1}}ENTRY{{else}}ENTRIES{{end}}</span>
-                </div>
-                {{if .GroupedWritings}}
-                {{range .GroupedWritings}}
-                <div class="home-list-year-group">
-                  <div class="home-list-year-label">
-                    {{.Year}}
-                  </div>
-                  <div class="home-list-rows">
-                    {{range .Posts}}
-                    <div class="home-list-row">
-                      <span class="home-list-date">{{.DateLabel}}</span>
-                      <a href="{{$.BasePath}}writings/{{.Slug}}" class="home-list-link">
-                        {{.Title}}
-                      </a>
+                  <!-- Writings Section -->
+                  {{if .Writings}}
+                  <section class="list-section">
+                    <div class="list-section-header">
+                      <h3 class="list-section-title">Writings</h3>
+                      <span class="meta-small">{{.WritingCount}} {{if eq .WritingCount
+                        1}}ENTRY{{else}}ENTRIES{{end}}</span>
+                    </div>
+                    {{if .GroupedWritings}}
+                    {{range .GroupedWritings}}
+                    <div class="home-list-year-group">
+                      <div class="home-list-year-label">
+                        {{.Year}}
+                      </div>
+                      <div class="home-list-rows">
+                        {{range .Posts}}
+                        <div class="home-list-row">
+                          <span class="home-list-date">{{.DateLabel}}</span>
+                          <a href="{{$.BasePath}}writings/{{.Slug}}" class="home-list-link">
+                            {{.Title}}
+                          </a>
+                        </div>
+                        {{end}}
+                      </div>
                     </div>
                     {{end}}
-                  </div>
-                </div>
-                {{end}}
-                {{else}}
-                <div class="home-list-rows">
-                  <div class="home-list-row">
-                    <span class="home-list-date"></span>
-                    <span class="home-list-link empty-state">No writings yet</span>
-                  </div>
-                </div>
-                {{end}}
-              </section>
-              {{end}}
+                    {{else}}
+                    <div class="home-list-rows">
+                      <div class="home-list-row">
+                        <span class="home-list-date"></span>
+                        <span class="home-list-link empty-state">No writings yet</span>
+                      </div>
+                    </div>
+                    {{end}}
+                  </section>
+                  {{end}}
 
 
-              <!-- Other Pages -->
-              <section class="list-section">
-                <div class="list-section-header">
-                  <h3 class="list-section-title">Pages</h3>
+                  <!-- Other Pages -->
+                  <section class="list-section">
+                    <div class="list-section-header">
+                      <h3 class="list-section-title">Pages</h3>
+                    </div>
+                    <div class="home-list-rows">
+                      <div class="home-list-row">
+                        <span class="home-list-date"></span>
+                        <a href="{{.BasePath}}about" class="home-list-link">About</a>
+                      </div>
+                    </div>
+                  </section>
                 </div>
-                <div class="home-list-rows">
-                  <div class="home-list-row">
-                    <span class="home-list-date"></span>
-                    <a href="{{.BasePath}}about" class="home-list-link">About</a>
-                  </div>
-                </div>
-              </section>
+              </div>
             </div>
+            <aside class="home-homepage-rail"></aside>
           </div>
         </div>
       </div>

@@ -84,10 +84,11 @@
 
 .hero-brand-image {
   width: auto;
-  max-width: 18ch;
+  max-width: 220px;
   height: auto;
   max-height: 240px;
-  margin: 2rem 0 3rem auto;
+  margin: 2rem auto 2rem;
+  display: block;
 }
 
 .hero-brand-main {
@@ -207,7 +208,7 @@
 
 /* Library empty state - slightly shifted to the right */
 .library-empty {
-  transform: translateX(1rem);
+  margin-left: 0;
 }
 
 .empty-message-subtle {
@@ -230,9 +231,8 @@
 .page-header {
   max-width: min(900px, 100%);
   /* Match homepage main content width */
-  margin: 0 auto clamp(1.5rem, 4vw, 2rem);
+  margin: 2rem auto 3rem;
   text-align: center;
-  margin: 2rem 22rem 3rem auto;
 }
 
 .page-title {
@@ -255,23 +255,18 @@
 
 .page-brand-logo-mobile {
   display: block;
-  text-align: right;
-  /* Match homepage - right-aligned */
-  max-width: min(900px, 100%);
-  /* Match homepage main content width */
-  margin: 0 auto clamp(1.5rem, 4vw, 2rem);
-  padding: 0;
+  text-align: center;
+  width: 100%;
+  margin: 2rem auto;
 }
 
 .page-brand-image {
   width: auto;
-  max-width: 18ch;
-  /* Match homepage image size */
+  max-width: 220px;
   height: auto;
   max-height: 240px;
-  /* Match homepage image height */
-  margin: 2rem 32.7rem 3rem auto;
-  /* Match homepage image position (right-aligned) */
+  margin: 2rem auto 2rem;
+  display: block;
 }
 
 /* Blog Posts */
@@ -292,9 +287,8 @@
   flex-direction: column;
   gap: clamp(1.5rem, 4vw, 2rem);
   width: 100%;
-  max-width: min(600px, 100%);
-  margin: 0 20rem 0 auto;
-  transform: translateX(1rem);
+  max-width: min(38rem, 100%);
+  margin: 0 auto;
 }
 
 .list-section {
@@ -399,7 +393,6 @@
   margin: 0 auto;
   width: 100%;
   padding: 1rem 0 0;
-  transform: translateX(1rem);
 }
 
 .library-year-section {
@@ -447,7 +440,7 @@
     margin-left: auto;
     margin-right: auto;
     max-width: 1200px;
-    transform: translateX(4rem);
+    transform: translateX(6rem);
     grid-template-columns: 12ch 1fr;
     gap: clamp(1.5rem, 4vw, 3rem);
   }
@@ -474,6 +467,7 @@
   }
 
   .home-homepage-main {
+    width: 100%;
     max-width: 100%;
     margin: 0 auto;
   }
@@ -502,33 +496,32 @@
 
   .page-brand-logo-mobile {
     display: block;
-    text-align: right;
-    /* Match homepage - right-aligned */
+    text-align: center;
     width: 100%;
-    max-width: min(900px, 100%);
-    /* Match homepage main content width */
     margin: 0 auto;
   }
 
   .page-header {
     text-align: center;
-    max-width: min(900px, 100%);
-    /* Match homepage main content width */
+    width: 100%;
+    margin: 0 auto clamp(1.5rem, 4vw, 2rem);
   }
 
   .page-title {
     text-align: center;
     max-width: min(750px, 100%);
+    margin: 0 auto 0.5rem;
   }
 
   .page-meta {
     text-align: center;
     max-width: min(750px, 100%);
+    margin: 0 auto;
   }
 
   .notes-content,
   .library-catalogue {
-    max-width: min(600px, 100%);
+    max-width: min(38rem, 100%);
     margin: clamp(3rem, 8vw, 6rem) auto 0;
     width: 100%;
     padding: 0;
@@ -547,12 +540,11 @@
     text-align: left;
   }
 
-  /* About and Colophon page content - separate from blog posts */
   .page-content {
-    max-width: min(var(--measure), 100%);
-    /* Wider */
-    margin: clamp(2rem, 6vw, 4rem) 2rem 0;
-    /* Centered */
+    max-width: min(38rem, 100%);
+    /* Narrower than standard measure for centered text */
+    margin: clamp(2rem, 6vw, 4rem) auto 0;
+    /* Properly centered */
     padding: 0;
     text-align: center;
     font-family: var(--font-body-narrative);
@@ -563,8 +555,12 @@
     letter-spacing: var(--spacing-body);
   }
 
-  .page-content p {
-    margin: 0 0 var(--paragraph-spacing) 0;
+  .page-content p,
+  .page-content h1,
+  .page-content h2,
+  .page-content h3 {
+    margin-left: auto;
+    margin-right: auto;
     text-align: center;
     hyphens: none;
   }
@@ -656,7 +652,7 @@
   .home-layout {
     grid-template-columns: 1fr;
     gap: 2rem;
-    padding: 0 0.75rem;
+    padding: 0 1rem;
     margin-left: 0;
     max-width: 100%;
     width: 100%;
@@ -759,13 +755,16 @@
     padding-left: clamp(1rem, 4vw, 2rem);
     padding-right: clamp(1rem, 4vw, 2rem);
     max-width: 100%;
-    text-align: left;
-    /* Left-align on mobile for better readability */
+    text-align: center;
+    /* Center-align on mobile as per user request */
   }
 
-  .page-content p {
-    text-align: left;
-    /* Left-align paragraphs on mobile */
+  .page-content p,
+  .page-content h1,
+  .page-content h2,
+  .page-content h3 {
+    text-align: center;
+    /* Center-align paragraphs and headers on mobile */
   }
 
   .home-layout {

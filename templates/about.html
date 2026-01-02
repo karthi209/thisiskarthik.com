@@ -28,30 +28,36 @@
       <div class="home-layout">
         {{template "sidebar" .}}
         <div class="home-main">
-          <a href="{{.BasePath}}" class="page-brand-logo-mobile">
-            <img src="{{.BasePath}}images/Bow 1.webp" alt="Vintage bow" class="page-brand-image" width="315"
-              height="282" fetchpriority="high" />
-          </a>
-          <div class="page-header">
-            <div>
-              <h1 class="page-title">About</h1>
+          <div class="home-homepage-grid">
+            <div class="home-homepage-main">
+              <a href="{{.BasePath}}" class="page-brand-logo-mobile">
+                <img src="{{.BasePath}}images/Bow 1.webp" alt="Vintage bow" class="page-brand-image" width="315"
+                  height="282" fetchpriority="high" />
+              </a>
+              <div class="page-header">
+                <div>
+                  <h1 class="page-title">About</h1>
+                </div>
+              </div>
+              <div class="page-content" style="text-align: center;">
+                <p>Hello there! I see you've found the About page. So, I suppose I should tell you a little about me and
+                  this site.</p>
+                <p>I'm Karthik. I live in Chennai, India, and I work as a systems engineer by day. At night, I'm a
+                  vampire. I....oh. No. Sorry. Forget I ever said that.</p>
+                <p>Apart from my day job, I love writing, cartography, programming, talking about public transit, and
+                  many
+                  other things. I'd probably need a whole day to explain them all.</p>
+                <p>That's one of the reasons I created this site. It gives me a place to organise my thoughts while also
+                  being able to share them. It's also why the site looks very much like a small book, both aesthetically
+                  and practically.</p>
+                <p>For more details about the site's design, inspiration, and technical details, see the <a
+                    href="{{.BasePath}}colophon">Colophon</a>.</p>
+                <p>You can reach me via <a href="mailto:hello@thisiskarthik.com">email</a>, <a
+                    href="https://x.com/karthi9003" target="_blank" rel="noreferrer">Twitter</a>, or <a
+                    href="https://github.com/karthi209" target="_blank" rel="noreferrer">GitHub</a>.</p>
+              </div>
             </div>
-          </div>
-          <div class="page-content">
-            <p>Hello there! I see you've found the About page. So, I suppose I should tell you a little about me and
-              this site.</p>
-            <p>I'm Karthik. I live in Chennai, India, and I work as a systems engineer by day. At night, I'm a
-              vampire. I....oh. No. Sorry. Forget I ever said that.</p>
-            <p>Apart from my day job, I love writing, cartography, programming, talking about public transit, and many
-              other things. I'd probably need a whole day to explain them all.</p>
-            <p>That's one of the reasons I created this site. It gives me a place to organise my thoughts while also
-              being able to share them. It's also why the site looks very much like a small book, both aesthetically
-              and practically.</p>
-            <p>For more details about the site's design, inspiration, and technical details, see the <a
-                href="{{.BasePath}}colophon">Colophon</a>.</p>
-            <p>You can reach me via <a href="mailto:hello@thisiskarthik.com">email</a>, <a
-                href="https://x.com/karthi9003" target="_blank" rel="noreferrer">Twitter</a>, or <a
-                href="https://github.com/karthi209" target="_blank" rel="noreferrer">GitHub</a>.</p>
+            <aside class="home-homepage-rail"></aside>
           </div>
         </div>
       </div>

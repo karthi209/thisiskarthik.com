@@ -29,45 +29,51 @@
       <div class="home-layout">
         {{template "sidebar" .}}
         <div class="home-main">
-          <a href="{{.BasePath}}" class="page-brand-logo-mobile">
-            <img src="{{.BasePath}}images/Bow 1.webp" alt="Vintage bow" class="page-brand-image" width="315"
-              height="282" />
-          </a>
-          <div class="page-header">
-            <div>
-              <h1 class="page-title">Writings</h1>
-              <p class="page-meta">All my Writings in one place</p>
-            </div>
-          </div>
-
-          {{if .Writings}}
-          <div class="list-stack">
-            {{range .GroupedWritings}}
-            <section class="list-section">
-              <div class="list-section-header">
-                <h3 class="list-section-title">{{.Year}}</h3>
-                <span class="meta-small">{{.Count}} {{if eq .Count 1}}POST{{else}}POSTS{{end}}</span>
-              </div>
-              <div class="home-list-rows">
-                {{range .Posts}}
-                <div class="home-list-row" onclick="window.location.href='{{$.BasePath}}writings/{{.Slug}}'">
-                  <span class="home-list-date">{{.DateLabel}}</span>
-                  <a href="{{$.BasePath}}writings/{{.Slug}}" class="home-list-link" onclick="event.stopPropagation();">
-                    {{.Title}}
-                    {{if .IsDraft}}<span class="draft-tag">DRAFT</span>{{end}}
-                  </a>
+          <div class="home-homepage-grid">
+            <div class="home-homepage-main">
+              <a href="{{.BasePath}}" class="page-brand-logo-mobile">
+                <img src="{{.BasePath}}images/Bow 1.webp" alt="Vintage bow" class="page-brand-image" width="315"
+                  height="282" fetchpriority="high" />
+              </a>
+              <div class="page-header">
+                <div>
+                  <h1 class="page-title">Writings</h1>
+                  <p class="page-meta">All my Writings in one place</p>
                 </div>
+              </div>
+
+              {{if .Writings}}
+              <div class="list-stack">
+                {{range .GroupedWritings}}
+                <section class="list-section">
+                  <div class="list-section-header">
+                    <h3 class="list-section-title">{{.Year}}</h3>
+                    <span class="meta-small">{{.Count}} {{if eq .Count 1}}POST{{else}}POSTS{{end}}</span>
+                  </div>
+                  <div class="home-list-rows">
+                    {{range .Posts}}
+                    <div class="home-list-row" onclick="window.location.href='{{$.BasePath}}writings/{{.Slug}}'">
+                      <span class="home-list-date">{{.DateLabel}}</span>
+                      <a href="{{$.BasePath}}writings/{{.Slug}}" class="home-list-link"
+                        onclick="event.stopPropagation();">
+                        {{.Title}}
+                        {{if .IsDraft}}<span class="draft-tag">DRAFT</span>{{end}}
+                      </a>
+                    </div>
+                    {{end}}
+                  </div>
+                </section>
                 {{end}}
               </div>
-            </section>
-            {{end}}
+              {{else}}
+              <div class="blog-card-empty">
+                <p>No entries found in this volume.</p>
+                <p class="empty-message-subtle">Return in time to find new writings.</p>
+              </div>
+              {{end}}
+            </div>
+            <aside class="home-homepage-rail"></aside>
           </div>
-          {{else}}
-          <div class="blog-card-empty">
-            <p>No entries found in this volume.</p>
-            <p class="empty-message-subtle">Return in time to find new writings.</p>
-          </div>
-          {{end}}
         </div>
       </div>
     </main>

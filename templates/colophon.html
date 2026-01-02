@@ -28,62 +28,69 @@
       <div class="home-layout">
         {{template "sidebar" .}}
         <div class="home-main">
-          <a href="{{.BasePath}}" class="page-brand-logo-mobile">
-            <img src="{{.BasePath}}images/Bow 1.webp" alt="Vintage bow" class="page-brand-image" width="315"
-              height="282" fetchpriority="high" />
-          </a>
-          <div class="page-header">
-            <div>
-              <h1 class="page-title">Colophon</h1>
+          <div class="home-homepage-grid">
+            <div class="home-homepage-main">
+              <a href="{{.BasePath}}" class="page-brand-logo-mobile">
+                <img src="{{.BasePath}}images/Bow 1.webp" alt="Vintage bow" class="page-brand-image" width="315"
+                  height="282" fetchpriority="high" />
+              </a>
+              <div class="page-header">
+                <div>
+                  <h1 class="page-title">Colophon</h1>
+                </div>
+              </div>
+              <div class="page-content" style="text-align: center;">
+                <p>This site is written in old-school HTML and CSS and assembled as static pages.
+                  It relies on no database, no runtime server, and no third-party frameworks.
+                  Minimal and classic. A full build of this site completes in {{.BuildTime}} milliseconds on this
+                  machine.
+                  These figures reflect the state of the site at the time of writing.</p>
+
+                <p><strong>Typography</strong></p>
+                <p>Headings and titles use IM Fell Great Primer, an open-source revival of early
+                  eighteenth-century type. Designed by Igino Marini, the face draws from the work of the
+                  seventeenth-century Dutch punchcutter Dirck Voskens, whose letters later found their way into
+                  the presses of William Caslon. Body text uses Libertinus Serif for comfortable long-form reading.
+                  Both typefaces are open source and licensed under the SIL Open Font License.</p>
+
+                <p><strong>Colour and Aesthetic</strong></p>
+                <p>The palette is deliberately restrained: a vintage-ish paper (#fbf9f4) for the background,
+                  a slightly worn ink (#2b2723) for the text, and a muted rubrication red (#C62828) for
+                  headings and occasional emphasis.</p>
+
+                <p><strong>Illustration</strong></p>
+                <p>The title artwork is a heraldic illustration. Heraldry favours symbolism over likeness,
+                  using formal shapes and limited colour to suggest identity rather than describe it.</p>
+
+                <p><strong>Technical Details</strong></p>
+                <p>The site is statically compiled using my own blog engine written in Go, using the standard
+                  library and two small external dependencies: Goldmark for Markdown parsing and YAML for
+                  frontmatter. No build tools are employed beyond the compiler itself. The code is kept simple
+                  and readable, with the intention that it may be understood, reused, or altered without ceremony.</p>
+
+                <p><strong>Philosophy</strong></p>
+                <p>The tone of the site is intentionally restrained. Clarity is preferred over novelty and
+                  permanence over convenience.<br />
+                  What you read is what was written.</p>
+
+                <p><strong>Inspiration</strong></p>
+                <p>The main inspiration for this site comes from three people: <a href="https://tomchalky.com/"
+                    target="_blank" rel="noreferrer">Tom</a>, <a href="https://www.fromjason.xyz/" target="_blank"
+                    rel="noreferrer">Jason</a>, and <a href="https://www.taniarascia.com/" target="_blank"
+                    rel="noreferrer">Tania</a>.</p>
+
+                <p><strong>Source</strong></p>
+                <p>The source code for this site is available on <a
+                    href="https://github.com/karthi209/thisiskarthik.git" target="_blank"
+                    rel="noreferrer">GitHub</a>.<br />
+                  It may be cloned, modified, or adapted as needed.</p>
+
+                <p><strong>Edition</strong></p>
+                <p>First digital edition.<br />
+                  Compiled in {{.BuildYear}}.</p>
+              </div>
             </div>
-          </div>
-          <div class="page-content">
-            <p>This site is written in old-school HTML and CSS and assembled as static pages.
-              It relies on no database, no runtime server, and no third-party frameworks.
-              Minimal and classic. A full build of this site completes in {{.BuildTime}} milliseconds on this machine.
-              These figures reflect the state of the site at the time of writing.</p>
-
-            <p><strong>Typography</strong></p>
-            <p>Headings and titles use IM Fell Great Primer, an open-source revival of early
-              eighteenth-century type. Designed by Igino Marini, the face draws from the work of the
-              seventeenth-century Dutch punchcutter Dirck Voskens, whose letters later found their way into
-              the presses of William Caslon. Body text uses Libertinus Serif for comfortable long-form reading.
-              Both typefaces are open source and licensed under the SIL Open Font License.</p>
-
-            <p><strong>Colour and Aesthetic</strong></p>
-            <p>The palette is deliberately restrained: a vintage-ish paper (#fbf9f4) for the background,
-              a slightly worn ink (#2b2723) for the text, and a muted rubrication red (#C62828) for
-              headings and occasional emphasis.</p>
-
-            <p><strong>Illustration</strong></p>
-            <p>The title artwork is a heraldic illustration. Heraldry favours symbolism over likeness,
-              using formal shapes and limited colour to suggest identity rather than describe it.</p>
-
-            <p><strong>Technical Details</strong></p>
-            <p>The site is statically compiled using my own blog engine written in Go, using the standard
-              library and two small external dependencies: Goldmark for Markdown parsing and YAML for
-              frontmatter. No build tools are employed beyond the compiler itself. The code is kept simple
-              and readable, with the intention that it may be understood, reused, or altered without ceremony.</p>
-
-            <p><strong>Philosophy</strong></p>
-            <p>The tone of the site is intentionally restrained. Clarity is preferred over novelty and
-              permanence over convenience.<br />
-              What you read is what was written.</p>
-
-            <p><strong>Inspiration</strong></p>
-            <p>The main inspiration for this site comes from three people: <a href="https://tomchalky.com/"
-                target="_blank" rel="noreferrer">Tom</a>, <a href="https://www.fromjason.xyz/" target="_blank"
-                rel="noreferrer">Jason</a>, and <a href="https://www.taniarascia.com/" target="_blank"
-                rel="noreferrer">Tania</a>.</p>
-
-            <p><strong>Source</strong></p>
-            <p>The source code for this site is available on <a href="https://github.com/karthi209/thisiskarthik.git"
-                target="_blank" rel="noreferrer">GitHub</a>.<br />
-              It may be cloned, modified, or adapted as needed.</p>
-
-            <p><strong>Edition</strong></p>
-            <p>First digital edition.<br />
-              Compiled in {{.BuildYear}}.</p>
+            <aside class="home-homepage-rail"></aside>
           </div>
         </div>
       </div>
