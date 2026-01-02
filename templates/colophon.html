@@ -6,17 +6,19 @@
   <meta charset="UTF-8" />
   <link rel="icon" type="image/svg+xml" href="{{.BasePath}}favicon.svg" />
   <meta name="viewport"
-    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0, viewport-fit=cover" />
+  <meta name="description" content="Colophon - On Matters Local and Otherwise - A personal blog by Karthik" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
   <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
   <meta name="color-scheme" content="light dark" />
-  <link rel="preload" as="font" href="{{.BasePath}}fonts/IMFellDWPica-Regular.woff2" type="font/woff2" crossorigin="anonymous">
-  <link rel="preload" as="font" href="{{.BasePath}}fonts/IMFellDWPica-Italic.woff2" type="font/woff2" crossorigin="anonymous">
-  <link rel="preload" as="image" href="{{.BasePath}}images/Bow 1.png" fetchpriority="high">
-  <link rel="stylesheet" href="{{.BasePath}}css/main.css">
+  <link rel="preload" as="font" href="{{.BasePath}}fonts/IMFellGreatPrimer-Regular.woff2" type="font/woff2"
+    crossorigin="anonymous">
+
+  <link rel="preload" as="image" href="{{.BasePath}}images/Bow 1.webp" fetchpriority="high">
+  <link rel="stylesheet" href="{{.BasePath}}css/combined.css">
   <title>{{if .Title}}{{.Title}} - {{end}}On Matters Local and Otherwise</title>
 </head>
 
@@ -27,7 +29,8 @@
         {{template "sidebar" .}}
         <div class="home-main">
           <a href="{{.BasePath}}" class="page-brand-logo-mobile">
-            <img src="{{.BasePath}}images/Bow 1.png" alt="Vintage bow" class="page-brand-image" />
+            <img src="{{.BasePath}}images/Bow 1.webp" alt="Vintage bow" class="page-brand-image" width="315"
+              height="282" fetchpriority="high" />
           </a>
           <div class="page-header">
             <div>
@@ -39,44 +42,45 @@
               It relies on no database, no runtime server, and no third-party frameworks.
               Minimal and classic. A full build of this site completes in {{.BuildTime}} milliseconds on this machine.
               These figures reflect the state of the site at the time of writing.</p>
-            
+
             <p><strong>Typography</strong></p>
-            <p>Only one typeface is used on this entire site: IM Fell DW Pica, an open-source revival of early
+            <p>Headings and titles use IM Fell Great Primer, an open-source revival of early
               eighteenth-century type. Designed by Igino Marini, the face draws from the work of the
               seventeenth-century Dutch punchcutter Dirck Voskens, whose letters later found their way into
-              the presses of William Caslon. I like the small irregularities and the human touch to it.
-              It is open source and available on <a href="https://fonts.google.com/specimen/IM+Fell+DW+Pica" target="_blank" rel="noreferrer">Google Fonts</a>.</p>
-            
+              the presses of William Caslon. Body text uses Libertinus Serif for comfortable long-form reading.
+              Both typefaces are open source and licensed under the SIL Open Font License.</p>
+
             <p><strong>Colour and Aesthetic</strong></p>
             <p>The palette is deliberately restrained: a vintage-ish paper (#fbf9f4) for the background,
               a slightly worn ink (#2b2723) for the text, and a muted rubrication red (#C62828) for
               headings and occasional emphasis.</p>
-            
+
             <p><strong>Illustration</strong></p>
             <p>The title artwork is a heraldic illustration. Heraldry favours symbolism over likeness,
               using formal shapes and limited colour to suggest identity rather than describe it.</p>
-            
+
             <p><strong>Technical Details</strong></p>
             <p>The site is statically compiled using my own blog engine written in Go, using the standard
               library and two small external dependencies: Goldmark for Markdown parsing and YAML for
               frontmatter. No build tools are employed beyond the compiler itself. The code is kept simple
               and readable, with the intention that it may be understood, reused, or altered without ceremony.</p>
-            
+
             <p><strong>Philosophy</strong></p>
             <p>The tone of the site is intentionally restrained. Clarity is preferred over novelty and
               permanence over convenience.<br />
               What you read is what was written.</p>
-            
+
             <p><strong>Inspiration</strong></p>
-            <p>The main inspiration for this site comes from three people: <a href="https://tomchalky.com/" target="_blank" rel="noreferrer">Tom</a>, <a
-                href="https://www.fromjason.xyz/" target="_blank" rel="noreferrer">Jason</a>, and <a
-                href="https://www.taniarascia.com/" target="_blank" rel="noreferrer">Tania</a>.</p>
-            
+            <p>The main inspiration for this site comes from three people: <a href="https://tomchalky.com/"
+                target="_blank" rel="noreferrer">Tom</a>, <a href="https://www.fromjason.xyz/" target="_blank"
+                rel="noreferrer">Jason</a>, and <a href="https://www.taniarascia.com/" target="_blank"
+                rel="noreferrer">Tania</a>.</p>
+
             <p><strong>Source</strong></p>
-            <p>The source code for this site is available on <a
-                href="https://github.com/karthi209/thisiskarthik.git" target="_blank" rel="noreferrer">GitHub</a>.<br />
+            <p>The source code for this site is available on <a href="https://github.com/karthi209/thisiskarthik.git"
+                target="_blank" rel="noreferrer">GitHub</a>.<br />
               It may be cloned, modified, or adapted as needed.</p>
-            
+
             <p><strong>Edition</strong></p>
             <p>First digital edition.<br />
               Compiled in {{.BuildYear}}.</p>
@@ -90,4 +94,3 @@
 
 </html>
 {{end}}
-

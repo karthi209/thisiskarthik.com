@@ -16,32 +16,9 @@
   display: block;
 }
 
-.brand-logo {
-  height: 120px;
-  min-height: 120px;
-  max-height: 120px;
-  width: 100%;
-}
 
-.brand-bow-icon {
-  display: block;
-  width: auto;
-  max-width: 12ch;
-  height: auto;
-  max-height: 140px;
-  min-height: 100px;
-  object-fit: contain;
-  margin: 0 auto;
-  padding: 0;
-  position: relative;
-  top: 0;
-  left: 0;
-  opacity: 1;
-  background: transparent;
-  border: none;
-  outline: none;
-  box-sizing: border-box;
-}
+
+
 
 .sidebar-nav {
   display: flex;
@@ -57,7 +34,8 @@
   font-family: var(--font-body);
   font-size: clamp(1rem, 2.5vw, 1.1875rem);
   font-weight: 600;
-  letter-spacing: 0.05em;
+  letter-spacing: var(--spacing-meta);
+  /* 0.06em - increased for structure */
   text-transform: uppercase;
   line-height: 1.5;
   width: 100%;
@@ -84,12 +62,13 @@
     gap: clamp(0.75rem, 2vw, 1rem);
     margin-top: 3rem;
   }
-  
+
   .sidebar-link {
     text-transform: uppercase;
     font-weight: 600;
     font-size: clamp(1rem, 2vw, 1.125rem);
-    letter-spacing: 0.05em;
+    letter-spacing: var(--spacing-meta);
+    /* 0.06em - increased for structure */
     padding: 0;
     width: auto;
     min-height: auto;
@@ -98,11 +77,11 @@
     color: var(--color-text);
     line-height: 1.5;
   }
-  
+
   .sidebar-link:not(:last-child)::after {
     content: none;
   }
-  
+
   .sidebar-link:hover {
     color: var(--color-accent);
     text-decoration: underline;
@@ -165,7 +144,8 @@
   font-family: var(--font-body);
   font-size: 0.875em;
   color: var(--color-text);
-  letter-spacing: 0.05em;
+  letter-spacing: var(--spacing-meta);
+  /* 0.06em - increased for structure */
   line-height: 1.6;
   font-style: italic;
   opacity: 0.85;
@@ -179,7 +159,8 @@
   gap: 0.75em;
   font-family: var(--font-body);
   font-size: 0.8125em;
-  letter-spacing: 0.05em;
+  letter-spacing: var(--spacing-meta);
+  /* 0.06em - increased for structure */
   white-space: nowrap;
 }
 
@@ -221,23 +202,23 @@
   .home-sidebar {
     width: 100%;
   }
-  
+
   .footer {
     margin-left: 0;
     margin-right: 0;
     padding: 1em 1rem 2em 1rem;
     max-width: 100%;
   }
-  
+
   .footer-container {
     padding: 0;
   }
-  
+
   .footer-nav {
     font-size: 0.7em;
     gap: 0.4em;
   }
-  
+
   .blog-cards-grid {
     gap: 1rem;
   }

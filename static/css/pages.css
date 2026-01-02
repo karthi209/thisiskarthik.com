@@ -8,7 +8,8 @@
   display: grid;
   grid-template-columns: 12ch 1fr;
   gap: clamp(1.5rem, 4vw, 3rem);
-  max-width: 1200px; /* Increased from 1000px to widen main content */
+  max-width: 1200px;
+  /* Increased from 1000px to widen main content */
   margin: 0 auto;
   width: 100%;
   padding: 0 clamp(1rem, 4vw, 2rem);
@@ -25,7 +26,8 @@
   gap: 0.75rem;
   padding-left: 0;
   padding-right: 0;
-  padding-top: 2rem; /* Added padding to bring sidebar lower */
+  padding-top: 2rem;
+  /* Added padding to bring sidebar lower */
   height: fit-content;
   align-items: center;
   flex-shrink: 0;
@@ -46,7 +48,8 @@
 }
 
 .home-homepage-main {
-  max-width: min(900px, 100%); /* Increased from 750px to widen main content */
+  max-width: min(900px, 100%);
+  /* Increased from 750px to widen main content */
   margin: 0 auto;
 }
 
@@ -104,7 +107,8 @@
 .hero-intro {
   max-width: min(480px, 100%);
   margin: 0 auto;
-  font-family: var(--font-body);
+  font-family: var(--font-body-narrative);
+  /* IM Fell Great Primer for home body */
   font-size: var(--size-body);
   line-height: var(--line-height-body);
   color: var(--color-text);
@@ -113,7 +117,8 @@
 
 .hero-intro p {
   font-size: clamp(1.25rem, 3vw, 1.5rem);
-  line-height: 1.6;
+  line-height: var(--line-height-body);
+  /* 1.62 - comfortable long-form reading */
 }
 
 /* Clean vintage underlining for hero intro links */
@@ -141,43 +146,8 @@
 
 .hero-brand-name {
   font-weight: 600;
-  color: var(--color-rubric); /* Vintage red for Karthik - rubrication style */
-}
-
-.homepage-nav {
-  margin-top: clamp(1.5rem, 4vw, 2rem);
-  font-family: var(--font-body);
-  font-size: clamp(0.875rem, 2vw, 0.95rem);
-}
-
-.homepage-nav-line {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  margin-bottom: 0.5rem;
-}
-
-.homepage-nav-line-center {
-  justify-content: center;
-}
-
-.homepage-nav a {
-  color: var(--color-text);
-  text-decoration: underline;
-  text-decoration-color: var(--color-rubric);
-  text-decoration-thickness: 1px;
-  text-underline-offset: 2px;
-}
-
-.homepage-nav a:hover {
-  color: var(--color-accent);
-  text-decoration-color: var(--color-accent);
-}
-
-.homepage-nav-separator {
-  color: var(--color-text-muted);
-  opacity: 0.5;
+  color: var(--color-rubric);
+  /* Vintage red for Karthik - rubrication style */
 }
 
 .latest-section {
@@ -189,6 +159,10 @@
   font-size: clamp(1.125rem, 3vw, 1.25rem);
   font-weight: 600;
   color: var(--color-text);
+  line-height: var(--line-height-heading);
+  /* 1.15 - tight, dignified */
+  letter-spacing: var(--spacing-heading);
+  /* 0.03em - increased for air and dignity */
   margin-bottom: clamp(0.75rem, 2vw, 1rem);
 }
 
@@ -208,7 +182,8 @@
   padding: 0.15rem 0.4rem;
   margin-left: 0.5rem;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: var(--spacing-meta);
+  /* 0.06em - increased for structure */
 }
 
 /* Empty States - Consistent book-like styling across all pages */
@@ -244,15 +219,17 @@
 
 .meta-small {
   font-size: 0.75rem;
-  font-family: var(--font-mono);
+  font-family: var(--font-meta);
   color: var(--color-text-muted);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: var(--spacing-meta);
+  /* 0.06em - increased for structure */
 }
 
 /* Page Headers */
 .page-header {
-  max-width: min(900px, 100%); /* Match homepage main content width */
+  max-width: min(900px, 100%);
+  /* Match homepage main content width */
   margin: 0 auto clamp(1.5rem, 4vw, 2rem);
   text-align: center;
   margin: 2rem 22rem 3rem auto;
@@ -263,6 +240,10 @@
   font-size: clamp(1.75rem, 4vw, 2.25rem);
   font-weight: 600;
   color: var(--color-text);
+  line-height: var(--line-height-title);
+  /* 1.15 - tight, dignified */
+  letter-spacing: var(--spacing-title);
+  /* 0.03em - increased for air and dignity */
   margin-bottom: 0.5rem;
 }
 
@@ -274,18 +255,23 @@
 
 .page-brand-logo-mobile {
   display: block;
-  text-align: right; /* Match homepage - right-aligned */
-  max-width: min(900px, 100%); /* Match homepage main content width */
+  text-align: right;
+  /* Match homepage - right-aligned */
+  max-width: min(900px, 100%);
+  /* Match homepage main content width */
   margin: 0 auto clamp(1.5rem, 4vw, 2rem);
   padding: 0;
 }
 
 .page-brand-image {
   width: auto;
-  max-width: 18ch; /* Match homepage image size */
+  max-width: 18ch;
+  /* Match homepage image size */
   height: auto;
-  max-height: 240px; /* Match homepage image height */
-  margin: 2rem 32.7rem 3rem auto; /* Match homepage image position (right-aligned) */
+  max-height: 240px;
+  /* Match homepage image height */
+  margin: 2rem 32.7rem 3rem auto;
+  /* Match homepage image position (right-aligned) */
 }
 
 /* Blog Posts */
@@ -364,7 +350,7 @@
 
 .home-list-date,
 .library-list-date {
-  font-family: var(--font-body);
+  font-family: var(--font-meta);
   font-size: 0.8125rem;
   color: var(--color-text-muted);
   font-variant-numeric: oldstyle-nums;
@@ -391,6 +377,7 @@
 }
 
 @media (max-width: 768px) {
+
   .home-list-link,
   .library-list-title {
     padding: 0.5em 0;
@@ -464,82 +451,81 @@
     grid-template-columns: 12ch 1fr;
     gap: clamp(1.5rem, 4vw, 3rem);
   }
-  
+
   .home-sidebar {
     display: flex;
     padding-top: clamp(10rem, 18.5vw, 44rem);
   }
-  
-  /* Hide brand image and divider on desktop */
-  .home-sidebar .sidebar-widget:first-child {
-    display: none;
-  }
-  
-  .home-sidebar .sidebar-widget:last-child {
-    display: none;
-  }
-  
+
+
+
   /* Align navigation to start (left) on desktop */
   .home-sidebar .sidebar-nav {
     align-items: flex-start;
     justify-content: flex-start;
   }
-  
+
   /* Homepage: 2-column layout with recent posts on right */
   .home-homepage-grid {
-    grid-template-columns: 2fr 1fr; /* Changed from 1fr 1fr to make recent column narrower */
+    grid-template-columns: 2fr 1fr;
+    /* Changed from 1fr 1fr to make recent column narrower */
     gap: clamp(2rem, 5vw, 3rem);
     align-items: start;
   }
-  
+
   .home-homepage-main {
     max-width: 100%;
     margin: 0 auto;
   }
-  
+
   /* Hero section spans full width of main column, centered */
   .hero-content {
     width: 100%;
   }
-  
+
   .hero-intro {
     max-width: min(480px, 100%);
     margin: 0 auto;
   }
-  
+
   .hero-intro p {
     font-size: clamp(1.25rem, 3vw, 1.375rem);
   }
-  
+
   .home-homepage-rail {
-    max-width: min(320px, 100%); /* Constrain recent column width */
+    max-width: min(320px, 100%);
+    /* Constrain recent column width */
     margin: 0;
-    padding-top: clamp(9.5rem, 18vw, 43.5rem); /* Align below title */
+    padding-top: clamp(9.5rem, 18vw, 43.5rem);
+    /* Align below title */
   }
-  
+
   .page-brand-logo-mobile {
     display: block;
-    text-align: right; /* Match homepage - right-aligned */
+    text-align: right;
+    /* Match homepage - right-aligned */
     width: 100%;
-    max-width: min(900px, 100%); /* Match homepage main content width */
+    max-width: min(900px, 100%);
+    /* Match homepage main content width */
     margin: 0 auto;
   }
-  
+
   .page-header {
     text-align: center;
-    max-width: min(900px, 100%); /* Match homepage main content width */
+    max-width: min(900px, 100%);
+    /* Match homepage main content width */
   }
-  
+
   .page-title {
     text-align: center;
     max-width: min(750px, 100%);
   }
-  
+
   .page-meta {
     text-align: center;
     max-width: min(750px, 100%);
   }
-  
+
   .notes-content,
   .library-catalogue {
     max-width: min(600px, 100%);
@@ -547,38 +533,42 @@
     width: 100%;
     padding: 0;
   }
-  
+
   .post-title {
     text-align: left;
     max-width: min(750px, 100%);
   }
-  
+
   .post-content {
     max-width: 100%;
-    margin: clamp(3rem, 6vw, 5rem) 0 0 0; /* Left-aligned instead of centered */
+    margin: clamp(3rem, 6vw, 5rem) 0 0 0;
+    /* Left-aligned instead of centered */
     padding: 0;
     text-align: left;
   }
-  
+
   /* About and Colophon page content - separate from blog posts */
   .page-content {
-    max-width: min(560px, 100%); /* Wider */
-    margin: clamp(2rem, 6vw, 4rem) 2rem 0; /* Centered */
+    max-width: min(var(--measure), 100%);
+    /* Wider */
+    margin: clamp(2rem, 6vw, 4rem) 2rem 0;
+    /* Centered */
     padding: 0;
     text-align: center;
-    font-family: var(--font-body);
+    font-family: var(--font-body-narrative);
+    /* IM Fell Great Primer for about/colophon body */
     font-size: var(--size-body);
     line-height: var(--line-height-body);
     color: var(--color-text-light);
     letter-spacing: var(--spacing-body);
   }
-  
+
   .page-content p {
     margin: 0 0 var(--paragraph-spacing) 0;
     text-align: center;
     hyphens: none;
   }
-  
+
   .page-content a {
     text-decoration: underline;
     text-underline-offset: 2px;
@@ -592,11 +582,11 @@
     display: flex;
     flex-direction: column;
   }
-  
+
   .home-main {
     order: 1;
   }
-  
+
   .home-sidebar {
     order: 2;
     display: block;
@@ -608,15 +598,9 @@
     border-top: none;
     border-bottom: none;
   }
-  
-  .sidebar-widget:first-child {
-    display: none; /* Hide brand image on mobile/tablet */
-  }
-  
-  .sidebar-widget:last-child {
-    display: none; /* Hide decorative divider on mobile/tablet */
-  }
-  
+
+
+
   .sidebar-nav {
     display: flex;
     flex-direction: row;
@@ -626,7 +610,7 @@
     row-gap: clamp(1.5rem, 2vw, 2rem);
     flex-wrap: wrap;
   }
-  
+
   .sidebar-link {
     text-transform: uppercase;
     font-size: clamp(0.875rem, 2.5vw, 1rem);
@@ -643,7 +627,7 @@
     min-height: auto;
     line-height: 1.5;
   }
-  
+
   .sidebar-link:not(:last-child)::after {
     content: "·";
     margin-left: 0.75rem;
@@ -653,40 +637,19 @@
     font-weight: 400;
     text-decoration: none;
   }
-  
+
   .sidebar-link:hover {
     color: var(--color-accent);
     text-decoration-color: var(--color-accent);
   }
-  
+
   .home-homepage-rail {
-    display: none; /* Hide Recent section on mobile/tablet */
+    display: none;
+    /* Hide Recent section on mobile/tablet */
   }
 }
 
-@media (min-width: 769px) and (max-width: 1099px) {
-  .home-layout {
-    grid-template-columns: 1fr;
-    gap: clamp(1.5rem, 4vw, 2rem);
-    padding: 0 clamp(1.5rem, 5vw, 3rem);
-    margin: 0 auto;
-  }
-  
-  .home-main {
-    max-width: min(720px, 100%);
-    margin: 0 auto;
-  }
-  
-  .home-list-link,
-  .library-list-title {
-    font-size: clamp(1.125rem, 3vw, 1.25rem);
-  }
-  
-  .home-list-date,
-  .library-list-date {
-    font-size: clamp(1rem, 2.5vw, 1.125rem);
-  }
-}
+
 
 /* Mobile */
 @media (max-width: 768px) {
@@ -698,19 +661,19 @@
     max-width: 100%;
     width: 100%;
   }
-  
+
   .home-main {
     padding: 0;
     max-width: 100%;
     width: 100%;
   }
-  
+
   .home-homepage-main,
   .home-homepage-rail {
     max-width: 100%;
     margin: 0;
   }
-  
+
   .page-header,
   .page-title {
     text-align: center;
@@ -718,80 +681,77 @@
     margin-right: auto;
     max-width: 100%;
   }
-  
+
   .page-meta {
     text-align: left;
     margin-left: 3.5rem;
     margin-right: 0;
     max-width: 100%;
   }
-  
-  .page-brand-logo-mobile {
-    margin-left: 0;
-    margin-right: 0;
-    max-width: 100%;
-  }
-  
+
+
+
   /* Post mobile styles are defined in post.css */
-  
+
   .post-title {
     margin-left: 0;
     text-align: left;
     max-width: 100%;
   }
-  
+
   .post-content {
     margin-left: 0;
     margin-top: 0;
     max-width: 100%;
     width: 100%;
   }
-  
+
   .post-container {
     max-width: 100%;
     padding: 0;
     margin: 0;
   }
-  
+
   .app-container[data-page="post"] .main-content {
     padding: 0;
   }
-  
+
   .app-container[data-page="post"] .home-layout {
     padding: 0;
     margin: 0;
   }
-  
+
   .app-container[data-page="post"] .home-main {
     padding: 0;
     margin: 0;
   }
-  
+
   .home-list-link,
   .library-list-title,
   .library-list-meta {
     font-size: clamp(1.125rem, 3vw, 1.25rem);
   }
-  
+
   .home-list-date,
   .library-list-date {
     font-size: clamp(1rem, 2.5vw, 1.125rem);
   }
-  
+
   .notes-content,
   .library-catalogue {
     margin: clamp(1.5em, 4vw, 2em) auto 0;
     padding: 0 clamp(1rem, 4vw, 2rem);
-    transform: none; /* Remove desktop transform on mobile */
+    transform: none;
+    /* Remove desktop transform on mobile */
   }
-  
+
   /* Remove transforms and fix margins for mobile */
   .list-stack {
     transform: none;
     margin: 0 auto;
     max-width: 100%;
   }
-  
+
   .page-content {
     transform: none;
     margin: clamp(2rem, 6vw, 4rem) auto 0;
@@ -799,33 +759,34 @@
     padding-left: clamp(1rem, 4vw, 2rem);
     padding-right: clamp(1rem, 4vw, 2rem);
     max-width: 100%;
-    text-align: left; /* Left-align on mobile for better readability */
+    text-align: left;
+    /* Left-align on mobile for better readability */
   }
-  
+
   .page-content p {
-    text-align: left; /* Left-align paragraphs on mobile */
+    text-align: left;
+    /* Left-align paragraphs on mobile */
   }
-  
+
   .home-layout {
-    transform: none; /* Remove desktop transform on mobile */
+    transform: none;
+    /* Remove desktop transform on mobile */
   }
-  
+
   /* Remove transforms from empty states on mobile */
   .library-empty,
-  .notes-empty,
-  .blog-card-empty {
+  .notes-empty {
     transform: none;
     max-width: 100%;
     padding: clamp(2rem, 5vw, 3rem) clamp(1rem, 4vw, 2rem);
   }
-  
+
   .page-header {
     margin: 2rem auto 3rem;
     padding: 0 clamp(1rem, 4vw, 2rem);
   }
-  
+
   .page-brand-image {
     margin: 2rem auto 3rem;
   }
 }
-

@@ -6,6 +6,7 @@ import (
 	"io/fs"
 	"os"
 	"path/filepath"
+	"regexp"
 	"sort"
 	"strconv"
 	"strings"
@@ -777,11 +778,15 @@ func processPostFile(filePath string) (*Post, error) {
 		return nil, fmt.Errorf("difficulty in converting the manuscript to print: %w", err)
 	}
 
+	// Post-process HTML to add lazy loading to images
+	htmlStr := htmlContent.String()
+	htmlStr = strings.ReplaceAll(htmlStr, "<img ", "<img loading=\"lazy\" decoding=\"async\" ")
+
 	// Build post object
 	post := Post{
 		ID:        slug,
 		Title:     frontmatter.Title,
-		Content:   htmlContent.String(),
+		Content:   htmlStr,
 		Category:  frontmatter.Category,
 		Slug:      slug,
 		IsDraft:   frontmatter.IsDraft,
@@ -821,13 +826,9 @@ func copyStaticFiles() error {
 		return fmt.Errorf("static directory not found: %s", staticDir)
 	}
 
-	// Copy CSS files
-	cssSrc := filepath.Join(staticDir, "css")
-	if _, err := os.Stat(cssSrc); err == nil {
-		cssDst := filepath.Join(outputDir, "css")
-		if err := copyDir(cssSrc, cssDst); err != nil {
-			return fmt.Errorf("difficulty in gathering styles: %w", err)
-		}
+	// Combine CSS files into a single file for better performance
+	if err := combineCSSFiles(); err != nil {
+		return fmt.Errorf("difficulty in combining styles: %w", err)
 	}
 
 	// Copy other static files (images, fonts, etc.)
@@ -970,5 +971,172 @@ func copyImages() error {
 
 	fmt.Printf("Gathered %d illustration%s\n", copied, plural(copied))
 	return nil
+}
+
+// combineCSSFiles combines all CSS files into a single combined.css file
+// This improves performance by eliminating @import blocking requests
+func combineCSSFiles() error {
+	cssSrc := filepath.Join(staticDir, "css")
+	cssDst := filepath.Join(outputDir, "css")
+	
+	// Ensure output CSS directory exists
+	if err := os.MkdirAll(cssDst, 0755); err != nil {
+		return err
+	}
+	
+	// Read main.css to get import order
+	mainCSSPath := filepath.Join(cssSrc, "main.css")
+	mainContent, err := os.ReadFile(mainCSSPath)
+	if err != nil {
+		return fmt.Errorf("could not read main.css: %w", err)
+	}
+	
+	var combined strings.Builder
+	
+	// Parse @import statements
+	importPattern := regexp.MustCompile(`@import\s+['"]([^'"]+)['"];?`)
+	matches := importPattern.FindAllStringSubmatch(string(mainContent), -1)
+	
+	// Read and combine each imported file
+	for _, match := range matches {
+		if len(match) < 2 {
+			continue
+		}
+		importPath := match[1]
+		// Remove ./ prefix if present
+		importPath = strings.TrimPrefix(importPath, "./")
+		
+		importFile := filepath.Join(cssSrc, importPath)
+		content, err := os.ReadFile(importFile)
+		if err != nil {
+			return fmt.Errorf("could not read %s: %w", importFile, err)
+		}
+		
+		combined.WriteString(string(content))
+		combined.WriteString("\n")
+	}
+	
+	// Minify CSS (remove unnecessary whitespace and comments, but preserve license comments)
+	minified := minifyCSS(combined.String())
+	
+	// Write combined CSS file
+	combinedPath := filepath.Join(cssDst, "combined.css")
+	if err := os.WriteFile(combinedPath, []byte(minified), 0644); err != nil {
+		return fmt.Errorf("could not write combined.css: %w", err)
+	}
+	
+	return nil
+}
+
+// minifyCSS removes unnecessary whitespace and comments while preserving functionality
+// Keeps license comments and important comments
+func minifyCSS(css string) string {
+	var result strings.Builder
+	inString := false
+	stringChar := byte(0)
+	inComment := false
+	inLicenseComment := false
+	lastChar := byte(0)
+	skipNextNewline := false
+	
+	for i := 0; i < len(css); i++ {
+		char := css[i]
+		
+		// Handle strings (preserve content inside quotes)
+		if !inComment && (char == '"' || char == '\'') {
+			if !inString {
+				inString = true
+				stringChar = char
+			} else if char == stringChar {
+				inString = false
+			}
+			result.WriteByte(char)
+			lastChar = char
+			continue
+		}
+		
+		if inString {
+			result.WriteByte(char)
+			lastChar = char
+			continue
+		}
+		
+		// Handle comments
+		if i+1 < len(css) && char == '/' && css[i+1] == '*' {
+			// Check if it's a license comment (contains "License" or "Copyright")
+			remaining := css[i:]
+			if strings.Contains(remaining, "License") || strings.Contains(remaining, "Copyright") {
+				inLicenseComment = true
+				result.WriteString("/*")
+				i++ // Skip the *
+				continue
+			}
+			inComment = true
+			i++ // Skip the *
+			continue
+		}
+		
+		if inComment || inLicenseComment {
+			if i+1 < len(css) && char == '*' && css[i+1] == '/' {
+				if inLicenseComment {
+					result.WriteString("*/")
+				}
+				inComment = false
+				inLicenseComment = false
+				i++ // Skip the /
+				lastChar = '/'
+				continue
+			}
+			if inLicenseComment {
+				result.WriteByte(char)
+			}
+			continue
+		}
+		
+		// Remove unnecessary whitespace
+		if char == ' ' || char == '\t' {
+			// Only add space if needed (between selectors/properties)
+			if lastChar != ' ' && lastChar != '\n' && lastChar != '\t' && lastChar != '{' && lastChar != ';' && lastChar != ':' {
+				// Check if next non-whitespace char needs space
+				nextNonWS := findNextNonWhitespace(css, i+1)
+				if nextNonWS < len(css) {
+					nextChar := css[nextNonWS]
+					if nextChar != '}' && nextChar != ';' && nextChar != ':' && nextChar != ',' && nextChar != ')' && nextChar != '{' {
+						result.WriteByte(' ')
+						lastChar = ' '
+					}
+				}
+			}
+			continue
+		}
+		
+		if char == '\n' || char == '\r' {
+			// Only keep newlines after semicolons, closing braces, or before @ rules
+			if lastChar == ';' || lastChar == '}' || (i+1 < len(css) && css[i+1] == '@') {
+				if !skipNextNewline {
+					result.WriteByte('\n')
+					lastChar = '\n'
+				}
+				skipNextNewline = false
+			} else {
+				skipNextNewline = true
+			}
+			continue
+		}
+		
+		result.WriteByte(char)
+		lastChar = char
+	}
+	
+	return result.String()
+}
+
+func findNextNonWhitespace(s string, start int) int {
+	for i := start; i < len(s); i++ {
+		if s[i] != ' ' && s[i] != '\t' && s[i] != '\n' && s[i] != '\r' {
+			return i
+		}
+	}
+	return len(s)
 }
 

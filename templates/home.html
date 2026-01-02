@@ -6,19 +6,21 @@
   <meta charset="UTF-8" />
   <link rel="icon" type="image/svg+xml" href="{{.BasePath}}favicon.svg" />
   <meta name="viewport"
-    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0, viewport-fit=cover" />
+  <meta name="description" content="On Matters Local and Otherwise - A personal blog by Karthik" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
   <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
   <meta name="color-scheme" content="light dark" />
-  <!-- Local fonts - IM Fell DW Pica loaded from {{.BasePath}}fonts/ directory -->
+  <!-- Local fonts - IM Fell Great Primer loaded from {{.BasePath}}fonts/ directory -->
   <!-- Preload fonts to prevent FOUT (Flash of Unstyled Text) -->
-  <link rel="preload" as="font" href="{{.BasePath}}fonts/IMFellDWPica-Regular.woff2" type="font/woff2" crossorigin="anonymous">
-  <link rel="preload" as="font" href="{{.BasePath}}fonts/IMFellDWPica-Italic.woff2" type="font/woff2" crossorigin="anonymous">
-    <link rel="preload" as="image" href="{{.BasePath}}images/Bow 1.png" fetchpriority="high">
-  <link rel="stylesheet" href="{{.BasePath}}css/main.css">
+  <link rel="preload" as="font" href="{{.BasePath}}fonts/IMFellGreatPrimer-Regular.woff2" type="font/woff2"
+    crossorigin="anonymous">
+
+  <link rel="preload" as="image" href="{{.BasePath}}images/Bow 1.webp" fetchpriority="high">
+  <link rel="stylesheet" href="{{.BasePath}}css/combined.css">
   <title>{{if .Title}}{{.Title}} - {{end}}On Matters Local and Otherwise</title>
 </head>
 
@@ -35,7 +37,8 @@
                   <div class="hero-content">
                     <div class="hero-brand">
                       <a href="{{.BasePath}}" class="hero-brand-logo-mobile">
-                        <img src="{{.BasePath}}images/Bow 1.png" alt="Vintage bow" class="hero-brand-image" />
+                        <img src="{{.BasePath}}images/Bow 1.webp" alt="Vintage bow" class="hero-brand-image" width="315"
+                          height="282" fetchpriority="high" />
                       </a>
                       <div class="hero-brand-main">On Matters Local and Otherwise</div>
                       <div class="hero-brand-byline"><span class="hero-brand-by">by</span> <span

@@ -43,11 +43,13 @@
   font-family: var(--font-heading);
   font-size: clamp(2.5rem, 5vw, 3rem);
   font-weight: 600;
-  line-height: 1.2;
+  line-height: var(--line-height-title);
+  /* 1.15 - tight, dignified */
   margin-bottom: 1.5rem;
   margin-top: 0;
   color: var(--color-text-dark);
-  letter-spacing: -0.02em;
+  letter-spacing: var(--spacing-title);
+  /* 0.03em - increased for air and dignity */
   text-align: left;
   margin-left: 0;
   margin-right: auto;
@@ -60,7 +62,8 @@
   gap: 0.5rem;
   color: var(--color-text);
   font-family: var(--font-body);
-  font-size: 1.125rem;
+  font-size: 0.95rem;
+  /* Reduced from 1.125rem to establish hierarchy */
   letter-spacing: 0.02em;
   flex-wrap: wrap;
   font-variant-numeric: oldstyle-nums;
@@ -94,25 +97,37 @@
 .post-body {
   font-family: var(--font-body);
   font-size: var(--size-body);
-  line-height: 1.65;
+  line-height: var(--line-height-body);
   color: var(--color-text);
   letter-spacing: var(--spacing-body);
-  max-width: min(60ch, 100%);
+  max-width: var(--measure);
   margin-left: 0;
   margin-right: auto;
   padding: 0;
   text-align: left;
 }
 
+/* First paragraph - quiet authority */
 .post-body p:first-of-type {
   margin-top: 0;
-  margin-bottom: var(--paragraph-spacing);
+  margin-bottom: 1em;
+  /* Standardized spacing */
   padding: 0;
+  font-variant-numeric: oldstyle-nums;
+  /* Subconscious authority */
+  letter-spacing: -0.003em;
+  /* Slightly tighter for presence */
+  hyphens: auto;
+  /* Small print wisdom */
 }
 
 .post-body p {
-  margin-block: var(--paragraph-spacing);
+  margin-bottom: var(--paragraph-spacing);
+  /* Standardized spacing */
+  margin-top: 0;
   padding: 0;
+  hyphens: auto;
+  /* Small print wisdom */
 }
 
 .post-body p:last-child {
@@ -184,7 +199,7 @@
 }
 
 /* Paragraphs with images followed by text - maintain flow */
-.post-body p:has(img) + p {
+.post-body p:has(img)+p {
   margin-top: 1.25em;
 }
 
@@ -279,11 +294,11 @@
   .post-title {
     font-size: clamp(2.4rem, 6vw, 4rem);
   }
-  
+
   .post-running-head {
     font-size: clamp(1.25rem, 2.5vw, 1.25rem);
   }
-  
+
   .post-header {
     margin-bottom: clamp(1rem, 3vw, 1.5rem);
     padding-top: clamp(1rem, 3vw, 1.5rem);
@@ -293,14 +308,14 @@
     padding-right: clamp(1rem, 4vw, 1.5rem);
     max-width: 100%;
   }
-  
+
   .post-body {
     font-size: clamp(1.25rem, 3vw, 1.7rem);
     padding-left: clamp(1rem, 4vw, 1.5rem);
     padding-right: clamp(1rem, 4vw, 1.5rem);
     max-width: 100%;
   }
-  
+
   .post-meta {
     flex-wrap: nowrap;
     justify-content: flex-start;
@@ -310,11 +325,11 @@
     scrollbar-width: none;
     white-space: nowrap;
   }
-  
+
   .post-meta::-webkit-scrollbar {
     display: none;
   }
-  
+
   .meta-group {
     flex-wrap: nowrap;
     gap: 0.25rem;
@@ -322,12 +337,9 @@
     white-space: nowrap;
     flex-shrink: 0;
   }
-  
-  .meta-item-read-time,
-  .meta-separator-read-time {
-    display: none;
-  }
-  
+
+
+
   .meta-separator {
     font-size: 0.5rem;
     flex-shrink: 0;

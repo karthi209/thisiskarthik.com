@@ -118,11 +118,11 @@ func watchFiles() (*fsnotify.Watcher, error) {
 
 func main() {
 	outputDir := "public"
-	port := "5173"
+	port := "5174"
 
 	// Initial build (silent)
 	if err := rebuildSite(); err != nil {
-		fmt.Printf("✗ Build failed: %v\n", err)
+		fmt.Printf("Build failed: %v\n", err)
 		os.Exit(1)
 	}
 
