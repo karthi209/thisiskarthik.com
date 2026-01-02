@@ -826,13 +826,7 @@ func copyStaticFiles() error {
 		return fmt.Errorf("static directory not found: %s", staticDir)
 	}
 
-	// Combine CSS files into a single file for better performance
-	if err := combineCSSFiles(); err != nil {
-		return fmt.Errorf("difficulty in combining styles: %w", err)
-	}
-
-	// Copy other static files (images, fonts, etc.)
-	// Skip css directory as we already copied it
+	// Copy all static files (including styles)
 	err := filepath.Walk(staticDir, func(path string, info fs.FileInfo, err error) error {
 		if err != nil {
 			return err
@@ -841,14 +835,6 @@ func copyStaticFiles() error {
 		relPath, err := filepath.Rel(staticDir, path)
 		if err != nil {
 			return err
-		}
-
-		// Skip css directory
-		if strings.HasPrefix(relPath, "css") {
-			if info.IsDir() {
-				return filepath.SkipDir
-			}
-			return nil
 		}
 
 		dstPath := filepath.Join(outputDir, relPath)
