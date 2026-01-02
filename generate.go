@@ -6,7 +6,7 @@ import (
 	"io/fs"
 	"os"
 	"path/filepath"
-	"regexp"
+
 	"sort"
 	"strconv"
 	"strings"
@@ -86,10 +86,10 @@ type RecentItem struct {
 }
 
 type WritingsPageData struct {
-	PageType      string
-	Title         string
-	BasePath      string
-	Writings      []PostTemplateData
+	PageType        string
+	Title           string
+	BasePath        string
+	Writings        []PostTemplateData
 	GroupedWritings []YearGroup
 }
 
@@ -119,7 +119,6 @@ type PostPageData struct {
 	Post     PostTemplateData
 }
 
-
 type AboutPageData struct {
 	PageType string
 	Title    string
@@ -134,16 +133,16 @@ type ColophonPageData struct {
 	PageCount   int
 	ImageCount  int
 	BuildYear   int
-	BuildTime  string
+	BuildTime   string
 }
 
 type IndexPageData struct {
-	PageType       string
-	Title          string
-	BasePath       string
-	Writings      []PostTemplateData
+	PageType        string
+	Title           string
+	BasePath        string
+	Writings        []PostTemplateData
 	GroupedWritings []YearGroup
-	WritingCount   int
+	WritingCount    int
 }
 
 // plural returns "s" if count is not 1, empty string otherwise
@@ -285,7 +284,6 @@ func main() {
 		fmt.Printf("I encountered difficulty in composing the colophon page: %v\n", err)
 	}
 
-
 	if err := generateIndexPage(templates, postTemplateData, groupedWritings); err != nil {
 		fmt.Printf("I encountered difficulty in composing the index page: %v\n", err)
 	}
@@ -380,10 +378,10 @@ func generateHomePage(templates *template.Template, posts []PostTemplateData) er
 
 func generateWritingsPage(templates *template.Template, posts []PostTemplateData, grouped []YearGroup) error {
 	data := WritingsPageData{
-		PageType:       "writings",
-		Title:          "Writings",
-		BasePath:       basePath,
-		Writings:       posts,
+		PageType:        "writings",
+		Title:           "Writings",
+		BasePath:        basePath,
+		Writings:        posts,
 		GroupedWritings: grouped,
 	}
 
@@ -426,7 +424,7 @@ func generateColophonPage(templates *template.Template, buildDuration time.Durat
 	buildYear := time.Now().Year()
 	buildTimeMs := buildDuration.Milliseconds()
 	buildTimeStr := fmt.Sprintf("%d", buildTimeMs)
-	
+
 	data := ColophonPageData{
 		PageType:    "colophon",
 		Title:       "Colophon",
@@ -453,12 +451,12 @@ func generateColophonPage(templates *template.Template, buildDuration time.Durat
 // Excludes: serve.go (dev tool), scripts (build tools), content (posts)
 func countLinesOfCode() int {
 	total := 0
-	
+
 	// Count generate.go only (exclude serve.go - it's a dev tool)
 	if content, err := os.ReadFile("generate.go"); err == nil {
 		total += strings.Count(string(content), "\n")
 	}
-	
+
 	// Count CSS files in static/css
 	err := filepath.WalkDir("static/css", func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
@@ -474,7 +472,7 @@ func countLinesOfCode() int {
 	if err != nil {
 		// Continue if CSS directory doesn't exist
 	}
-	
+
 	// Count template HTML files
 	err = filepath.WalkDir("templates", func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
@@ -490,7 +488,7 @@ func countLinesOfCode() int {
 	if err != nil {
 		// Continue if templates directory doesn't exist
 	}
-	
+
 	return total
 }
 
@@ -499,30 +497,30 @@ func countLinesOfCode() int {
 // So we count existing pages + pages that will be generated
 func countGeneratedPages() int {
 	count := 0
-	
+
 	// Count pages already generated (home, writings, posts, about)
 	err := filepath.WalkDir(outputDir, func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return nil
 		}
-		
+
 		if !d.IsDir() && strings.HasSuffix(path, "index.html") {
 			count++
 		}
-		
+
 		return nil
 	})
-	
+
 	if err != nil {
 		// If outputDir doesn't exist yet, start with 0
 		count = 0
 	}
-	
+
 	// Add pages that will be generated after colophon:
 	// - Colophon (1)
 	// - Index (1)
 	count += 2 // Colophon + Index
-	
+
 	return count
 }
 
@@ -530,14 +528,14 @@ func countGeneratedPages() int {
 func countImages() int {
 	count := 0
 	imageDir := filepath.Join(staticDir, "images")
-	
+
 	imageExts := []string{".png", ".jpg", ".jpeg", ".gif", ".webp", ".svg"}
-	
+
 	err := filepath.WalkDir(imageDir, func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return nil
 		}
-		
+
 		if !d.IsDir() {
 			lowerPath := strings.ToLower(path)
 			for _, ext := range imageExts {
@@ -547,26 +545,25 @@ func countImages() int {
 				}
 			}
 		}
-		
+
 		return nil
 	})
-	
+
 	if err != nil {
 		return 0
 	}
-	
+
 	return count
 }
 
-
 func generateIndexPage(templates *template.Template, posts []PostTemplateData, grouped []YearGroup) error {
 	data := IndexPageData{
-		PageType:      "index",
-		Title:         "Index",
-		BasePath:      basePath,
-		Writings:         posts,
-		GroupedWritings:  grouped,
-		WritingCount:     len(posts),
+		PageType:        "index",
+		Title:           "Index",
+		BasePath:        basePath,
+		Writings:        posts,
+		GroupedWritings: grouped,
+		WritingCount:    len(posts),
 	}
 
 	indexDir := filepath.Join(outputDir, "index")
@@ -958,171 +955,3 @@ func copyImages() error {
 	fmt.Printf("Gathered %d illustration%s\n", copied, plural(copied))
 	return nil
 }
-
-// combineCSSFiles combines all CSS files into a single combined.css file
-// This improves performance by eliminating @import blocking requests
-func combineCSSFiles() error {
-	cssSrc := filepath.Join(staticDir, "css")
-	cssDst := filepath.Join(outputDir, "css")
-	
-	// Ensure output CSS directory exists
-	if err := os.MkdirAll(cssDst, 0755); err != nil {
-		return err
-	}
-	
-	// Read main.css to get import order
-	mainCSSPath := filepath.Join(cssSrc, "main.css")
-	mainContent, err := os.ReadFile(mainCSSPath)
-	if err != nil {
-		return fmt.Errorf("could not read main.css: %w", err)
-	}
-	
-	var combined strings.Builder
-	
-	// Parse @import statements
-	importPattern := regexp.MustCompile(`@import\s+['"]([^'"]+)['"];?`)
-	matches := importPattern.FindAllStringSubmatch(string(mainContent), -1)
-	
-	// Read and combine each imported file
-	for _, match := range matches {
-		if len(match) < 2 {
-			continue
-		}
-		importPath := match[1]
-		// Remove ./ prefix if present
-		importPath = strings.TrimPrefix(importPath, "./")
-		
-		importFile := filepath.Join(cssSrc, importPath)
-		content, err := os.ReadFile(importFile)
-		if err != nil {
-			return fmt.Errorf("could not read %s: %w", importFile, err)
-		}
-		
-		combined.WriteString(string(content))
-		combined.WriteString("\n")
-	}
-	
-	// Minify CSS (remove unnecessary whitespace and comments, but preserve license comments)
-	minified := minifyCSS(combined.String())
-	
-	// Write combined CSS file
-	combinedPath := filepath.Join(cssDst, "combined.css")
-	if err := os.WriteFile(combinedPath, []byte(minified), 0644); err != nil {
-		return fmt.Errorf("could not write combined.css: %w", err)
-	}
-	
-	return nil
-}
-
-// minifyCSS removes unnecessary whitespace and comments while preserving functionality
-// Keeps license comments and important comments
-func minifyCSS(css string) string {
-	var result strings.Builder
-	inString := false
-	stringChar := byte(0)
-	inComment := false
-	inLicenseComment := false
-	lastChar := byte(0)
-	skipNextNewline := false
-	
-	for i := 0; i < len(css); i++ {
-		char := css[i]
-		
-		// Handle strings (preserve content inside quotes)
-		if !inComment && (char == '"' || char == '\'') {
-			if !inString {
-				inString = true
-				stringChar = char
-			} else if char == stringChar {
-				inString = false
-			}
-			result.WriteByte(char)
-			lastChar = char
-			continue
-		}
-		
-		if inString {
-			result.WriteByte(char)
-			lastChar = char
-			continue
-		}
-		
-		// Handle comments
-		if i+1 < len(css) && char == '/' && css[i+1] == '*' {
-			// Check if it's a license comment (contains "License" or "Copyright")
-			remaining := css[i:]
-			if strings.Contains(remaining, "License") || strings.Contains(remaining, "Copyright") {
-				inLicenseComment = true
-				result.WriteString("/*")
-				i++ // Skip the *
-				continue
-			}
-			inComment = true
-			i++ // Skip the *
-			continue
-		}
-		
-		if inComment || inLicenseComment {
-			if i+1 < len(css) && char == '*' && css[i+1] == '/' {
-				if inLicenseComment {
-					result.WriteString("*/")
-				}
-				inComment = false
-				inLicenseComment = false
-				i++ // Skip the /
-				lastChar = '/'
-				continue
-			}
-			if inLicenseComment {
-				result.WriteByte(char)
-			}
-			continue
-		}
-		
-		// Remove unnecessary whitespace
-		if char == ' ' || char == '\t' {
-			// Only add space if needed (between selectors/properties)
-			if lastChar != ' ' && lastChar != '\n' && lastChar != '\t' && lastChar != '{' && lastChar != ';' && lastChar != ':' {
-				// Check if next non-whitespace char needs space
-				nextNonWS := findNextNonWhitespace(css, i+1)
-				if nextNonWS < len(css) {
-					nextChar := css[nextNonWS]
-					if nextChar != '}' && nextChar != ';' && nextChar != ':' && nextChar != ',' && nextChar != ')' && nextChar != '{' {
-						result.WriteByte(' ')
-						lastChar = ' '
-					}
-				}
-			}
-			continue
-		}
-		
-		if char == '\n' || char == '\r' {
-			// Only keep newlines after semicolons, closing braces, or before @ rules
-			if lastChar == ';' || lastChar == '}' || (i+1 < len(css) && css[i+1] == '@') {
-				if !skipNextNewline {
-					result.WriteByte('\n')
-					lastChar = '\n'
-				}
-				skipNextNewline = false
-			} else {
-				skipNextNewline = true
-			}
-			continue
-		}
-		
-		result.WriteByte(char)
-		lastChar = char
-	}
-	
-	return result.String()
-}
-
-func findNextNonWhitespace(s string, start int) int {
-	for i := start; i < len(s); i++ {
-		if s[i] != ' ' && s[i] != '\t' && s[i] != '\n' && s[i] != '\r' {
-			return i
-		}
-	}
-	return len(s)
-}
-
