@@ -72,17 +72,9 @@ type Frontmatter struct {
 
 // Template data structures
 type HomePageData struct {
-	PageType    string
-	Title       string
-	BasePath    string
-	RecentItems []RecentItem
-}
-
-type RecentItem struct {
-	Title     string
-	DateLabel string
-	Path      string
-	IsDraft   bool
+	PageType string
+	Title    string
+	BasePath string
 }
 
 type WritingsPageData struct {
@@ -103,6 +95,7 @@ type PostTemplateData struct {
 	Title         string
 	Slug          string
 	DateLabel     string
+	DateLabelFormal string
 	Year          int
 	Category      string
 	CategoryUpper string
@@ -242,11 +235,13 @@ func main() {
 		}
 		createdAt, _ := time.Parse(time.RFC3339, post.CreatedAt)
 		dateLabel := formatDate(post.CreatedAt)
+		dateLabelFormal := formatDateFormal(post.CreatedAt)
 		readingTime := calculateReadingTime(post.Content)
 		postTemplateData = append(postTemplateData, PostTemplateData{
 			Title:         post.Title,
 			Slug:          post.Slug,
 			DateLabel:     dateLabel,
+			DateLabelFormal: dateLabelFormal,
 			Year:          createdAt.Year(),
 			Category:      post.Category,
 			CategoryUpper: strings.ToUpper(post.Category),
@@ -355,22 +350,10 @@ func loadTemplates() (*template.Template, error) {
 }
 
 func generateHomePage(templates *template.Template, posts []PostTemplateData) error {
-	// Get 5 most recent posts
-	recentItems := make([]RecentItem, 0, 5)
-	for i := 0; i < len(posts) && i < 5; i++ {
-		recentItems = append(recentItems, RecentItem{
-			Title:     posts[i].Title,
-			DateLabel: posts[i].DateLabel,
-			Path:      basePath + "writings/" + posts[i].Slug,
-			IsDraft:   posts[i].IsDraft,
-		})
-	}
-
 	data := HomePageData{
-		PageType:    "home",
-		Title:       "Home",
-		BasePath:    basePath,
-		RecentItems: recentItems,
+		PageType: "home",
+		Title:    "Home",
+		BasePath: basePath,
 	}
 
 	return writeTemplate(templates, "home.html", filepath.Join(outputDir, "index.html"), data)
@@ -641,6 +624,37 @@ func formatDate(dateStr string) string {
 	}
 
 	return t.Format("Jan 2")
+}
+
+func formatDateFormal(dateStr string) string {
+	if dateStr == "" {
+		return "—"
+	}
+
+	t, err := time.Parse(time.RFC3339, dateStr)
+	if err != nil {
+		return "—"
+	}
+
+	// Format in formal vintage book style: "the 15th of May, 2025"
+	day := t.Day()
+	month := t.Format("January")
+	year := t.Year()
+	
+	// Add ordinal suffix for day (1st, 2nd, 3rd, 4th, etc.)
+	var suffix string
+	switch day {
+	case 1, 21, 31:
+		suffix = "st"
+	case 2, 22:
+		suffix = "nd"
+	case 3, 23:
+		suffix = "rd"
+	default:
+		suffix = "th"
+	}
+	
+	return fmt.Sprintf("the %d%s of %s, %d", day, suffix, month, year)
 }
 
 func calculateReadingTime(content string) int {

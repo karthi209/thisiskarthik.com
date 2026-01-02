@@ -23,14 +23,13 @@
 </head>
 
 <body>
-  <div class="app-container" data-page="{{.PageType}}">
+  <div class="site-container" data-page="{{.PageType}}">
     <main class="main-content">
       <div class="home-layout">
-        {{template "sidebar" .}}
         <div class="home-main">
           <div class="home-homepage-grid">
             <div class="home-homepage-main">
-              <a href="{{.BasePath}}" class="page-brand-logo-mobile">
+              <a href="{{.BasePath}}" class="page-brand-logo">
                 <img src="{{.BasePath}}images/Bow 1.webp" alt="Vintage bow" class="page-brand-image" width="315"
                   height="282" fetchpriority="high" />
               </a>
@@ -39,7 +38,7 @@
                   <h1 class="page-title">About</h1>
                 </div>
               </div>
-              <div class="page-content" style="text-align: center;">
+              <div class="page-content">
                 <p>Hello there! I see you've found the About page. So, I suppose I should tell you a little about me and
                   this site.</p>
                 <p>I'm Karthik. I live in Chennai, India, and I work as a systems engineer by day. At night, I'm a
@@ -57,7 +56,6 @@
                     href="https://github.com/karthi209" target="_blank" rel="noreferrer">GitHub</a>.</p>
               </div>
             </div>
-            <aside class="home-homepage-rail"></aside>
           </div>
         </div>
       </div>

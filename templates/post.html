@@ -26,48 +26,40 @@
 </head>
 
 <body>
-  <div class="app-container" data-page="{{.PageType}}">
+  <div class="site-container" data-page="{{.PageType}}">
     <main class="main-content">
       <div class="home-layout">
-        {{template "sidebar" .}}
         <div class="home-main">
-          <div class="post-container">
-            <div class="post-layout">
-              <div class="post-main">
-                <article class="post-content">
-                  <header class="post-header">
-                    <a href="{{.BasePath}}" class="post-running-head">On Matters Local and Otherwise</a>
-                    <h1 class="post-title">{{.Post.Title}}</h1>
+          <article class="post-content">
+            <header class="post-header">
+              <a href="{{.BasePath}}" class="post-running-head">On Matters Local and Otherwise</a>
+              <h1 class="post-title">{{.Post.Title}}</h1>
 
-                    <div class="post-meta">
-                      <div class="meta-group">
-                        <div class="meta-item">
-                          <span>{{.Post.DateLabel}}</span>
-                        </div>
-                        {{if .Post.Category}}
-                        <span class="meta-separator">•</span>
-                        <div class="meta-item">
-                          <span>{{.Post.Category}}</span>
-                        </div>
-                        {{end}}
-
-                      </div>
-                    </div>
-                  </header>
-
-                  {{if .Post.Content}}
-                  <div class="post-body">
-                    {{.Post.Content}}
+              <div class="post-meta">
+                <div class="meta-group">
+                  <div class="meta-item">
+                    <span>{{.Post.DateLabelFormal}}</span>
                   </div>
-                  {{else}}
-                  <div class="post-body">
-                    <p>Content not available.</p>
+                  {{if .Post.Category}}
+                  <span class="meta-separator">•</span>
+                  <div class="meta-item">
+                    <span>{{.Post.Category}}</span>
                   </div>
                   {{end}}
-                </article>
+                </div>
               </div>
+            </header>
+
+            {{if .Post.Content}}
+            <div class="post-body">
+              {{.Post.Content}}
             </div>
-          </div>
+            {{else}}
+            <div class="post-body">
+              <p>Content not available.</p>
+            </div>
+            {{end}}
+          </article>
         </div>
       </div>
     </main>

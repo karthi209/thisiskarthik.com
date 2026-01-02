@@ -25,10 +25,9 @@
 </head>
 
 <body>
-  <div class="app-container" data-page="{{.PageType}}">
+  <div class="site-container" data-page="{{.PageType}}">
     <main class="main-content">
       <div class="home-layout">
-        {{template "sidebar" .}}
         <div class="home-main">
           <div class="home-homepage-grid">
             <div class="home-homepage-main">
@@ -36,13 +35,18 @@
                 <div class="hero-header">
                   <div class="hero-content">
                     <div class="hero-brand">
-                      <a href="{{.BasePath}}" class="hero-brand-logo-mobile">
+                      <a href="{{.BasePath}}" class="hero-brand-logo">
                         <img src="{{.BasePath}}images/Bow 1.webp" alt="Vintage bow" class="hero-brand-image" width="315"
                           height="282" fetchpriority="high" />
                       </a>
                       <div class="hero-brand-main">On Matters Local and Otherwise</div>
                       <div class="hero-brand-byline"><span class="hero-brand-by">by</span> <span
                           class="hero-brand-name">Karthik</span></div>
+                      <nav class="site-nav">
+                        <a href="{{.BasePath}}writings" class="site-nav-link">Writings</a>
+                        <span class="site-nav-separator">·</span>
+                        <a href="{{.BasePath}}about" class="site-nav-link">About</a>
+                      </nav>
                     </div>
                     <div class="hero-intro">
                       <p>
@@ -68,39 +72,6 @@
                 </div>
               </div>
             </div>
-
-            <aside class="home-homepage-rail">
-              <div class="latest-section">
-                <h2 class="section-title">Recent Writing</h2>
-                {{if .RecentItems}}
-                {{if eq (len .RecentItems) 0}}
-                <div class="blog-card-empty">
-                  <p>No entries in this section yet.</p>
-                  <p class="empty-message-subtle">Return in time to find new additions.</p>
-                </div>
-                {{else}}
-                <div class="home-list-rows">
-                  {{range .RecentItems}}
-                  <div class="home-list-row" onclick="window.location.href='{{.Path}}'">
-                    <div class="home-list-item">
-                      <div class="home-list-date">{{.DateLabel}}</div>
-                      <a href="{{.Path}}" class="home-list-link" onclick="event.stopPropagation();">
-                        {{.Title}}
-                        {{if .IsDraft}}<span class="draft-tag-inline">DRAFT</span>{{end}}
-                      </a>
-                    </div>
-                  </div>
-                  {{end}}
-                </div>
-                {{end}}
-                {{else}}
-                <div class="blog-card-empty">
-                  <p>No entries in this section yet.</p>
-                  <p class="empty-message-subtle">Return in time to find new additions.</p>
-                </div>
-                {{end}}
-              </div>
-            </aside>
           </div>
         </div>
       </div>

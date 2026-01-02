@@ -18,7 +18,7 @@
   <link rel="preload" as="font" href="{{.BasePath}}fonts/IMFellGreatPrimer-Regular.woff2" type="font/woff2"
     crossorigin="anonymous">
 
-  <!-- Preload sidebar image to prevent layout shifts - only on pages where it appears -->
+  <!-- Preload brand image to prevent layout shifts -->
   {{if ne .PageType "post"}}
   <link rel="preload" as="image" href="{{.BasePath}}images/Bow 1.webp" fetchpriority="high">
   {{end}}
@@ -27,10 +27,9 @@
 </head>
 
 <body>
-  <div class="app-container" data-page="{{.PageType}}">
+  <div class="site-container" data-page="{{.PageType}}">
     <main class="main-content">
       <div class="home-layout">
-        {{template "sidebar" .}}
         <div class="home-main">
           {{block "content" .}}<p>No content defined</p>{{end}}
         </div>
@@ -41,23 +40,6 @@
 </body>
 
 </html>
-
-{{define "sidebar"}}
-<aside class="home-sidebar">
-
-
-  <div class="sidebar-widget">
-    <nav class="sidebar-nav">
-      <a class="sidebar-link" href="{{.BasePath}}writings">Writings</a>
-      <a class="sidebar-link" href="{{.BasePath}}about">About</a>
-    </nav>
-  </div>
-
-  <div class="sidebar-widget">
-    <div class="sidebar-decorative-divider"></div>
-  </div>
-</aside>
-{{end}}
 
 {{define "footer"}}
 <footer class="footer">

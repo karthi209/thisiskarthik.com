@@ -6,9 +6,7 @@
 
 ## Preface
 
-This repository contains the source code and content for *On Matters Local and Otherwise*, a personal website designed to function as a long-term digital archive.
-
-It is built on the conviction that a personal website should be a quiet place. It is not a product, a platform, or a growth engine. It is a digital book, static, readable, and preservable.
+This repository contains the source code and content for *On Matters Local and Otherwise*, a personal website designed to function as a long-term digital archive built on the conviction that a personal website should be a quiet place not a product, platform, or a growth engine. I built is as my digital book. Static, readable, and preservable.
 
 ## Philosophy
 

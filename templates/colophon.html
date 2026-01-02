@@ -23,14 +23,13 @@
 </head>
 
 <body>
-  <div class="app-container" data-page="{{.PageType}}">
+  <div class="site-container" data-page="{{.PageType}}">
     <main class="main-content">
       <div class="home-layout">
-        {{template "sidebar" .}}
         <div class="home-main">
           <div class="home-homepage-grid">
             <div class="home-homepage-main">
-              <a href="{{.BasePath}}" class="page-brand-logo-mobile">
+              <a href="{{.BasePath}}" class="page-brand-logo">
                 <img src="{{.BasePath}}images/Bow 1.webp" alt="Vintage bow" class="page-brand-image" width="315"
                   height="282" fetchpriority="high" />
               </a>
@@ -39,7 +38,7 @@
                   <h1 class="page-title">Colophon</h1>
                 </div>
               </div>
-              <div class="page-content" style="text-align: center;">
+              <div class="page-content">
                 <p>This site is written in old-school HTML and CSS and assembled as static pages.
                   It relies on no database, no runtime server, and no third-party frameworks.
                   Minimal and classic. A full build of this site completes in {{.BuildTime}} milliseconds on this
@@ -90,7 +89,6 @@
                   Compiled in {{.BuildYear}}.</p>
               </div>
             </div>
-            <aside class="home-homepage-rail"></aside>
           </div>
         </div>
       </div>
