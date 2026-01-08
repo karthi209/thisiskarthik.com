@@ -22,10 +22,9 @@ Most websites are built like houses of cards. This one is built like a brick. It
 
 I spent way too much time picking fonts. Here's what I ended up with:
 
-- **IM Fell Great Primer**: Used for headings. It's old, it's imperfect.
-- **Libertinus Serif**: Used for body text. It's calm, readable, and doesn't scream at you. A rare quality these days.
+- **IM Fell Great Primer**: Used for everything. Headings, body text, metadata, navigation, everything. It's old, it's imperfect, and it looks serious without trying too hard.
 
-Both fonts are served locally because I don't trust Google Fonts to still exist in 2030.
+The font is served locally because I don't trust Google Fonts to still exist in 2030.
 
 ## Structure
 
