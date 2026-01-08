@@ -8,7 +8,7 @@
 
 This is the source code for my personal website. I built it because I got tired of platforms that change their terms of service every Tuesday and frameworks who's dependencies break every friday.
 
-It's just HTML and CSS compiled into static pages. No databases, no JavaScript frameworks that will be obsolete next month, no external services that will shut down and leave me stranded. It's boring, and that's the point.
+It's just HTML and CSS compiled into static pages. It uses no JavaScript frameworks that will be obsolete next month, no external services that will shut down and leave me stranded.
 
 ## Why?
 
@@ -29,7 +29,7 @@ Both fonts are served locally because I don't trust Google Fonts to still exist 
 
 ## Structure
 
-The repository structure is pretty straightforward. If you can't figure it out, that's on you.
+The repository structure is pretty straightforward.
 
 - `content/` : The actual writing (Markdown files)
 - `templates/` : How pages get assembled (Go HTML templates)
