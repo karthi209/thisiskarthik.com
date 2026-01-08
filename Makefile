@@ -12,6 +12,8 @@ serve:
 	@echo "Serving site on http://localhost:5173 (with auto-rebuild)"
 	@go run serve.go || true
 
+server: serve
+
 setup:
 	@echo "Setting up project dependencies..."
 	@./scripts/install-dependencies.sh

@@ -7,7 +7,7 @@
   <link rel="icon" type="image/svg+xml" href="{{.BasePath}}favicon.svg" />
   <meta name="viewport"
     content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0, viewport-fit=cover" />
-  <meta name="description" content="About - On Matters Local and Otherwise - A personal blog by Karthik" />
+  <meta name="description" content="About - Hmm... Blog? - A personal blog by Karthik" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
@@ -17,7 +17,7 @@
   <link rel="preload" as="font" href="{{.BasePath}}fonts/IMFellGreatPrimer-Regular.woff2" type="font/woff2"
     crossorigin="anonymous">
 
-  <link rel="preload" as="image" href="{{.BasePath}}images/Bow 1.webp" fetchpriority="high">
+  <link rel="preload" as="image" href="{{.BasePath}}images/about.webp" fetchpriority="high">
   <link rel="stylesheet" href="{{.BasePath}}css/style.css">
   <title>{{if .Title}}{{.Title}} - {{end}}Journals By Karthik</title>
 </head>
@@ -30,7 +30,7 @@
           <div class="home-homepage-grid">
             <div class="home-homepage-main">
               <a href="{{.BasePath}}" class="page-brand-logo">
-                <img src="{{.BasePath}}images/Bow 1.webp" alt="Vintage bow" class="page-brand-image" width="315"
+                <img src="{{.BasePath}}images/about.webp" data-theme-image="{{.BasePath}}images/about.webp" alt="About" class="page-brand-image" width="315"
                   height="282" fetchpriority="high" />
               </a>
               <div class="page-header">
@@ -50,7 +50,7 @@
                   being able to share them. It's also why the site looks very much like a small book, both aesthetically
                   and practically.</p>
                 <p>For more details about the site's design, inspiration, and technical details, see the <a
-                    href="{{.BasePath}}colophon">Colophon</a>.</p>
+                    href="{{.BasePath}}meta">Meta</a>.</p>
                 <p>You can reach me via <a href="mailto:hello@thisiskarthik.com">email</a>, <a
                     href="https://x.com/karthi9003" target="_blank" rel="noreferrer">Twitter</a>, or <a
                     href="https://github.com/karthi209" target="_blank" rel="noreferrer">GitHub</a>.</p>

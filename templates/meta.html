@@ -39,22 +39,21 @@
                 </div>
               </div>
               <div class="page-content">
-                <p>This site is built with HTML and CSS, compiled as static pages. No database, no server runtime, no frameworks. A full build completes in {{.BuildTime}} milliseconds.</p>
-
+                <p>This site is just HTML and CSS compiled into static pages. I wrote a blog generator in Go because I got tired of platforms that change their terms of service every Tuesday and frameworks whose dependencies break every Friday.</p>
+                <p>A full build takes {{.BuildTime}} milliseconds. That's longer than zero, but shorter than most modern websites take to load. So there's that.</p>
+                <p>Almost everything lives in the static build with few moving parts means fewer things to break in ways I'll discover at 2am.</p>
                 <p><strong>Typography</strong></p>
-                <p>Headings use IM Fell Great Primer, a revival of early eighteenth-century type. Body text uses Libertinus Serif. Both are open source and served locally.</p>
-
-                <p><strong>Design</strong></p>
-                <p>Minimal palette: paper background, dark text, neutral grays. The design aims for clarity and readability, not decoration.</p>
-
-                <p><strong>Technical</strong></p>
-                <p>Built with a custom static site generator written in Go. Uses Goldmark for Markdown and YAML for frontmatter. The code is simple and readable.</p>
-
-                <p><strong>Source</strong></p>
-                <p>Available on <a href="https://github.com/karthi209/thisiskarthik.git" target="_blank" rel="noreferrer">GitHub</a>. You can clone, modify, or adapt it as needed.</p>
-
-                <p><strong>Edition</strong></p>
-                <p>Compiled in {{.BuildYear}}.</p>
+                <p>I spent way too much time picking fonts and here's what I ended up with:</p>
+                <p>Headings use IM Fell Great Primer. It's a revival of some eighteenth-century typeface. I picked it because it looks serious without trying too hard, which is more than I can say for most things on the internet.</p>
+                <p>Body text uses Libertinus Serif. It's plenty readable, calm, and doesn't feel like it's shouting at you.</p>
+                <p>Both fonts are open source and served locally, which is nice because I don't trust Google Fonts to still exist in 2030.</p>
+                <p><strong>How It Works</strong></p>
+                <p>Custom static site generator in Go</p>
+                <p>Goldmark for Markdown (because why not)</p>
+                <p>YAML for frontmatter (it's fine, I guess)</p>
+                <p>The code is simple and readable. No clever abstractions that will confuse future me, who already has enough problems.</p>
+                <p><strong>Source Code</strong></p>
+                <p>It's all on <a href="https://github.com/karthi209/thisiskarthik.com.git" target="_blank" rel="noreferrer">GitHub</a> if you're into that sort of thing.</p>
               </div>
             </div>
           </div>

@@ -13,7 +13,6 @@ NC='\033[0m' # No Color
 
 # Default settings
 QUALITY=80
-INPUT_DIR="${1:-content/images}"
 REMOVE_ORIGINALS=true
 
 # Recommended resolutions
@@ -28,10 +27,10 @@ usage() {
     echo "Converts all images to optimized WebP format and removes originals"
     echo ""
     echo "Arguments:"
-    echo "  image_directory    Directory containing images (default: content/images/)"
+    echo "  image_directory    Directory containing images (default: content/images/ and static/images/)"
     echo ""
     echo "Examples:"
-    echo "  $0                    # Process content/images/"
+    echo "  $0                    # Process content/images/ and static/images/"
     echo "  $0 content/images/     # Process specific directory"
     exit 1
 }
@@ -208,27 +207,37 @@ main() {
         usage
     fi
     
-    if [ -n "$1" ]; then
-        INPUT_DIR="$1"
-    fi
-    
-    # Validate input
-    if [ ! -d "$INPUT_DIR" ]; then
-        echo -e "${RED}Error: Directory not found: $INPUT_DIR${NC}"
-        exit 1
-    fi
-    
     # Check dependencies
     check_dependencies
     
-    # Find and process images
-    local image_count=0
-    local supported_exts=("jpg" "jpeg" "png" "tiff" "tif" "gif" "bmp")
-    
-    echo -e "${GREEN}Optimizing images in: $INPUT_DIR${NC}"
     echo -e "Quality: ${YELLOW}$QUALITY${NC}, Removing originals: ${YELLOW}$REMOVE_ORIGINALS${NC}"
     echo ""
     
+    local total_count=0
+    local dirs=()
+    local supported_exts=("jpg" "jpeg" "png" "tiff" "tif" "gif" "bmp")
+    
+    # Determine which directories to process
+    if [ -n "$1" ]; then
+        # Process specified directory
+        dirs=("$1")
+    else
+        # Process both default directories
+        dirs=("content/images" "static/images")
+    fi
+    
+    # Process each directory
+    for INPUT_DIR in "${dirs[@]}"; do
+        # Validate input
+        if [ ! -d "$INPUT_DIR" ]; then
+            echo -e "${YELLOW}Warning: Directory not found: $INPUT_DIR${NC} (skipping)"
+            echo ""
+            continue
+        fi
+        
+        echo -e "${GREEN}Optimizing images in: $INPUT_DIR${NC}"
+        
+        local image_count=0
     for ext in "${supported_exts[@]}"; do
         while IFS= read -r -d '' file; do
             if [ -n "$file" ]; then
@@ -238,11 +247,14 @@ main() {
         done < <(find "$INPUT_DIR" -type f -iname "*.${ext}" -print0 2>/dev/null)
     done
     
-    if [ $image_count -eq 0 ]; then
-        echo -e "${YELLOW}No images found in $INPUT_DIR${NC}"
-    else
+        total_count=$((total_count + image_count))
         echo ""
-        echo -e "${GREEN}✓ Processed $image_count image(s)${NC}"
+    done
+    
+    if [ $total_count -eq 0 ]; then
+        echo -e "${YELLOW}No images found in specified directories${NC}"
+    else
+        echo -e "${GREEN}✓ Processed $total_count image(s) total${NC}"
         echo -e "All images converted to WebP format"
     fi
 }

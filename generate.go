@@ -118,7 +118,7 @@ type AboutPageData struct {
 	BasePath string
 }
 
-type ColophonPageData struct {
+type MetaPageData struct {
 	PageType    string
 	Title       string
 	BasePath    string
@@ -274,13 +274,21 @@ func main() {
 		fmt.Printf("I encountered difficulty in composing the about page: %v\n", err)
 	}
 
+	if err := generateForAIPage(templates); err != nil {
+		fmt.Printf("I encountered difficulty in composing the forai page: %v\n", err)
+	}
+
 	buildDuration := time.Since(buildStart)
-	if err := generateColophonPage(templates, buildDuration); err != nil {
-		fmt.Printf("I encountered difficulty in composing the colophon page: %v\n", err)
+	if err := generateMetaPage(templates, buildDuration); err != nil {
+		fmt.Printf("I encountered difficulty in composing the meta page: %v\n", err)
 	}
 
 	if err := generateIndexPage(templates, postTemplateData, groupedWritings); err != nil {
 		fmt.Printf("I encountered difficulty in composing the index page: %v\n", err)
+	}
+
+	if err := generateRSSFeed(postTemplateData); err != nil {
+		fmt.Printf("I encountered difficulty in composing the RSS feed: %v\n", err)
 	}
 
 	// Copy static files
@@ -403,14 +411,29 @@ func generateAboutPage(templates *template.Template) error {
 	return writeTemplate(templates, "about.html", filepath.Join(aboutDir, "index.html"), data)
 }
 
-func generateColophonPage(templates *template.Template, buildDuration time.Duration) error {
+func generateForAIPage(templates *template.Template) error {
+	data := AboutPageData{
+		PageType: "forai",
+		Title:    "For AI",
+		BasePath: basePath,
+	}
+
+	foraiDir := filepath.Join(outputDir, "forai")
+	if err := os.MkdirAll(foraiDir, 0755); err != nil {
+		return err
+	}
+
+	return writeTemplate(templates, "forai.html", filepath.Join(foraiDir, "index.html"), data)
+}
+
+func generateMetaPage(templates *template.Template, buildDuration time.Duration) error {
 	buildYear := time.Now().Year()
 	buildTimeMs := buildDuration.Milliseconds()
 	buildTimeStr := fmt.Sprintf("%d", buildTimeMs)
 
-	data := ColophonPageData{
-		PageType:    "colophon",
-		Title:       "Colophon",
+	data := MetaPageData{
+		PageType:    "meta",
+		Title:       "Meta",
 		BasePath:    basePath,
 		LinesOfCode: 0,
 		PageCount:   0,
@@ -419,12 +442,12 @@ func generateColophonPage(templates *template.Template, buildDuration time.Durat
 		BuildTime:   buildTimeStr,
 	}
 
-	colophonDir := filepath.Join(outputDir, "colophon")
-	if err := os.MkdirAll(colophonDir, 0755); err != nil {
+	metaDir := filepath.Join(outputDir, "meta")
+	if err := os.MkdirAll(metaDir, 0755); err != nil {
 		return err
 	}
 
-	return writeTemplate(templates, "colophon.html", filepath.Join(colophonDir, "index.html"), data)
+	return writeTemplate(templates, "meta.html", filepath.Join(metaDir, "index.html"), data)
 }
 
 // countLinesOfCode counts lines in core site code only:
@@ -476,7 +499,7 @@ func countLinesOfCode() int {
 }
 
 // countGeneratedPages counts HTML pages in the output directory
-// Note: This is called before colophon, notes, library, and index pages are generated
+// Note: This is called before meta, notes, library, and index pages are generated
 // So we count existing pages + pages that will be generated
 func countGeneratedPages() int {
 	count := 0
@@ -499,10 +522,10 @@ func countGeneratedPages() int {
 		count = 0
 	}
 
-	// Add pages that will be generated after colophon:
-	// - Colophon (1)
+	// Add pages that will be generated after meta:
+	// - Meta (1)
 	// - Index (1)
-	count += 2 // Colophon + Index
+	count += 2 // Meta + Index
 
 	return count
 }
@@ -967,5 +990,111 @@ func copyImages() error {
 	}
 
 	fmt.Printf("Gathered %d illustration%s\n", copied, plural(copied))
+	return nil
+}
+
+func generateRSSFeed(posts []PostTemplateData) error {
+	if len(posts) == 0 {
+		return nil // No posts, skip RSS generation
+	}
+
+	rssPath := filepath.Join(outputDir, "rss.xml")
+	file, err := os.Create(rssPath)
+	if err != nil {
+		return fmt.Errorf("could not create RSS file: %w", err)
+	}
+	defer file.Close()
+
+	// Get site URL from environment variable or use default
+	siteURL := os.Getenv("SITE_URL")
+	if siteURL == "" {
+		siteURL = "https://thisiskarthik.com"
+		if basePath != "/" {
+			// For GitHub Pages project sites, construct URL from basePath
+			path := strings.Trim(basePath, "/")
+			if path != "" {
+				// Try to extract username from path or use default
+				username := os.Getenv("GITHUB_USERNAME")
+				if username == "" {
+					username = "karthi209"
+				}
+				siteURL = fmt.Sprintf("https://%s.github.io/%s", username, path)
+			}
+		}
+	}
+	// Ensure siteURL doesn't end with /
+	siteURL = strings.TrimSuffix(siteURL, "/")
+
+	// Get current time for feed date
+	now := time.Now().UTC().Format(time.RFC1123Z)
+
+	// Write RSS header
+	rssLink := fmt.Sprintf("%s%s", siteURL, basePath)
+	rssLink = strings.TrimSuffix(rssLink, "/")
+	fmt.Fprintf(file, `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+<title>Hmm... Blog?</title>
+<link>%s</link>
+<description>Notes and observations by Karthik</description>
+<language>en-us</language>
+<lastBuildDate>%s</lastBuildDate>
+<atom:link href="%srss.xml" rel="self" type="application/rss+xml"/>
+`, rssLink, now, rssLink)
+
+	// Write RSS items (limit to 20 most recent)
+	maxItems := 20
+	if len(posts) < maxItems {
+		maxItems = len(posts)
+	}
+
+		for i := 0; i < maxItems; i++ {
+		post := posts[i]
+		postURL := fmt.Sprintf("%s%swritings/%s", siteURL, basePath, post.Slug)
+		
+		// Use CreatedAt time directly
+		pubDate := post.CreatedAt.UTC().Format(time.RFC1123Z)
+
+		// Clean HTML content for description (strip tags, limit length)
+		// Simple HTML tag removal
+		description := string(post.Content)
+		// Remove HTML tags
+		for {
+			start := strings.Index(description, "<")
+			if start == -1 {
+				break
+			}
+			end := strings.Index(description[start:], ">")
+			if end == -1 {
+				break
+			}
+			description = description[:start] + " " + description[start+end+1:]
+		}
+		// Clean up whitespace
+		description = strings.TrimSpace(description)
+		// Replace HTML entities
+		description = strings.ReplaceAll(description, "&nbsp;", " ")
+		description = strings.ReplaceAll(description, "&amp;", "&")
+		description = strings.ReplaceAll(description, "&lt;", "<")
+		description = strings.ReplaceAll(description, "&gt;", ">")
+		// Limit length
+		if len(description) > 500 {
+			description = description[:500] + "..."
+		}
+
+		fmt.Fprintf(file, `<item>
+<title><![CDATA[%s]]></title>
+<link>%s</link>
+<guid isPermaLink="true">%s</guid>
+<pubDate>%s</pubDate>
+<description><![CDATA[%s]]></description>
+</item>
+`, post.Title, postURL, postURL, pubDate, description)
+	}
+
+	// Write RSS footer
+	fmt.Fprintf(file, `</channel>
+</rss>`)
+
 	return nil
 }

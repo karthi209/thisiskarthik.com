@@ -7,7 +7,7 @@
   <link rel="icon" type="image/svg+xml" href="{{.BasePath}}favicon.svg" />
   <meta name="viewport"
     content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0, viewport-fit=cover" />
-  <meta name="description" content="Index - On Matters Local and Otherwise - A personal blog by Karthik" />
+  <meta name="description" content="Index - Complete site map and contents - Hmm... Blog?" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
@@ -18,9 +18,9 @@
   <!-- Preload fonts to prevent FOUT (Flash of Unstyled Text) -->
   <link rel="preload" as="font" href="{{.BasePath}}fonts/IMFellGreatPrimer-Regular.woff2" type="font/woff2"
     crossorigin="anonymous">
-  <link rel="preload" as="image" href="{{.BasePath}}images/Bow 1.webp" fetchpriority="high">
+  <link rel="preload" as="image" href="{{.BasePath}}images/posts.webp" fetchpriority="high">
   <link rel="stylesheet" href="{{.BasePath}}css/style.css">
-  <title>{{if .Title}}{{.Title}} - {{end}}On Matters Local and Otherwise</title>
+  <title>{{if .Title}}{{.Title}} - {{end}}Hmm... Blog?</title>
 </head>
 
 <body>
@@ -31,13 +31,13 @@
           <div class="home-homepage-grid">
             <div class="home-homepage-main">
               <a href="{{.BasePath}}" class="page-brand-logo">
-                <img src="{{.BasePath}}images/Bow 1.webp" alt="Vintage bow" class="page-brand-image" width="315"
+                <img src="{{.BasePath}}images/posts.webp" data-theme-image="{{.BasePath}}images/posts.webp" alt="Vintage bow" class="page-brand-image" width="315"
                   height="282" fetchpriority="high" />
               </a>
               <div class="page-header">
                 <div>
                   <h1 class="page-title">Index</h1>
-                  <p class="page-meta">Complete site map and contents.</p>
+                  <p class="page-meta">Site map and contents.</p>
                 </div>
               </div>
 
@@ -60,9 +60,9 @@
                   {{if .Writings}}
                   <section class="list-section">
                     <div class="list-section-header">
-                      <h3 class="list-section-title">Writings</h3>
+                      <h3 class="list-section-title">Notes</h3>
                       <span class="meta-small">{{.WritingCount}} {{if eq .WritingCount
-                        1}}ENTRY{{else}}ENTRIES{{end}}</span>
+                        1}}entry{{else}}entries{{end}}</span>
                     </div>
                     {{if .GroupedWritings}}
                     {{range .GroupedWritings}}
@@ -86,7 +86,7 @@
                     <div class="home-list-rows">
                       <div class="home-list-row">
                         <span class="home-list-date"></span>
-                        <span class="home-list-link empty-state">No writings yet</span>
+                        <span class="home-list-link empty-state">No notes yet</span>
                       </div>
                     </div>
                     {{end}}

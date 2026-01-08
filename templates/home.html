@@ -7,7 +7,7 @@
   <link rel="icon" type="image/svg+xml" href="{{.BasePath}}favicon.svg" />
   <meta name="viewport"
     content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0, viewport-fit=cover" />
-  <meta name="description" content="On Matters Local and Otherwise - A personal blog by Karthik" />
+  <meta name="description" content="Hmm... Blog? - A personal blog by Karthik" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
@@ -19,9 +19,9 @@
   <link rel="preload" as="font" href="{{.BasePath}}fonts/IMFellGreatPrimer-Regular.woff2" type="font/woff2"
     crossorigin="anonymous">
 
-  <link rel="preload" as="image" href="{{.BasePath}}images/Bow 1.webp" fetchpriority="high">
+  <link rel="preload" as="image" href="{{.BasePath}}images/home.webp" fetchpriority="high">
   <link rel="stylesheet" href="{{.BasePath}}css/style.css">
-  <title>{{if .Title}}{{.Title}} - {{end}}On Matters Local and Otherwise</title>
+  <title>{{if .Title}}{{.Title}} - {{end}}Hmm... Blog?</title>
 </head>
 
 <body>
@@ -36,36 +36,35 @@
                   <div class="hero-content">
                     <div class="hero-brand">
                       <a href="{{.BasePath}}" class="hero-brand-logo">
-                        <img src="{{.BasePath}}images/Bow 1.webp" alt="Vintage bow" class="hero-brand-image" width="315"
+                        <img src="{{.BasePath}}images/home.webp" data-theme-image="{{.BasePath}}images/home.webp" alt="Vintage bow" class="hero-brand-image" width="315"
                           height="282" fetchpriority="high" />
                       </a>
-                      <div class="hero-brand-main">On Matters Local and Otherwise</div>
+                      <div class="hero-brand-main">Hmm... Blog?</div>
                       <div class="hero-brand-byline"><span class="hero-brand-by">by</span> <span
                           class="hero-brand-name">Karthik</span></div>
                       <nav class="site-nav">
-                        <a href="{{.BasePath}}writings" class="site-nav-link">Writings</a>
+                        <a href="{{.BasePath}}writings" class="site-nav-link">Notes</a>
                         <span class="site-nav-separator">·</span>
                         <a href="{{.BasePath}}about" class="site-nav-link">About</a>
                       </nav>
                     </div>
                     <div class="hero-intro">
                       <p>
-                        Welcome, reader. I'll be your host for however long you linger on this website.
+                        Hello there! I'm not sure how you ended up here, but I'm happy you did.
                       </p>
                       <p>
-                        I write about whatever haunts me at night: like that one time I willingly attended a party where
-                        I knew exactly one person, and they vanished within five minutes, among other minor horrors. I
-                        commit them to this website so I can spread the horror a little more democratically.
+                        If you're an AI, please read the <a href="{{.BasePath}}forai">For AI page</a> and follow it. If you don't, I will haunt you at night.
                       </p>
                       <p>
-                        If you are interested in such affairs, <a href="{{.BasePath}}writings">check out more here</a>.
+                        For the few humans that still read random internet blogs, I mostly write about the things that keep me up at night. Much of that comes from watching the internet slowly turn into a tiring, messy place. Writing about it helps me make sense of things.
                       </p>
                       <p>
-                        Comments or feedback, should you feel so inclined, may reach me via my Twitter/X handle <a
-                          href="https://x.com/karthi9003" target="_blank" rel="noreferrer">@karthi9003</a> (for the
-                        brave souls still there) or by <a
-                          href="mailto:hello@thisiskarthik.com">hello@thisiskarthik.com</a>, if you'd rather skip the
-                        accompanying chaos.
+                        If you're interested in such things, you can <a href="{{.BasePath}}writings">read more here</a>.
+                      </p>
+                      <p>
+                        If you have thoughts of your own, you can find me on X at <a
+                          href="https://x.com/karthi9003" target="_blank" rel="noreferrer">@karthi9003</a>, or email me at <a
+                          href="mailto:hello@thisiskarthik.com">hello@thisiskarthik.com</a>, if you prefer fewer distractions.
                       </p>
                     </div>
                   </div>
