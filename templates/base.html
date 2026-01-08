@@ -146,21 +146,9 @@
       return savedTheme === 'dark' ? 'dark' : 'light';
     }
     
-    // Initialize icon visibility on page load
+    // Initialize theme on page load
     const savedTheme = getCurrentTheme();
     updateTheme(savedTheme);
-    
-    // Sync theme from localStorage on page load (in case it changed)
-    const currentTheme = getCurrentTheme();
-    if (moonIcon && sunIcon) {
-      if (currentTheme === 'dark') {
-        moonIcon.style.display = 'none';
-        sunIcon.style.display = 'inline-block';
-      } else {
-        moonIcon.style.display = 'inline-block';
-        sunIcon.style.display = 'none';
-      }
-    }
     
     // Set up toggle click handler
     themeToggle.addEventListener('click', function() {

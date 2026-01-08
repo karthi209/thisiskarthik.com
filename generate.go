@@ -6,6 +6,7 @@ import (
 	"io/fs"
 	"os"
 	"path/filepath"
+	"regexp"
 
 	"sort"
 	"strconv"
@@ -92,17 +93,17 @@ type YearGroup struct {
 }
 
 type PostTemplateData struct {
-	Title         string
-	Slug          string
-	DateLabel     string
+	Title           string
+	Slug            string
+	DateLabel       string
 	DateLabelFormal string
-	Year          int
-	Category      string
-	CategoryUpper string
-	Content       template.HTML
-	ReadingTime   int
-	IsDraft       bool
-	CreatedAt     time.Time
+	Year            int
+	Category        string
+	CategoryUpper   string
+	Content         template.HTML
+	ReadingTime     int
+	IsDraft         bool
+	CreatedAt       time.Time
 }
 
 type PostPageData struct {
@@ -238,17 +239,17 @@ func main() {
 		dateLabelFormal := formatDateFormal(post.CreatedAt)
 		readingTime := calculateReadingTime(post.Content)
 		postTemplateData = append(postTemplateData, PostTemplateData{
-			Title:         post.Title,
-			Slug:          post.Slug,
-			DateLabel:     dateLabel,
+			Title:           post.Title,
+			Slug:            post.Slug,
+			DateLabel:       dateLabel,
 			DateLabelFormal: dateLabelFormal,
-			Year:          createdAt.Year(),
-			Category:      post.Category,
-			CategoryUpper: strings.ToUpper(post.Category),
-			Content:       template.HTML(post.Content),
-			ReadingTime:   readingTime,
-			IsDraft:       post.IsDraft,
-			CreatedAt:     createdAt,
+			Year:            createdAt.Year(),
+			Category:        post.Category,
+			CategoryUpper:   strings.ToUpper(post.Category),
+			Content:         template.HTML(post.Content),
+			ReadingTime:     readingTime,
+			IsDraft:         post.IsDraft,
+			CreatedAt:       createdAt,
 		})
 	}
 
@@ -663,7 +664,7 @@ func formatDateFormal(dateStr string) string {
 	day := t.Day()
 	month := t.Format("January")
 	year := t.Year()
-	
+
 	// Add ordinal suffix for day (1st, 2nd, 3rd, 4th, etc.)
 	var suffix string
 	switch day {
@@ -676,7 +677,7 @@ func formatDateFormal(dateStr string) string {
 	default:
 		suffix = "th"
 	}
-	
+
 	return fmt.Sprintf("the %d%s of %s, %d", day, suffix, month, year)
 }
 
@@ -812,9 +813,34 @@ func processPostFile(filePath string) (*Post, error) {
 		return nil, fmt.Errorf("difficulty in converting the manuscript to print: %w", err)
 	}
 
-	// Post-process HTML to add lazy loading to images
+	// Post-process HTML to add lazy loading to images and fix image paths
 	htmlStr := htmlContent.String()
 	htmlStr = strings.ReplaceAll(htmlStr, "<img ", "<img loading=\"lazy\" decoding=\"async\" ")
+
+	// Fix image src paths to include base path (for GitHub Pages compatibility)
+	// Match src="/images/..." or src='/images/...' and prepend basePath
+	if basePath != "/" {
+		// Match src="/images/..." or src='/images/...'
+		imgSrcRegex := regexp.MustCompile(`src=["'](/images/[^"']+)["']`)
+		htmlStr = imgSrcRegex.ReplaceAllStringFunc(htmlStr, func(match string) string {
+			// Extract the path
+			pathMatch := regexp.MustCompile(`src=["'](/images/[^"']+)["']`)
+			submatches := pathMatch.FindStringSubmatch(match)
+			if len(submatches) > 1 {
+				// Prepend basePath (which already ends with /)
+				newPath := basePath + strings.TrimPrefix(submatches[1], "/")
+				// Preserve the original quote style
+				quote := ""
+				if strings.Contains(match, `"`) {
+					quote = `"`
+				} else {
+					quote = `'`
+				}
+				return `src=` + quote + newPath + quote
+			}
+			return match
+		})
+	}
 
 	// Build post object
 	post := Post{
@@ -1036,7 +1062,7 @@ func generateRSSFeed(posts []PostTemplateData) error {
 <channel>
 <title>Hmm... Blog?</title>
 <link>%s</link>
-<description>Notes and observations by Karthik</description>
+<description>Writings and observations by Karthik</description>
 <language>en-us</language>
 <lastBuildDate>%s</lastBuildDate>
 <atom:link href="%srss.xml" rel="self" type="application/rss+xml"/>
@@ -1048,10 +1074,10 @@ func generateRSSFeed(posts []PostTemplateData) error {
 		maxItems = len(posts)
 	}
 
-		for i := 0; i < maxItems; i++ {
+	for i := 0; i < maxItems; i++ {
 		post := posts[i]
 		postURL := fmt.Sprintf("%s%swritings/%s", siteURL, basePath, post.Slug)
-		
+
 		// Use CreatedAt time directly
 		pubDate := post.CreatedAt.UTC().Format(time.RFC1123Z)
 

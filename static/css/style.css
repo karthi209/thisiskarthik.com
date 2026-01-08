@@ -912,6 +912,8 @@ th {
     padding: 0.75em 0.5em;
     margin: -0.75em -0.5em;
     font-size: 1em !important;
+    box-sizing: border-box;
+    vertical-align: baseline;
   }
 
   /* Post styles */
@@ -1113,6 +1115,8 @@ th {
   font-family: var(--font-body);
   letter-spacing: var(--spacing-meta);
   min-height: 44px;
+  box-sizing: border-box;
+  vertical-align: baseline;
 }
 
 .theme-toggle:hover {
@@ -1828,7 +1832,7 @@ th {
 
 /* Empty states */
 .blog-card-empty,
-.notes-empty,
+.writings-empty,
 .library-empty {
   font-family: var(--font-body);
   font-size: var(--size-body);
@@ -1901,7 +1905,7 @@ th {
   opacity: 1;
 }
 
-.notes-content {
+.writings-content {
   width: 100%;
 }
 
