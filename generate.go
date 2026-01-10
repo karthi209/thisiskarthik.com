@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"html/template"
 	"io/fs"
@@ -16,8 +17,7 @@ import (
 	"github.com/yuin/goldmark"
 	"github.com/yuin/goldmark/extension"
 	"github.com/yuin/goldmark/parser"
-	"github.com/yuin/goldmark/renderer/html"
-	"gopkg.in/yaml.v3"
+	goldmarkhtml "github.com/yuin/goldmark/renderer/html"
 )
 
 // Configuration
@@ -64,11 +64,11 @@ type Post struct {
 
 // Frontmatter represents the YAML frontmatter in markdown files
 type Frontmatter struct {
-	Title    string `yaml:"title"`
-	Category string `yaml:"category"`
-	Date     string `yaml:"date"`
-	Slug     string `yaml:"slug"`
-	IsDraft  bool   `yaml:"is_draft"`
+	Title    string
+	Category string
+	Date     string
+	Slug     string
+	IsDraft  bool
 }
 
 // Template data structures
@@ -439,20 +439,103 @@ func writeTemplate(templates *template.Template, templateName, outputPath string
 		}
 	}
 
-	// Create file with buffer for performance
-	file, err := os.Create(outputPath)
-	if err != nil {
-		return fmt.Errorf("could not create file: %w", err)
-	}
-	defer file.Close()
-
-	// Execute template
-	if err := templates.ExecuteTemplate(file, templateName, data); err != nil {
-		os.Remove(outputPath) // Clean up on error
+	// Execute template to buffer first
+	var buf bytes.Buffer
+	if err := templates.ExecuteTemplate(&buf, templateName, data); err != nil {
 		return fmt.Errorf("template execution failed: %w", err)
 	}
 
+	// Format HTML
+	formattedHTML, err := formatHTML(buf.Bytes())
+	if err != nil {
+		// If formatting fails, use original (non-critical)
+		formattedHTML = buf.Bytes()
+	}
+
+	// Write formatted HTML to file
+	if err := os.WriteFile(outputPath, formattedHTML, 0644); err != nil {
+		os.Remove(outputPath) // Clean up on error
+		return fmt.Errorf("could not write file: %w", err)
+	}
+
 	return nil
+}
+
+// formatHTML formats HTML with proper indentation using simple regex-based approach
+func formatHTML(input []byte) ([]byte, error) {
+	inputStr := string(input)
+	
+	// Preserve DOCTYPE
+	doctype := ""
+	if strings.HasPrefix(strings.TrimSpace(inputStr), "<!DOCTYPE") {
+		doctypeIdx := strings.Index(inputStr, "<!DOCTYPE")
+		idx := strings.Index(inputStr[doctypeIdx:], ">")
+		if idx > 0 {
+			doctype = inputStr[doctypeIdx:doctypeIdx+idx+1] + "\n"
+			inputStr = strings.TrimSpace(inputStr[doctypeIdx+idx+1:])
+		}
+	}
+	
+	// Simple formatting: add newlines and indentation
+	// Replace >< with >\n< (except for inline content)
+	inputStr = regexp.MustCompile(`>\s*<`).ReplaceAllString(inputStr, ">\n<")
+	
+	// Add indentation
+	lines := strings.Split(inputStr, "\n")
+	var result []string
+	indent := 0
+	indentStr := "  "
+	
+	voidElements := map[string]bool{
+		"area": true, "base": true, "br": true, "col": true, "embed": true,
+		"hr": true, "img": true, "input": true, "link": true, "meta": true,
+		"param": true, "source": true, "track": true, "wbr": true,
+	}
+	
+	inlineElements := map[string]bool{
+		"a": true, "span": true, "strong": true, "em": true, "code": true,
+		"b": true, "i": true, "small": true, "sub": true, "sup": true,
+	}
+	
+	for _, line := range lines {
+		trimmed := strings.TrimSpace(line)
+		if trimmed == "" {
+			continue
+		}
+		
+		// Decrease indent for closing tags
+		if strings.HasPrefix(trimmed, "</") {
+			indent--
+			if indent < 0 {
+				indent = 0
+			}
+		}
+		
+		// Add line with indentation
+		result = append(result, strings.Repeat(indentStr, indent)+trimmed)
+		
+		// Increase indent for opening tags (not void, not self-closing, not inline-only)
+		if strings.HasPrefix(trimmed, "<") && !strings.HasPrefix(trimmed, "</") {
+			// Extract tag name
+			tagName := strings.Fields(strings.TrimPrefix(trimmed, "<"))[0]
+			tagName = strings.TrimSuffix(tagName, ">")
+			tagName = strings.ToLower(tagName)
+			
+			// Check if self-closing
+			isSelfClosing := strings.HasSuffix(trimmed, "/>")
+			
+			if !voidElements[tagName] && !isSelfClosing && !inlineElements[tagName] {
+				indent++
+			}
+		}
+	}
+	
+	formatted := strings.Join(result, "\n")
+	if doctype != "" {
+		formatted = doctype + formatted
+	}
+	
+	return []byte(formatted), nil
 }
 
 func groupPostsByYear(posts []PostTemplateData) []YearGroup {
@@ -538,6 +621,45 @@ func calculateReadingTime(content string) int {
 	return readingTime
 }
 
+// parseFrontmatter parses simple YAML frontmatter (only handles key: value pairs)
+func parseFrontmatter(yamlContent string, fm *Frontmatter) error {
+	lines := strings.Split(strings.TrimSpace(yamlContent), "\n")
+	
+	for _, line := range lines {
+		line = strings.TrimSpace(line)
+		if line == "" || strings.HasPrefix(line, "#") {
+			continue
+		}
+		
+		// Simple key: value parser
+		idx := strings.Index(line, ":")
+		if idx <= 0 {
+			continue
+		}
+		
+		key := strings.TrimSpace(line[:idx])
+		value := strings.TrimSpace(line[idx+1:])
+		
+		// Remove quotes if present
+		value = strings.Trim(value, "\"'")
+		
+		switch strings.ToLower(key) {
+		case "title":
+			fm.Title = value
+		case "category":
+			fm.Category = value
+		case "date":
+			fm.Date = value
+		case "slug":
+			fm.Slug = value
+		case "draft":
+			fm.IsDraft = strings.ToLower(value) == "true"
+		}
+	}
+	
+	return nil
+}
+
 // Copy functions from original generate-static.go
 func findMarkdownFiles(dir string) ([]string, error) {
 	var files []string
@@ -583,7 +705,8 @@ func processPostFile(filePath string) (*Post, error) {
 			if len(parts[1]) == 0 {
 				return nil, fmt.Errorf("frontmatter is empty")
 			}
-			if err := yaml.Unmarshal([]byte(parts[1]), &frontmatter); err != nil {
+			// Parse frontmatter manually (simple YAML parser for our needs)
+			if err := parseFrontmatter(parts[1], &frontmatter); err != nil {
 				return nil, fmt.Errorf("difficulty in parsing the frontmatter: %w", err)
 			}
 			rest = []byte(strings.TrimSpace(parts[2]))
@@ -647,8 +770,8 @@ func processPostFile(filePath string) (*Post, error) {
 			parser.WithAutoHeadingID(),
 		),
 		goldmark.WithRendererOptions(
-			html.WithHardWraps(),
-			html.WithXHTML(),
+			goldmarkhtml.WithHardWraps(),
+			goldmarkhtml.WithXHTML(),
 		),
 	)
 

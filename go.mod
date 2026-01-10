@@ -1,13 +1,12 @@
-module omlo_by_karthik
+module the-book-of-odds-and-ends
 
-go 1.21
+go 1.24.0
+
+toolchain go1.24.11
 
 require (
+	github.com/fsnotify/fsnotify v1.9.0
 	github.com/yuin/goldmark v1.6.0
-	gopkg.in/yaml.v3 v3.0.1
 )
 
-require (
-	github.com/fsnotify/fsnotify v1.9.0 // indirect
-	golang.org/x/sys v0.13.0 // indirect
-)
+require golang.org/x/sys v0.39.0 // indirect
