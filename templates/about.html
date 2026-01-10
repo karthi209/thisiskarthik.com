@@ -1,68 +1,44 @@
 {{define "about.html"}}
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="{{.BasePath}}favicon.svg" />
-  <meta name="viewport"
-    content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0, viewport-fit=cover" />
-  <meta name="description" content="About - Hmm... Blog? - A personal blog by Karthik" />
-  <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
-  <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
-  <meta name="color-scheme" content="light dark" />
-  <link rel="preload" as="font" href="{{.BasePath}}fonts/IMFellGreatPrimer-Regular.woff2" type="font/woff2"
-    crossorigin="anonymous">
-
-  <link rel="preload" as="image" href="{{.BasePath}}images/about.webp" fetchpriority="high">
-  <link rel="stylesheet" href="{{.BasePath}}css/style.css">
-  <title>{{if .Title}}{{.Title}} - {{end}}Journals By Karthik</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com;">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="color-scheme" content="light dark">
+  <meta name="description" content="About Karthik - Systems engineer, writer, and creator of this blog">
+  <title>About - The Book of Odds and Ends</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="{{.BasePath}}css/style.css" rel="stylesheet" type="text/css">
+  <link rel="icon" href="{{.BasePath}}favicon.png" type="image/png">
+  <link rel="alternate" type="application/rss+xml" href="{{.BasePath}}rss.xml" title="The Book of Odds and Ends">
 </head>
-
 <body>
-  <div class="site-container" data-page="{{.PageType}}">
-    <main class="main-content">
-      <div class="home-layout">
-        <div class="home-main">
-          <div class="home-homepage-grid">
-            <div class="home-homepage-main">
-              <a href="{{.BasePath}}" class="page-brand-logo">
-                <img src="{{.BasePath}}images/about.webp" data-theme-image="{{.BasePath}}images/about.webp" alt="About" class="page-brand-image" width="315"
-                  height="282" fetchpriority="high" />
-              </a>
-              <div class="page-header">
-                <div>
-                  <h1 class="page-title">About</h1>
-                </div>
-              </div>
-              <div class="page-content">
-                <p>Hello there! I see you've found the About page. So, I suppose I should tell you a little about me and
-                  this site.</p>
-                <p>I'm Karthik. I live in Chennai, India, and I work as a systems engineer by day. At night, I'm a
-                  vampire. I....oh. No. Sorry. Forget I ever said that.</p>
-                <p>Apart from my day job, I love writing, cartography, programming, talking about public transit, and
-                  many
-                  other things. I'd probably need a whole day to explain them all.</p>
-                <p>That's one of the reasons I created this site. It gives me a place to organise my thoughts while also
-                  being able to share them. It's also why the site looks very much like a small book, both aesthetically
-                  and practically.</p>
-                <p>For more details about the site's design, inspiration, and technical details, see the <a
-                    href="{{.BasePath}}meta">Meta</a>.</p>
-                <p>You can reach me via <a href="mailto:hello@thisiskarthik.com">email</a>, <a
-                    href="https://x.com/karthi9003" target="_blank" rel="noreferrer">Twitter</a>, or <a
-                    href="https://github.com/karthi209" target="_blank" rel="noreferrer">GitHub</a>.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </main>
-    {{template "footer" .}}
-  </div>
-</body>
 
+<nav>
+  <a href="{{.BasePath}}">Home</a>
+  <a href="{{.BasePath}}about">About</a>
+</nav>
+
+<h1>About</h1>
+
+<p>Hello there! I see you've found the About page. So, I suppose I should tell you a little about me and this site.</p>
+
+<p>I'm Karthik. I live in Chennai, India, and I work as a systems engineer by day. At night, I'm a vampire. I....oh. No. Sorry. Forget I ever said that.</p>
+
+<p>Apart from my day job, I love writing, cartography, programming, talking about public transit, and many other things. I'd probably need a whole day to explain them all.</p>
+
+<p>That's one of the reasons I created this site. It gives me a place to organise my thoughts while also being able to share them.</p>
+
+<p>You can reach me via <a href="mailto:hello@thisiskarthik.com">email</a>, <a href="https://x.com/karthi9003" target="_blank" rel="noreferrer">Twitter</a>, or <a href="https://github.com/karthi209" target="_blank" rel="noreferrer">GitHub</a>.</p>
+
+<footer>
+<a href="{{.BasePath}}meta">Meta</a> ·
+<a href="{{.BasePath}}rss.xml">RSS</a>
+</footer>
+
+</body>
 </html>
 {{end}}

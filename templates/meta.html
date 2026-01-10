@@ -1,67 +1,48 @@
 {{define "meta.html"}}
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="{{.BasePath}}favicon.svg" />
-  <meta name="viewport"
-    content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0, viewport-fit=cover" />
-  <meta name="description" content="Meta - Hmm... Blog? - A personal blog by Karthik" />
-  <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
-  <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
-  <meta name="color-scheme" content="light dark" />
-  <link rel="preload" as="font" href="{{.BasePath}}fonts/IMFellGreatPrimer-Regular.woff2" type="font/woff2"
-    crossorigin="anonymous">
-
-  <link rel="preload" as="image" href="{{.BasePath}}images/home.webp" fetchpriority="high">
-  <link rel="stylesheet" href="{{.BasePath}}css/style.css">
-  <title>{{if .Title}}{{.Title}} - {{end}}Hmm... Blog?</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com;">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="color-scheme" content="light dark">
+  <meta name="description" content="Technical details about how this site is built - a smolweb compliant static site generator">
+  <title>Meta - The Book of Odds and Ends</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="{{.BasePath}}css/style.css" rel="stylesheet" type="text/css">
+  <link rel="icon" href="{{.BasePath}}favicon.png" type="image/png">
+  <link rel="alternate" type="application/rss+xml" href="{{.BasePath}}rss.xml" title="The Book of Odds and Ends">
 </head>
-
 <body>
-  <div class="site-container" data-page="{{.PageType}}">
-    <main class="main-content">
-      <div class="home-layout">
-        <div class="home-main">
-          <div class="home-homepage-grid">
-            <div class="home-homepage-main">
-              <a href="{{.BasePath}}" class="page-brand-logo">
-                <img src="{{.BasePath}}images/home.webp" data-theme-image="{{.BasePath}}images/home.webp" alt="Home" class="page-brand-image" width="315"
-                  height="282" fetchpriority="high" />
-              </a>
-              <div class="page-header">
-                <div>
-                  <h1 class="page-title">Meta</h1>
-                </div>
-              </div>
-              <div class="page-content">
-                <p>This site is just HTML and CSS compiled into static pages. I wrote a blog generator in Go because I got tired of platforms that change their terms of service every Tuesday and frameworks whose dependencies break every Friday.</p>
-                <p>A full build takes {{.BuildTime}} milliseconds. That's longer than zero, but shorter than most modern websites take to load. So there's that.</p>
-                <p>Almost everything lives in the static build with few moving parts means fewer things to break in ways I'll discover at 2am.</p>
-                <p><strong>Typography</strong></p>
-                <p>I spent way too much time picking fonts and here's what I ended up with:</p>
-                <p>Everything uses IM Fell Great Primer. It's a revival of some eighteenth-century typeface. I picked it because it looks serious without trying too hard, which is more than I can say for most things on the internet. Headings, body text, metadata, everything.</p>
-                <p>It's open source and served locally, which is nice because I don't trust Google Fonts to still exist in 2030.</p>
-                <p><strong>How It Works</strong></p>
-                <p>Custom static site generator in Go</p>
-                <p>Goldmark for Markdown (because why not)</p>
-                <p>YAML for frontmatter (it's fine, I guess)</p>
-                <p>The code is simple and readable. No clever abstractions that will confuse future me, who already has enough problems.</p>
-                <p><strong>Source Code</strong></p>
-                <p>It's all on <a href="https://github.com/karthi209/thisiskarthik.com.git" target="_blank" rel="noreferrer">GitHub</a> if you're into that sort of thing.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </main>
-    {{template "footer" .}}
-  </div>
-</body>
 
+<nav>
+  <a href="{{.BasePath}}">Home</a>
+  <a href="{{.BasePath}}about">About</a>
+</nav>
+
+<h1>Meta</h1>
+
+<p>This site is just HTML and CSS compiled into static pages using a blog generator I wrote in Go because I got tired of platforms that change their terms of service every Tuesday. I post a lot on Twitter, and I realized late that you don't actually own anything you post there, so everything I write online, this website will have a copy of it all, and it's just HTML and CSS compiled into static pages using a custom Go static site generator... just my words on my domain under my control. A full build of this site takes {{.BuildTime}} milliseconds which is longer than zero but shorter than most modern websites take to load, and almost everything lives in the static build which means few moving parts and fewer things to break.</p>
+
+<p><strong>Typography</strong></p>
+
+<p>Bricolage Grotesk for everything because why not.</p>
+
+<p><strong>Colors</strong></p>
+
+<p>Background is #1e1e1e which is a muted dark gray that's easy on the eyes for long reading sessions, and text is #e8e8e8 which is off-white for good contrast without being harsh, and the accent is #00d9ff which is a bright cyan for links and highlights that stands out without being too saturated. Still experimenting with the colors!</p>
+
+<p><strong>Source Code</strong></p>
+
+<p>It's all on <a href="https://github.com/karthi209/thisiskarthik.com.git" target="_blank" rel="noreferrer">GitHub</a> if you're into that sort of thing.</p>
+
+<footer>
+<a href="{{.BasePath}}meta">Meta</a> ·
+<a href="{{.BasePath}}rss.xml">RSS</a>
+</footer>
+
+</body>
 </html>
 {{end}}

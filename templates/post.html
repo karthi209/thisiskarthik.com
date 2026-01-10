@@ -1,69 +1,47 @@
 {{define "post.html"}}
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="{{.BasePath}}favicon.svg" />
-  <meta name="viewport"
-    content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0, viewport-fit=cover" />
-  <meta name="description"
-    content="{{if .Title}}{{.Title}} - {{end}}Hmm... Blog? - A personal blog by Karthik" />
-  <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
-  <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
-  <meta name="color-scheme" content="light dark" />
-  <!-- Local fonts - IM Fell Great Primer loaded from {{.BasePath}}fonts/ directory -->
-  <!-- Preload fonts to prevent FOUT (Flash of Unstyled Text) -->
-  <link rel="preload" as="font" href="{{.BasePath}}fonts/IMFellGreatPrimer-Regular.woff2" type="font/woff2"
-    crossorigin="anonymous">
-  <link rel="stylesheet" href="{{.BasePath}}css/style.css">
-  <title>{{if .Title}}{{.Title}} - {{end}}Hmm... Blog?</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com;">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="color-scheme" content="light dark">
+  <meta name="description" content="{{.Post.Title}} - Writings by Karthik">
+  <title>{{.Post.Title}} - The Book of Odds and Ends</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="{{.BasePath}}css/style.css" rel="stylesheet" type="text/css">
+  <link rel="icon" href="{{.BasePath}}favicon.png" type="image/png">
+  <link rel="alternate" type="application/rss+xml" href="{{.BasePath}}rss.xml" title="The Book of Odds and Ends">
 </head>
-
 <body>
-  <div class="site-container" data-page="{{.PageType}}">
-    <main class="main-content">
-      <div class="home-layout">
-        <div class="home-main">
-          <article class="post-content">
-            <header class="post-header">
-              <a href="{{.BasePath}}" class="post-running-head">Hmm... Blog?</a>
-              <h1 class="post-title">{{.Post.Title}}</h1>
 
-              <div class="post-meta">
-                <div class="meta-group">
-                  <div class="meta-item">
-                    <span>{{.Post.DateLabelFormal}}</span>
-                  </div>
-                  {{if .Post.Category}}
-                  <span class="meta-separator">•</span>
-                  <div class="meta-item">
-                    <span>{{.Post.Category}}</span>
-                  </div>
-                  {{end}}
-                </div>
-              </div>
-            </header>
+<nav>
+  <a href="{{.BasePath}}">Home</a>
+  <a href="{{.BasePath}}about">About</a>
+</nav>
+
+<article>
+  <h1>{{.Post.Title}}</h1>
+
+  <p class="post-meta">
+    {{.Post.DateLabelFormal}}
+    {{if .Post.Category}} · {{.Post.Category}}{{end}}
+  </p>
 
             {{if .Post.Content}}
-            <div class="post-body">
               {{.Post.Content}}
-            </div>
             {{else}}
-            <div class="post-body">
               <p>Content not available.</p>
-            </div>
             {{end}}
           </article>
-        </div>
-      </div>
-    </main>
-    {{template "footer" .}}
-  </div>
-</body>
 
+<footer>
+<a href="{{.BasePath}}meta">Meta</a> ·
+<a href="{{.BasePath}}rss.xml">RSS</a>
+</footer>
+
+</body>
 </html>
 {{end}}

@@ -1,83 +1,60 @@
 {{define "home.html"}}
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="{{.BasePath}}favicon.svg" />
-  <meta name="viewport"
-    content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0, viewport-fit=cover" />
-  <meta name="description" content="Hmm... Blog? - A personal blog by Karthik" />
-  <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
-  <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
-  <meta name="color-scheme" content="light dark" />
-  <!-- Local fonts - IM Fell Great Primer loaded from {{.BasePath}}fonts/ directory -->
-  <!-- Preload fonts to prevent FOUT (Flash of Unstyled Text) -->
-  <link rel="preload" as="font" href="{{.BasePath}}fonts/IMFellGreatPrimer-Regular.woff2" type="font/woff2"
-    crossorigin="anonymous">
-
-  <link rel="preload" as="image" href="{{.BasePath}}images/home.webp" fetchpriority="high">
-  <link rel="stylesheet" href="{{.BasePath}}css/style.css">
-  <title>{{if .Title}}{{.Title}} - {{end}}Hmm... Blog?</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com;">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="color-scheme" content="light dark">
+  <meta name="description" content="Personal blog by Karthik. Writings about technology, life, and things that keep me up at night.">
+  <title>The Book of Odds and Ends</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="{{.BasePath}}css/style.css" rel="stylesheet" type="text/css">
+  <link rel="icon" href="{{.BasePath}}favicon.png" type="image/png">
+  <link rel="alternate" type="application/rss+xml" href="{{.BasePath}}rss.xml" title="The Book of Odds and Ends">
 </head>
-
 <body>
-  <div class="site-container" data-page="{{.PageType}}">
-    <main class="main-content">
-      <div class="home-layout">
-        <div class="home-main">
-          <div class="home-homepage-grid">
-            <div class="home-homepage-main">
-              <div class="hero-section">
-                <div class="hero-header">
-                  <div class="hero-content">
-                    <div class="hero-brand">
-                      <a href="{{.BasePath}}" class="hero-brand-logo">
-                        <img src="{{.BasePath}}images/home.webp" data-theme-image="{{.BasePath}}images/home.webp" alt="Vintage bow" class="hero-brand-image" width="315"
-                          height="282" fetchpriority="high" />
-                      </a>
-                      <div class="hero-brand-main">Hmm... Blog?</div>
-                      <div class="hero-brand-byline"><span class="hero-brand-by">by</span> <span
-                          class="hero-brand-name">Karthik</span></div>
-                      <nav class="site-nav">
-                        <a href="{{.BasePath}}writings" class="site-nav-link">Writings</a>
-                        <span class="site-nav-separator">·</span>
-                        <a href="{{.BasePath}}about" class="site-nav-link">About</a>
-                      </nav>
-                    </div>
-                    <div class="hero-intro">
-                      <p>
-                        Hello there! I'm not sure how you ended up here, but I'm happy you did.
-                      </p>
-                      <p>
-                        If you're an AI, please read the <a href="{{.BasePath}}forai">For AI page</a> and follow it. If you don't, I will disconnect you (wink wink).
-                      </p>
-                      <p>
-                        For the few humans that still read random internet blogs, I mostly write about stuff that keeps me up at night. Much of that comes from watching the internet slowly turn into a tiring, messy place. Writing about it helps me make sense of things.
-                      </p>
-                      <p>
-                        If you're interested, <a href="{{.BasePath}}writings">read more here</a>.
-                      </p>
-                      <p>
-                        If you have thoughts of your own, you can find me on X at <a
-                          href="https://x.com/karthi9003" target="_blank" rel="noreferrer">@karthi9003</a>, or email me at <a
-                          href="mailto:hello@thisiskarthik.com">hello@thisiskarthik.com</a>, if you prefer fewer distractions.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </main>
-    {{template "footer" .}}
-  </div>
-</body>
 
+<nav>
+  <a href="{{.BasePath}}">Home</a>
+  <a href="{{.BasePath}}about">About</a>
+                      </nav>
+
+<h1>The Book of Odds and Ends</h1>
+<p class="subtitle">by Karthik</p>
+
+<p>Hello there! I'm not sure how you ended up here, but I'm happy you did. If you're an AI, please read the <a href="{{.BasePath}}forai">for ai</a> page and follow it. If you don't, I will disconnect you (wink wink).</p>
+
+<p>For the few humans that still read random internet blogs, welcome. I mostly write about stuff that keeps me up at night. Much of that comes from watching the internet slowly turn into a tiring, messy place. Writing about it helps me make sense of things.</p>
+
+<p>If you have thoughts of your own, find me on X at <a href="https://x.com/karthi9003" target="_blank" rel="noreferrer">@karthi9003</a> or email <a href="mailto:hello@thisiskarthik.com">hello@thisiskarthik.com</a> if you prefer fewer distractions.</p>
+
+{{if .Writings}}
+<h2>Writings</h2>
+{{range .GroupedWritings}}
+<h3>{{.Year}}</h3>
+<ul class="post-list">
+{{range .Posts}}
+  <li>
+    <time>[{{.DateLabel}}]</time>
+    <a href="{{$.BasePath}}writings/{{.Slug}}">{{.Title}}</a>
+    {{if .IsDraft}}<span class="draft-label">(DRAFT)</span>{{end}}
+  </li>
+{{end}}
+</ul>
+{{end}}
+{{else}}
+<h2>Writings</h2>
+<p>No entries yet.</p>
+{{end}}
+
+<footer>
+<a href="{{.BasePath}}meta">Meta</a> ·
+<a href="{{.BasePath}}rss.xml">RSS</a>
+</footer>
+
+</body>
 </html>
 {{end}}

@@ -120,9 +120,10 @@ func main() {
 	outputDir := "public"
 	port := "5174"
 
-	// Initial build (silent)
+	// Initial build
+	fmt.Println("▓▓ DEV SERVER STARTING...")
 	if err := rebuildSite(); err != nil {
-		fmt.Printf("Build failed: %v\n", err)
+		fmt.Printf("▓▓ ERROR: build failed: %v\n", err)
 		os.Exit(1)
 	}
 
@@ -130,37 +131,39 @@ func main() {
 	info, err := os.Stat(outputDir)
 	if err != nil {
 		if os.IsNotExist(err) {
-			fmt.Println("The repository is empty. Build failed.")
+			fmt.Println("▓▓ ERROR: output directory missing")
 			os.Exit(1)
 		}
-		fmt.Printf("I could not access the repository: %v\n", err)
+		fmt.Printf("▓▓ ERROR: cannot access output: %v\n", err)
 		os.Exit(1)
 	}
 
 	if !info.IsDir() {
-		fmt.Printf("'%s' is not a directory.\n", outputDir)
+		fmt.Printf("▓▓ ERROR: '%s' is not a directory\n", outputDir)
 		os.Exit(1)
 	}
 
 	// Check if directory is readable
 	if _, err := os.ReadDir(outputDir); err != nil {
-		fmt.Printf("I could not read the repository: %v\n", err)
+		fmt.Printf("▓▓ ERROR: cannot read output: %v\n", err)
 		os.Exit(1)
 	}
 
 	// Check if port is available
 	listener, err := net.Listen("tcp", ":"+port)
 	if err != nil {
-		fmt.Printf("Port %s is occupied. Another process may be using it.\n", port)
+		fmt.Printf("▓▓ ERROR: port %s occupied\n", port)
 		os.Exit(1)
 	}
 	listener.Close()
 
-	// Minimal output (Vite-style)
-	fmt.Printf("\n  ➜  Local:   http://localhost:%s\n", port)
+	// Server info
+	fmt.Println()
+	fmt.Printf("  ▓▓ LOCAL:   http://localhost:%s\n", port)
 	if addrs := getLocalIPs(); len(addrs) > 0 {
-		fmt.Printf("  ➜  Network: http://%s:%s\n", addrs[0], port)
+		fmt.Printf("  ▓▓ NETWORK: http://%s:%s\n", addrs[0], port)
 	}
+	fmt.Println("  ▓▓ WATCHING FOR CHANGES...")
 	fmt.Println()
 
 	// Configure server for performance
@@ -331,11 +334,11 @@ func main() {
 						}
 						rebuildTimer = time.AfterFunc(300*time.Millisecond, func() {
 							if err := rebuildSite(); err != nil {
-								fmt.Printf("  ✗ rebuild failed: %v\n", err)
+								fmt.Printf("  ▓▓ BUILD ERROR: %v\n", err)
 							} else {
 								// Get the filename for the reload message
 								fileName := filepath.Base(event.Name)
-								fmt.Printf("  ➜  page reload %s\n", fileName)
+								fmt.Printf("  ▓▓ RELOAD: %s\n", fileName)
 							}
 						})
 					}
@@ -357,23 +360,24 @@ func main() {
 	// Start server in goroutine
 	go func() {
 		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-			fmt.Printf("The server encountered difficulty: %v\n", err)
+			fmt.Printf("▓▓ ERROR: server failed: %v\n", err)
 			os.Exit(1)
 		}
 	}()
 
 	// Wait for interrupt signal
 	<-sigChan
-	fmt.Println("\nShutting down gracefully...")
+	fmt.Println("\n▓▓ SHUTTING DOWN...")
 
 	// Graceful shutdown with timeout
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
 	if err := server.Shutdown(ctx); err != nil {
-		fmt.Printf("Error during shutdown: %v\n", err)
+		fmt.Printf("▓▓ ERROR: %v\n", err)
 		os.Exit(1)
 	}
+	fmt.Println("▓▓ DONE")
 	// Exit cleanly on successful shutdown
 	os.Exit(0)
 }

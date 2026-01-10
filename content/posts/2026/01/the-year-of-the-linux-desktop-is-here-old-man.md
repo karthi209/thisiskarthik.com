@@ -2,6 +2,7 @@
 title: "The year of the linux desktop is here, old man!"
 date: 2026-01-08
 category: tech
+slug: the-year-of-the-linux-desktop-is-here-old-man
 ---
 
 For a very long time, I thought I was bad at making choices.

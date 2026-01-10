@@ -1,55 +1,56 @@
-# Hmm... Blog?
+# The Book of Odds and Ends
 
-**A personal blog that probably won't break in five years.**
+**A personal blog with a little bit of character.**
 
 ---
 
 ## What is this?
 
-This is the source code for my personal website. I built it because I got tired of platforms that change their terms of service every Tuesday and frameworks who's dependencies break every friday.
-
-It's just HTML and CSS compiled into static pages. It uses no JavaScript frameworks that will be obsolete next month, no external services that will shut down and leave me stranded.
-
-## Why?
-
-Most websites are built like houses of cards. This one is built like a brick. It might not be flashy, but it'll probably still work when everything else has broken.
-
-- **Static**: Pure HTML and CSS. No server-side anything. If it works on my machine, it works everywhere.
-- **Readable**: I care more about whether you can actually read the text than whether the animations are smooth.
-- **Independent**: Doesn't rely on any external services. If GitHub goes down, I can host this on a toaster.
-
-## Typography
-
-I spent way too much time picking fonts. Here's what I ended up with:
-
-- **IM Fell Great Primer**: Used for everything. Headings, body text, metadata, navigation, everything. It's old, it's imperfect, and it looks serious without trying too hard.
-
-The font is served locally because I don't trust Google Fonts to still exist in 2030.
+This is the source code for my personal website, and I built it because I got tired of platforms that change their terms of service every Tuesday. I post a lot on Twitter, and I realized late that you don't actually own anything you post there, so everything I write online, this website will have a copy of it all, and it's just HTML and CSS compiled into static pages using a custom Go static site generator... just my words on my domain under my control.
 
 ## Structure
 
-The repository structure is pretty straightforward.
+The repository structure is pretty straightforward, and it's organized into a few key directories that make sense when you look at them.
 
 - `content/` : The actual writing (Markdown files)
 - `templates/` : How pages get assembled (Go HTML templates)
-- `static/` : CSS, fonts, images, the usual suspects
-- `public/` : The compiled output, ready to deploy
+- `static/` : CSS, fonts, images, the usual stuff
+- `public/` : The compiled output, that we deploy to static servers like gtihub pages and yadayada
 
 ## How to Build
 
-The site uses a custom static site generator written in Go. It's intentionally simple. If you can't read the code and understand it in one sitting, I've failed.
+The site uses a custom static site generator written in Go, and it's intentionally simple, and if you can't read the code and understand it in one sitting, I've failed.
 
-To build it:
+### Build Commands
 
 ```bash
 make setup      # Install dependencies (Go, imaging tools)
 make generate   # Compile the site to /public directory
-make serve      # Preview locally
+make serve      # Dev server with hot reload (port 5174)
+make clean      # Remove generated files
 ```
 
-To clean up:
+### Manual Build
 
 ```bash
-make clean
+go run generate.go  # Build site
+go run serve.go     # Dev server
 ```
+
+## Tech Stack
+
+- **Generator**: Custom Go static site generator
+- **Markdown**: Goldmark for parsing
+- **Templates**: Go's `html/template` package
+- **Font**: Bricolage Grotesk (Google Fonts)
+- **Styling**: Pure CSS, no frameworks
+- **Deployment**: Static files, works with GitHub Pages, Netlify, etc.
+
+## Design
+
+- **Theme**: Dark mode only (#1e1e1e background, #e8e8e8 text)
+- **Accent**: Cyan (#00d9ff) for links and highlights
+- **Typography**: Bricolage Grotesk - modern geometric sans-serif
+- **Layout**: Clean, minimal, inspired by seated.ro aesthetic
+- **Responsive**: Mobile, tablet, and desktop optimized
 

@@ -73,9 +73,11 @@ type Frontmatter struct {
 
 // Template data structures
 type HomePageData struct {
-	PageType string
-	Title    string
-	BasePath string
+	PageType        string
+	Title           string
+	BasePath        string
+	Writings        []PostTemplateData
+	GroupedWritings []YearGroup
 }
 
 type WritingsPageData struct {
@@ -120,24 +122,13 @@ type AboutPageData struct {
 }
 
 type MetaPageData struct {
-	PageType    string
-	Title       string
-	BasePath    string
-	LinesOfCode int
-	PageCount   int
-	ImageCount  int
-	BuildYear   int
-	BuildTime   string
+	PageType  string
+	Title     string
+	BasePath  string
+	BuildYear int
+	BuildTime string
 }
 
-type IndexPageData struct {
-	PageType        string
-	Title           string
-	BasePath        string
-	Writings        []PostTemplateData
-	GroupedWritings []YearGroup
-	WritingCount    int
-}
 
 // plural returns "s" if count is not 1, empty string otherwise
 func plural(count int) string {
@@ -160,24 +151,26 @@ func validateDirectories() error {
 
 func main() {
 	buildStart := time.Now()
-	fmt.Println("Commencing the typesetting of pages...")
+	fmt.Println("▓▓ SITE GENERATOR V1.0")
+	fmt.Println("▓▓ INITIALIZING...")
+	fmt.Println()
 
 	// Validate directories exist
 	if err := validateDirectories(); err != nil {
-		fmt.Printf("I could not proceed: %v\n", err)
+		fmt.Printf("▓▓ ERROR: %v\n", err)
 		os.Exit(1)
 	}
 
 	// Ensure output directory exists and is writable
 	if err := os.MkdirAll(outputDir, 0755); err != nil {
-		fmt.Printf("I could not prepare the workspace: %v\n", err)
+		fmt.Printf("▓▓ ERROR: cannot prepare workspace: %v\n", err)
 		os.Exit(1)
 	}
 
 	// Load templates
 	templates, err := loadTemplates()
 	if err != nil {
-		fmt.Printf("I encountered difficulty in loading the templates: %v\n", err)
+		fmt.Printf("▓▓ ERROR: template load failed: %v\n", err)
 		os.Exit(1)
 	}
 
@@ -202,7 +195,7 @@ func main() {
 	}
 
 	if len(postFiles) > 0 {
-		fmt.Printf("   Discovered %d manuscript%s\n", len(postFiles), plural(len(postFiles)))
+		fmt.Printf("▓▓ LOADING %d POST%s...\n", len(postFiles), strings.ToUpper(plural(len(postFiles))))
 	}
 
 	// Process all posts
@@ -225,7 +218,7 @@ func main() {
 	})
 
 	if len(posts) > 0 {
-		fmt.Printf("   Committed %d entr%s to print\n", len(posts), plural(len(posts)))
+		fmt.Printf("▓▓ PROCESSED %d POST%s\n", len(posts), strings.ToUpper(plural(len(posts))))
 	}
 
 	// Convert posts to template data
@@ -257,12 +250,13 @@ func main() {
 	groupedWritings := groupPostsByYear(postTemplateData)
 
 	// Generate pages
-	if err := generateHomePage(templates, postTemplateData); err != nil {
-		fmt.Printf("I encountered difficulty in composing the home page: %v\n", err)
+	fmt.Println("▓▓ GENERATING PAGES...")
+	if err := generateHomePage(templates, postTemplateData, groupedWritings); err != nil {
+		fmt.Printf("▓▓ ERROR: home page failed: %v\n", err)
 	}
 
 	if err := generateWritingsPage(templates, postTemplateData, groupedWritings); err != nil {
-		fmt.Printf("I encountered difficulty in composing the writings page: %v\n", err)
+		fmt.Printf("▓▓ ERROR: writings page failed: %v\n", err)
 	}
 
 	for _, post := range postTemplateData {
@@ -272,62 +266,46 @@ func main() {
 	}
 
 	if err := generateAboutPage(templates); err != nil {
-		fmt.Printf("I encountered difficulty in composing the about page: %v\n", err)
+		fmt.Printf("▓▓ ERROR: about page failed: %v\n", err)
 	}
 
 	if err := generateForAIPage(templates); err != nil {
-		fmt.Printf("I encountered difficulty in composing the forai page: %v\n", err)
+		fmt.Printf("▓▓ ERROR: forai page failed: %v\n", err)
 	}
 
 	buildDuration := time.Since(buildStart)
 	if err := generateMetaPage(templates, buildDuration); err != nil {
-		fmt.Printf("I encountered difficulty in composing the meta page: %v\n", err)
-	}
-
-	if err := generateIndexPage(templates, postTemplateData, groupedWritings); err != nil {
-		fmt.Printf("I encountered difficulty in composing the index page: %v\n", err)
+		fmt.Printf("▓▓ ERROR: meta page failed: %v\n", err)
 	}
 
 	if err := generateRSSFeed(postTemplateData); err != nil {
-		fmt.Printf("I encountered difficulty in composing the RSS feed: %v\n", err)
+		fmt.Printf("▓▓ ERROR: RSS feed failed: %v\n", err)
 	}
 
 	// Copy static files
+	fmt.Println("▓▓ COPYING ASSETS...")
 	if err := copyStaticFiles(); err != nil {
-		fmt.Printf("A note: difficulty in gathering materials: %v\n", err)
+		fmt.Printf("▓▓ WARNING: asset copy failed: %v\n", err)
 	}
 
 	// Copy images (non-critical, continue on error)
 	_ = copyImages()
 
-	// Minimal completion message
+	// Completion message
+	fmt.Println()
 	if len(postTemplateData) > 0 {
-		fmt.Printf("\nThe volume is complete. %d entr%s rendered to %s.\n", len(postTemplateData), plural(len(postTemplateData)), outputDir)
+		fmt.Printf("▓▓ BUILD COMPLETE: %d POST%s → %s/\n", len(postTemplateData), strings.ToUpper(plural(len(postTemplateData))), outputDir)
 	} else {
-		fmt.Printf("\nThe volume is complete. Rendered to %s.\n", outputDir)
+		fmt.Printf("▓▓ BUILD COMPLETE → %s/\n", outputDir)
 	}
+	fmt.Printf("▓▓ TIME: %dms\n", buildDuration.Milliseconds())
+	fmt.Println()
 }
 
 func loadTemplates() (*template.Template, error) {
 	tmpl := template.New("base")
 
-	// Load base template first
-	basePath := filepath.Join(templatesDir, "base.html")
-	baseContent, err := os.ReadFile(basePath)
-	if err != nil {
-		return nil, fmt.Errorf("difficulty in reading the base template: %w", err)
-	}
-
-	if len(baseContent) == 0 {
-		return nil, fmt.Errorf("base template is empty")
-	}
-
-	tmpl, err = tmpl.Parse(string(baseContent))
-	if err != nil {
-		return nil, fmt.Errorf("difficulty in parsing the base template: %w", err)
-	}
-
-	// Load all other template files
+	// Load all template files
 	files, err := filepath.Glob(filepath.Join(templatesDir, "*.html"))
 	if err != nil {
 		return nil, fmt.Errorf("difficulty in finding templates: %w", err)
@@ -339,9 +317,6 @@ func loadTemplates() (*template.Template, error) {
 
 	// Parse all templates
 	for _, file := range files {
-		if filepath.Base(file) == "base.html" {
-			continue // Already parsed
-		}
 		content, err := os.ReadFile(file)
 		if err != nil {
 			return nil, fmt.Errorf("difficulty in reading template %s: %w", file, err)
@@ -358,11 +333,13 @@ func loadTemplates() (*template.Template, error) {
 	return tmpl, nil
 }
 
-func generateHomePage(templates *template.Template, posts []PostTemplateData) error {
+func generateHomePage(templates *template.Template, posts []PostTemplateData, grouped []YearGroup) error {
 	data := HomePageData{
-		PageType: "home",
-		Title:    "Home",
-		BasePath: basePath,
+		PageType:        "home",
+		Title:           "Home",
+		BasePath:        basePath,
+		Writings:        posts,
+		GroupedWritings: grouped,
 	}
 
 	return writeTemplate(templates, "home.html", filepath.Join(outputDir, "index.html"), data)
@@ -433,14 +410,11 @@ func generateMetaPage(templates *template.Template, buildDuration time.Duration)
 	buildTimeStr := fmt.Sprintf("%d", buildTimeMs)
 
 	data := MetaPageData{
-		PageType:    "meta",
-		Title:       "Meta",
-		BasePath:    basePath,
-		LinesOfCode: 0,
-		PageCount:   0,
-		ImageCount:  0,
-		BuildYear:   buildYear,
-		BuildTime:   buildTimeStr,
+		PageType:  "meta",
+		Title:     "Meta",
+		BasePath:  basePath,
+		BuildYear: buildYear,
+		BuildTime: buildTimeStr,
 	}
 
 	metaDir := filepath.Join(outputDir, "meta")
@@ -449,136 +423,6 @@ func generateMetaPage(templates *template.Template, buildDuration time.Duration)
 	}
 
 	return writeTemplate(templates, "meta.html", filepath.Join(metaDir, "index.html"), data)
-}
-
-// countLinesOfCode counts lines in core site code only:
-// - generate.go (site generator)
-// - CSS files (styling)
-// - Template HTML files (structure)
-// Excludes: serve.go (dev tool), scripts (build tools), content (posts)
-func countLinesOfCode() int {
-	total := 0
-
-	// Count generate.go only (exclude serve.go - it's a dev tool)
-	if content, err := os.ReadFile("generate.go"); err == nil {
-		total += strings.Count(string(content), "\n")
-	}
-
-	// Count CSS files in static/css
-	err := filepath.WalkDir("static/css", func(path string, d fs.DirEntry, err error) error {
-		if err != nil {
-			return nil
-		}
-		if !d.IsDir() && strings.HasSuffix(path, ".css") {
-			if content, err := os.ReadFile(path); err == nil {
-				total += strings.Count(string(content), "\n")
-			}
-		}
-		return nil
-	})
-	if err != nil {
-		// Continue if CSS directory doesn't exist
-	}
-
-	// Count template HTML files
-	err = filepath.WalkDir("templates", func(path string, d fs.DirEntry, err error) error {
-		if err != nil {
-			return nil
-		}
-		if !d.IsDir() && strings.HasSuffix(path, ".html") {
-			if content, err := os.ReadFile(path); err == nil {
-				total += strings.Count(string(content), "\n")
-			}
-		}
-		return nil
-	})
-	if err != nil {
-		// Continue if templates directory doesn't exist
-	}
-
-	return total
-}
-
-// countGeneratedPages counts HTML pages in the output directory
-// Note: This is called before meta, notes, library, and index pages are generated
-// So we count existing pages + pages that will be generated
-func countGeneratedPages() int {
-	count := 0
-
-	// Count pages already generated (home, writings, posts, about)
-	err := filepath.WalkDir(outputDir, func(path string, d fs.DirEntry, err error) error {
-		if err != nil {
-			return nil
-		}
-
-		if !d.IsDir() && strings.HasSuffix(path, "index.html") {
-			count++
-		}
-
-		return nil
-	})
-
-	if err != nil {
-		// If outputDir doesn't exist yet, start with 0
-		count = 0
-	}
-
-	// Add pages that will be generated after meta:
-	// - Meta (1)
-	// - Index (1)
-	count += 2 // Meta + Index
-
-	return count
-}
-
-// countImages counts image files in static/images
-func countImages() int {
-	count := 0
-	imageDir := filepath.Join(staticDir, "images")
-
-	imageExts := []string{".png", ".jpg", ".jpeg", ".gif", ".webp", ".svg"}
-
-	err := filepath.WalkDir(imageDir, func(path string, d fs.DirEntry, err error) error {
-		if err != nil {
-			return nil
-		}
-
-		if !d.IsDir() {
-			lowerPath := strings.ToLower(path)
-			for _, ext := range imageExts {
-				if strings.HasSuffix(lowerPath, ext) {
-					count++
-					break
-				}
-			}
-		}
-
-		return nil
-	})
-
-	if err != nil {
-		return 0
-	}
-
-	return count
-}
-
-func generateIndexPage(templates *template.Template, posts []PostTemplateData, grouped []YearGroup) error {
-	data := IndexPageData{
-		PageType:        "index",
-		Title:           "Index",
-		BasePath:        basePath,
-		Writings:        posts,
-		GroupedWritings: grouped,
-		WritingCount:    len(posts),
-	}
-
-	indexDir := filepath.Join(outputDir, "index")
-	if err := os.MkdirAll(indexDir, 0755); err != nil {
-		return err
-	}
-
-	return writeTemplate(templates, "index.html", filepath.Join(indexDir, "index.html"), data)
 }
 
 func writeTemplate(templates *template.Template, templateName, outputPath string, data interface{}) error {
@@ -914,46 +758,6 @@ func copyStaticFiles() error {
 	return err
 }
 
-func copyDir(src, dst string) error {
-	if _, err := os.Stat(src); os.IsNotExist(err) {
-		return nil // Source doesn't exist, skip silently
-	}
-
-	return filepath.Walk(src, func(path string, info fs.FileInfo, err error) error {
-		if err != nil {
-			return err
-		}
-
-		relPath, err := filepath.Rel(src, path)
-		if err != nil {
-			return err
-		}
-
-		dstPath := filepath.Join(dst, relPath)
-
-		if info.IsDir() {
-			return os.MkdirAll(dstPath, 0755)
-		}
-
-		// Skip if source is empty
-		if info.Size() == 0 {
-			return nil
-		}
-
-		srcData, err := os.ReadFile(path)
-		if err != nil {
-			return err
-		}
-
-		// Ensure destination directory exists
-		if err := os.MkdirAll(filepath.Dir(dstPath), 0755); err != nil {
-			return err
-		}
-
-		return os.WriteFile(dstPath, srcData, 0644)
-	})
-}
-
 func copyImages() error {
 	if _, err := os.Stat(imagesDir); os.IsNotExist(err) {
 		return fmt.Errorf("no repository of illustrations found; proceeding without")
@@ -1015,7 +819,9 @@ func copyImages() error {
 		return fmt.Errorf("difficulty in gathering illustrations: %w", err)
 	}
 
-	fmt.Printf("Gathered %d illustration%s\n", copied, plural(copied))
+	if copied > 0 {
+		fmt.Printf("▓▓ COPIED %d IMAGE%s\n", copied, strings.ToUpper(plural(copied)))
+	}
 	return nil
 }
 
@@ -1060,7 +866,7 @@ func generateRSSFeed(posts []PostTemplateData) error {
 	fmt.Fprintf(file, `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
 <channel>
-<title>Hmm... Blog?</title>
+<title>The Book of Odds and Ends</title>
 <link>%s</link>
 <description>Writings and observations by Karthik</description>
 <language>en-us</language>
