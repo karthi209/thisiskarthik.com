@@ -1,12 +1,19 @@
 
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com;">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="color-scheme" content="light dark">
+  <meta name="description" content="Technical details about how this site is built - a smolweb compliant static site generator">
   <title>Meta - Hmm... Blog?</title>
-  <link rel="stylesheet" href="/css/style.css">
-  <link rel="icon" href="/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="/css/style.css" rel="stylesheet" type="text/css">
+  <link rel="icon" href="/favicon.png" type="image/png">
+  <link rel="alternate" type="application/rss+xml" href="/rss.xml" title="Hmm... Blog?">
 </head>
 <body>
 
@@ -17,42 +24,29 @@
 
 <h1>Meta</h1>
 
-<p>This site is just HTML and CSS compiled into static pages. I wrote a blog generator in Go because I got tired of platforms that change their terms of service every Tuesday and frameworks whose dependencies break every Friday.</p>
-
-<p>A full build takes 2 milliseconds. That's longer than zero, but shorter than most modern websites take to load.</p>
-
-<p>Almost everything lives in the static build. Few moving parts means fewer things to break at 2am.</p>
-
-<p><strong>Design Philosophy</strong></p>
-
-<p>The site has a subtle Commodore 64 aesthetic. IBM Plex Mono everywhere. Cyan accents. ASCII box-drawing characters. Dark theme. Zero JavaScript.</p>
-
-<p>It's designed to be readable, fast, and still work in 20 years when everything else has broken.</p>
+<p>This site is just HTML and CSS compiled into static pages using a blog generator I wrote in Go because I got tired of platforms that change their terms of service every Tuesday. A full build of this site takes 2 milliseconds which is longer than zero but shorter than most modern websites take to load, and almost everything lives in the static build which means few moving parts and fewer things to break.</p>
 
 <p><strong>Typography</strong></p>
 
-<p>IBM Plex Mono for everything. It's monospace, but actually readable. Good for both UI elements and body text. Gives that retro computing feel without sacrificing legibility.</p>
+<p>Bricolage Grotesk for everything because it's a modern geometric sans-serif that's clean and readable and has that indie aesthetic without being too weird, with system fonts as fallback for older browsers. Body text uses regular weight (400) for comfortable reading, while headings use semibold (600) for better distinction.</p>
 
 <p><strong>How It Works</strong></p>
 
-<p>Custom static site generator in Go. Goldmark for Markdown. YAML for frontmatter. No build tools. No dependencies that will break next week.</p>
-
-<p>The code is simple and readable. No clever abstractions that will confuse future me.</p>
+<p>Custom static site generator in Go with Goldmark for Markdown and YAML for frontmatter and no build tools and no dependencies that will break next week, and the code is simple and readable with no clever abstractions that will confuse future me.</p>
 
 <p><strong>Colors</strong></p>
 
-<p>Background: #1a1a2e (dark but not black)</p>
-
-<p>Text: #eaeaea (off-white, easy on the eyes)</p>
-
-<p>Accent: #00d9ff (cyan, very C64)</p>
+<p>Background is #1e1e1e which is a muted dark gray that's easy on the eyes for long reading sessions, and text is #e8e8e8 which is off-white for good contrast without being harsh, and the accent is #00d9ff which is a bright cyan for links and highlights that stands out without being too saturated.</p>
 
 <p><strong>Source Code</strong></p>
 
 <p>It's all on <a href="https://github.com/karthi209/thisiskarthik.com.git" target="_blank" rel="noreferrer">GitHub</a> if you're into that sort of thing.</p>
 
+<p><strong>Performance</strong></p>
+
+<p>Fonts are loaded with preconnect hints and display=swap to minimize layout shifts, and the site uses semantic HTML and minimal CSS for fast loading and good performance across all devices.</p>
+
 <footer>
-<a href="/index">Index</a> ·
 <a href="/meta">Meta</a> ·
 <a href="/rss.xml">RSS</a>
 </footer>
