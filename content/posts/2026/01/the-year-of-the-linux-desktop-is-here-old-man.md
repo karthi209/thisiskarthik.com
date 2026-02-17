@@ -15,23 +15,23 @@ Windows was my first operating system. More specifically, it was Windows 2000. M
 
 I then moved to Windows XP. And .. it was ok, you know. It worked.. and nothing to complain, because I was not doing much with it.. it's not like I had an internet connection back then. 
 
-After that, I jumped straight to Windows 10. Yes, I completely skipped Windows 7. Not because I wanted to, but because the laptop I owned for years absolutely refused to run anything newer than XP. Windows 10 felt like I just travelled into the feature all of a sudden. From XP to Windows 10 is a big jump and it felt like one.
+After that, I jumped straight to Windows 10. I skipped Windows 7 not because I wanted to, but because the laptop I owned for years absolutely refused to run anything newer than XP. Windows 10 felt like I just travelled into the future all of a sudden. From XP to Windows 10 is a big jump and it felt like one.
 
-I did not have any issues with Windows 10 specifically, it just worked.. but around 2022, windows kept nagging me to install windows 11... i was like, this thing already works so stop nagging me.. but I eventually cave into curiosity. I had to try the new one you know (i pretty sune realised this was not a wise idea).
+I did not have any issues with Windows 10 specifically, it just worked.. but around 2022, windows kept nagging me to install windows 11... I was not into it at first, but I eventually cave into curiosity. I had to try the new one you know (i pretty soon realised this was not a wise idea).
 
 Windows 11 felt like Windows 10 with a skin. Like a new material design overlayed on top of Windows 10. Felt kinda bloated..but it was still fine. My benchmark for an OS was not that high..
 
-Then.. then everything changed when "Artificial Intelligence" showed up in the form of Copilot
+Then everything changed when "Artificial Intelligence" showed up in the form of Copilot
 
 Windows completely forgot what an operating system is supposed to be.
 
-An operating system is not something you _use_. It is something that sits quietly between your hardware and your applications. It exists so your apps can work properly and you don’t have to think about drivers, memory, or other deeply unpleasant topics.
+An operating system is not something you _use_. It is something that sits between your hardware and your applications. It exists so your apps can work properly and you don’t have to think about drivers, memory, or other deeply unpleasant topics.
 
 You use applications to get things done. The OS is just there so those applications don’t fall apart.
 
-So when Microsoft starts talking about _agentic AI_ at the operating system level, I feel confused in a very specific way. Why does my operating system need agency? Why does it need initiative? I don’t want my OS to think for me. If I wanted that, I would install an application. Or maybe hire someone.
+So when Microsoft starts talking about _agentic AI_ at the operating system level, I feel confused in a very specific way. Why does my operating system need agency? Why does it need initiative? I don’t want my OS to think for me. If I wanted that, I would install an application that specifically does that.
 
-I think almost everyone know that we'll all fall towards linux, but I always thought that that'll be because linux would imporve leaps and bounds in general ussability... and do t get me wrong it it improve a lot, but. the rate of degradation in windows is even faster. The combined effect means the year of the Linux desktop is finally here!
+I think almost everyone know that we'll all fall towards linux, but I always thought that that'll be because linux would improve leaps and bounds in general ussability... and don't get me wrong it did improve a lot, but the rate of degradation in windows is even faster. The combined effect means the year of the Linux desktop is finally here!
 
 
 ![OS Usability Chart](/images/2026/01/os_usability.webp)
@@ -49,6 +49,6 @@ This time, I did proper research and locked down on Kubuntu, which is the KDE ve
 
 Over the last few days, I’ve been tweaking it. Yes, there are inconsistencies and some things feel like they were designed by people who never spoke to each other. But Linux has one very important thing going on... almost everything has a solution.
 
-You just need patience and time.... and the ability to read through linux forum posts. Once you find the fix, you make it permanent and once it’s permanent, you write a shell script so you never have to think about it again. I stayed with Windows for so long because I truly believe operating systems should stay out of your way. They are infrastructure. Linux used to demand too much effort. Windows, on the other hand, used to just work. But now Windows doesn’t just get in the way. It actively inserts itself, nags, interrupts and insists it knows what you want better than you do.
+You just need patience and time.... and the ability to read through linux forum posts. Once you find the fix, you make it permanent and once it’s permanent, you write a shell script so you never have to think about it again. I stayed with Windows for so long because I truly believe operating systems should stay out of your way. They are infrastructure. Linux used to demand too much effort. Windows, on the other hand, used to just work. But now Windows doesn’t just get in the way... it actively inserts itself, nags, interrupts and insists it knows what you want better than you do.
 
 Microsoft seems determined to push users away by slowly and carefully making the experience worse. Windows used to be an operating system. Now it feels like platform that Microsoft uses to sell it's other products.
