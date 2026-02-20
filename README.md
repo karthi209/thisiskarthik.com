@@ -1,4 +1,4 @@
-# The Book of Odds and Ends
+# புரியல, ஆனா நல்லா இருக்கு | Puriyala, Aana Nalla Iruku
 
 **A personal blog with a little bit of character.**
 
@@ -24,9 +24,11 @@ The site uses a custom static site generator written in Go, and it's intentional
 ### Build Commands
 
 ```bash
-make setup      # Install dependencies (Go, imaging tools)
+make setup      # Install dependencies (Go, WebP, ImageMagick)
 make generate   # Compile the site to /public directory
 make serve      # Dev server with hot reload (port 5174)
+make optimize   # Optimize images to WebP
+make deploy     # Build and deploy to GitHub Pages
 make clean      # Remove generated files
 ```
 
@@ -42,15 +44,15 @@ go run serve.go     # Dev server
 - **Generator**: Custom Go static site generator
 - **Markdown**: Goldmark for parsing
 - **Templates**: Go's `html/template` package
-- **Font**: Bricolage Grotesk (Google Fonts)
-- **Styling**: Pure CSS, no frameworks
-- **Deployment**: Static files, works with GitHub Pages, Netlify, etc.
+- **Font**: Native OS System Fonts & Courier New (Zero external requests)
+- **Styling**: Pure vanilla CSS, no frameworks
+- **Deployment**: Simple static directory, GitHub Pages target
 
 ## Design
 
-- **Theme**: Dark mode only (#1e1e1e background, #e8e8e8 text)
-- **Accent**: Cyan (#00d9ff) for links and highlights
-- **Typography**: Bricolage Grotesk - modern geometric sans-serif
-- **Layout**: Clean, minimal, inspired by seated.ro aesthetic
-- **Responsive**: Mobile, tablet, and desktop optimized
+- **Theme**: Matte dark palette (background `#1e1e1e`, text `#d4d4d4`)
+- **Accent**: Structural styling. Thick borders and block layouts instead of colorful highlights.
+- **Typography**: Native System UI fonts for prose, Monospace for metadata to reinforce a terminal feel. 
+- **Layout**: Brutalist, high-contrast tree-style timelines, reminiscent of early classic Macintosh / DOS UIs.
+- **Responsive**: Mobile-first density tuning to ensure maximal scan-ability on small screens.
 
