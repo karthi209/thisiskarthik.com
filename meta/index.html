@@ -2,40 +2,59 @@
 <html lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com;">
+    <meta http-equiv="Content-Security-Policy"
+    content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self' 'unsafe-inline';">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="color-scheme" content="light dark">
-    <meta name="description" content="Technical details about how this site is built - a smolweb compliant static site generator">
-    <title>Meta - The Book of Odds and Ends</title>
-      <link rel="preconnect" href="https://fonts.googleapis.com">
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-      <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+    <meta name="description"
+    content="Technical details about how this site is built - a smolweb compliant static site generator">
+    <title>Meta - புரியல, ஆனா நல்லா இருக்கு</title>
       <link href="/css/style.css" rel="stylesheet" type="text/css">
       <link rel="icon" href="/favicon.png" type="image/png">
-      <link rel="alternate" type="application/rss+xml" href="/rss.xml" title="The Book of Odds and Ends">
+      <link rel="alternate" type="application/rss+xml" href="/rss.xml"
+      title="புரியல, ஆனா நல்லா இருக்கு | Puriyala, Aana Nalla Iruku">
     </head>
     <body>
-      <nav>
-        <a href="/">Home</a>
-        <a href="/about">About</a>
-      </nav>
-      <h1>Meta</h1>
-        <p>This site is just HTML and CSS compiled into static pages using a blog generator I wrote in Go because I got tired of platforms that change their terms of service every Tuesday. I post a lot on Twitter, and I realized late that you don't actually own anything you post there, so everything I write online, this website will have a copy of it all, and it's just HTML and CSS compiled into static pages using a custom Go static site generator... just my words on my domain under my control. A full build of this site takes 3 milliseconds which is longer than zero but shorter than most modern websites take to load, and almost everything lives in the static build which means few moving parts and fewer things to break.</p>
+      <header class="site-header">
+        <div class="site-title">
+          <a href="/">புரியல, ஆனா நல்லா இருக்கு<br>
+          <span
+          style="font-size: 0.55em; color: var(--text-muted); font-weight: 500; letter-spacing: 0.05em; display: inline-block; margin-top: 0.2em;">PURIYALA,
+          AANA NALLA IRUKU</span>
+        </a>
+      </div>
+    </header>
+    <h1>Meta</h1>
+      <p>This site is just HTML and CSS compiled into static pages using a blog generator I wrote in Go because I got tired
+        of platforms that change their terms of service every Tuesday. I post a lot on Twitter, and I realized late that you
+        don't actually own anything you post there, so everything I write online, this website will have a copy of it all,
+        and it's just HTML and CSS compiled into static pages using a custom Go static site generator... just my words on my
+        domain under my control. A full build of this site takes 3 milliseconds which is longer than zero but
+        shorter than most modern websites take to load, and almost everything lives in the static build which means few
+        moving parts and fewer things to break.</p>
+        <p>
+          <strong>Typography</strong>
+          </p>
+          <p>System UI sans-serif fonts (-apple-system, Segoe UI, Roboto) for maximum readability and a native OS feel.
+            Monospace (Courier New etc.) is used heavily for metadata, dates, and code to retain the brutalist terminal feel.
+          </p>
           <p>
-            <strong>Typography</strong>
+            <strong>Colors</strong>
             </p>
-            <p>Bricolage Grotesk for everything because why not.</p>
+            <p>A unified, neutral matte dark palette.<br>
+              Background: <code>#1e1e1e</code> (softer, matte gray/black)<br>
+              Text: <code>#d4d4d4</code> (soft off-white to prevent eye strain)<br>
+              Accents: Thick borders and layered structural blocks take the place of colorful highlights. It's a high-contrast
+              layout heavily inspired by early Macintosh and raw MS-DOS window structures.</p>
               <p>
-                <strong>Colors</strong>
+                <strong>Source Code</strong>
                 </p>
-                <p>Background is #1e1e1e which is a muted dark gray that's easy on the eyes for long reading sessions, and text is #e8e8e8 which is off-white for good contrast without being harsh, and the accent is #00d9ff which is a bright cyan for links and highlights that stands out without being too saturated. Still experimenting with the colors!</p>
-                  <p>
-                    <strong>Source Code</strong>
-                    </p>
-                    <p>It's all on <a href="https://github.com/karthi209/thisiskarthik.com.git" target="_blank" rel="noreferrer">GitHub</a> if you're into that sort of thing.</p>
-                      <footer>
-                        <a href="/meta">Meta</a> ·
-                        <a href="/rss.xml">RSS</a>
-                      </footer>
-                    </body>
-                  </html>
+                <p>It's all on <a href="https://github.com/karthi209/thisiskarthik.com.git" target="_blank"
+                  rel="noreferrer">GitHub</a> if you're into that sort of thing.</p>
+                  <footer>
+                    <a href="/about">About</a> ·
+                    <a href="/meta">Meta</a> ·
+                    <a href="/rss.xml">RSS</a>
+                  </footer>
+                </body>
+              </html>
