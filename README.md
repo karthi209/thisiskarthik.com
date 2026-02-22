@@ -1,4 +1,4 @@
-# புரியல, ஆனா நல்லா இருக்கு | Puriyala, Aana Nalla Iruku
+# Theriyala, But Moving
 
 **A personal blog with a little bit of character.**
 
