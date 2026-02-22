@@ -1,0 +1,389 @@
+﻿/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  /* Neutral Dark Palette */
+  --bg: #1e1e1e;
+  /* Softer, matte black/gray */
+  --text: #d4d4d4;
+  /* Softer off-white */
+  --text-muted: #888888;
+  --border-color: #d4d4d4;
+  --link-color: #d4d4d4;
+  --highlight-bg: #d4d4d4;
+  --highlight-text: #1e1e1e;
+}
+
+html {
+  font-size: 100%;
+  background-color: var(--bg);
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  /* Clean native OS feel resembling classic Mac UI */
+  font-size: 1.1rem;
+  font-weight: 400;
+  line-height: 1.6;
+  max-width: 800px;
+  margin: 3em auto;
+  padding: 2.5em 3.5em;
+  /* border removed */
+}
+
+/* TYPOGRAPHY */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 700;
+  color: var(--text);
+}
+
+h1 {
+  font-size: 2.5rem;
+  line-height: 1.2;
+  margin: 0 0 0.5em 0;
+  letter-spacing: -0.02em;
+}
+
+h2 {
+  font-size: 1.5rem;
+  margin: 2em 0 1em 0;
+  border-bottom: 2px solid var(--border-color);
+  padding-bottom: 0.2em;
+}
+
+h3 {
+  font-size: 1.2rem;
+  margin: 1.5em 0 0.5em 0;
+}
+
+p {
+  margin: 0 0 1.2em;
+}
+
+p strong {
+  font-weight: 700;
+}
+
+ul,
+ol {
+  margin: 1.2em 0;
+  padding-left: 2em;
+}
+
+li {
+  margin: 0.4em 0;
+}
+
+/* LINKS */
+a {
+  color: var(--link-color);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+a:hover {
+  background-color: var(--highlight-bg);
+  color: var(--highlight-text);
+  text-decoration: none;
+}
+
+/* CARDS / IMAGES / CODE */
+code {
+  background: #252525;
+  color: var(--text);
+  padding: 0.2em 0.4em;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.95em;
+  border: 1px solid var(--border-color);
+}
+
+pre {
+  background: #252525;
+  padding: 1.2em;
+  overflow-x: auto;
+  border: 2px solid var(--border-color);
+  margin: 1.5em 0;
+  font-size: 0.95rem;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  border: none;
+}
+
+blockquote {
+  margin: 1.5em 0;
+  padding: 1em 1.5em;
+  border-left: 4px solid var(--border-color);
+  background: #252525;
+  font-style: italic;
+  color: var(--text-muted);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 2em auto;
+}
+
+/* TABLES */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5em 0;
+  border: 2px solid var(--border-color);
+}
+
+th,
+td {
+  padding: 0.75em;
+  text-align: left;
+  border: 1px solid var(--border-color);
+}
+
+th {
+  background: #252525;
+  font-weight: 700;
+}
+
+/* POST LISTS (JOURNAL STYLE) */
+.post-list {
+  list-style: none;
+  padding: 0;
+  margin: 1em 0 3em 0;
+  border-left: 2px solid var(--border-color);
+  padding-left: 1.5em;
+}
+
+.post-list li {
+  margin: 1.5em 0;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.post-list li::before {
+  content: "";
+  position: absolute;
+  left: -1.5em;
+  /* Match padding-left of ul */
+  top: 0.6em;
+  /* Start roughly at the text baseline or top */
+  width: 1em;
+  height: 2px;
+  background-color: var(--border-color);
+}
+
+@media (min-width: 600px) {
+  .post-list li {
+    flex-direction: row;
+    align-items: baseline;
+  }
+}
+
+.post-list time {
+  color: var(--text-muted);
+  margin-right: 1.5em;
+  min-width: 120px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.post-list a {
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.15rem;
+}
+
+.post-list a:hover {
+  text-decoration: underline;
+  background-color: transparent;
+  color: var(--link-color);
+}
+
+/* HEADER & NAVIGATION */
+.site-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 0 2em 0;
+  padding-bottom: 1em;
+  border-bottom: 2px solid var(--border-color);
+  flex-wrap: wrap;
+  gap: 1em;
+}
+
+.site-title {
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.2;
+}
+
+h1.site-title {
+  padding: 0;
+  font-size: 1.5rem;
+}
+
+.site-title a {
+  text-decoration: none;
+  color: var(--text);
+}
+
+.site-title a:hover {
+  background-color: transparent;
+  text-decoration: underline;
+}
+
+nav {
+  display: flex;
+  gap: 1.5em;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+nav a {
+  text-decoration: none;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.95rem;
+}
+
+nav a:hover {
+  text-decoration: underline;
+  background-color: transparent;
+  color: var(--link-color);
+}
+
+/* FOOTER */
+footer {
+  margin-top: 4em;
+  padding-top: 1.5em;
+  border-top: 2px solid var(--border-color);
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+footer a {
+  margin-right: 1em;
+}
+
+/* SUBTITLES */
+.subtitle {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  margin: -1.25em 0 2.5em 0;
+  text-align: left;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+}
+
+.draft-label {
+  font-size: 0.8rem;
+  background: var(--text);
+  color: var(--bg);
+  padding: 0.1em 0.5em;
+  margin-left: 0.8em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.post-meta {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  margin: 0.5em 0 2em 0;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+/* HORIZONTAL RULE */
+hr {
+  border: none;
+  border-top: 2px solid var(--border-color);
+  margin: 2em 0;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  html {
+    background-color: var(--bg);
+  }
+
+  body {
+    margin: 0;
+    padding: 1.25em;
+    border: none;
+    box-shadow: none;
+    font-size: 0.95rem;
+  }
+
+  h1.site-title {
+    font-size: 1.2rem;
+  }
+
+  .site-header {
+    flex-wrap: wrap;
+    gap: 1em;
+  }
+
+  .site-title {
+    font-size: 0.95rem;
+    line-height: 1.3;
+  }
+
+  nav a {
+    font-size: 0.85rem;
+  }
+
+  /* Subtitle gap fix on mobile */
+  .subtitle {
+    margin: -0.5em 0 2em 0;
+  }
+
+  /* Enhance timeline styling on small screens */
+  .post-list {
+    border-left: 2px solid var(--border-color);
+    /* Keep the timeline */
+    padding-left: 1.25em;
+  }
+
+  .post-list li::before {
+    display: block;
+    /* Keep the connector */
+    left: -1.25em;
+    width: 0.9em;
+    top: 0.5em;
+    /* Anchor next to the time */
+  }
+
+  .post-list li {
+    flex-direction: column;
+    margin-bottom: 0.8em;
+  }
+
+  .post-list time {
+    margin-bottom: 0.1em;
+    margin-right: 0;
+    font-size: 0.75rem;
+  }
+
+  .post-list a {
+    font-size: 1.05rem;
+  }
+}
