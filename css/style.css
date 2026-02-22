@@ -26,15 +26,16 @@ html {
 body {
   background-color: var(--bg);
   color: var(--text);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  /* Clean native OS feel resembling classic Mac UI */
-  font-size: 1.1rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-size: 1.15rem;
   font-weight: 400;
-  line-height: 1.6;
-  max-width: 800px;
-  margin: 3em auto;
-  padding: 2.5em 3.5em;
-  /* border removed */
+  line-height: 1.75;
+  max-width: 720px;
+  margin: 2rem auto;
+  padding: 0 2em;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* TYPOGRAPHY */
@@ -51,15 +52,16 @@ h6 {
 h1 {
   font-size: 2.5rem;
   line-height: 1.2;
-  margin: 0 0 0.5em 0;
+  margin: 0 0 0.3em 0;
   letter-spacing: -0.02em;
 }
 
 h2 {
-  font-size: 1.5rem;
-  margin: 2em 0 1em 0;
+  font-size: 1.6rem;
+  margin: 2.5rem 0 1.25rem 0;
   border-bottom: 2px solid var(--border-color);
-  padding-bottom: 0.2em;
+  padding-bottom: 0.3rem;
+  letter-spacing: -0.02em;
 }
 
 h3 {
@@ -68,7 +70,12 @@ h3 {
 }
 
 p {
-  margin: 0 0 1.2em;
+  margin: 0 0 1.5rem;
+  letter-spacing: -0.011em;
+}
+
+article p {
+  hyphens: auto;
 }
 
 p strong {
@@ -101,12 +108,12 @@ a:hover {
 
 /* CARDS / IMAGES / CODE */
 code {
-  background: #252525;
+  background: #2a2a2a;
   color: var(--text);
   padding: 0.2em 0.4em;
-  font-family: 'Courier New', Courier, monospace;
-  font-size: 0.95em;
-  border: 1px solid var(--border-color);
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 0.9em;
+  border-radius: 4px;
 }
 
 pre {
@@ -126,12 +133,12 @@ pre code {
 }
 
 blockquote {
-  margin: 1.5em 0;
-  padding: 1em 1.5em;
-  border-left: 4px solid var(--border-color);
-  background: #252525;
+  margin: 2.5rem 0;
+  padding: 0.5rem 1.75rem;
+  border-left: 3px solid var(--border-color);
   font-style: italic;
   color: var(--text-muted);
+  line-height: 1.8;
 }
 
 img {
@@ -222,16 +229,16 @@ th {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 0 0 2em 0;
-  padding-bottom: 1em;
+  margin: 0 0 2rem 0;
+  padding-bottom: 0.8rem;
   border-bottom: 2px solid var(--border-color);
   flex-wrap: wrap;
-  gap: 1em;
+  gap: 1.5rem;
 }
 
 .site-title {
-  font-size: 1rem;
-  font-weight: 700;
+  font-size: 1.1rem;
+  font-weight: 400;
   margin: 0;
   line-height: 1.2;
 }
@@ -249,6 +256,67 @@ h1.site-title {
 .site-title a:hover {
   background-color: transparent;
   text-decoration: underline;
+}
+
+
+.nalla {
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+
+.nalla:hover {
+  animation: jitter 0.2s infinite;
+}
+
+.site-tagline {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-style: italic;
+  font-weight: 400;
+  margin-left: 0.3rem;
+  opacity: 0.8;
+}
+
+@keyframes jitter {
+  0% {
+    transform: translate(0, 0);
+  }
+
+  25% {
+    transform: translate(1px, -1px);
+  }
+
+  50% {
+    transform: translate(-1px, 1px);
+  }
+
+  75% {
+    transform: translate(1px, 1px);
+  }
+
+  100% {
+    transform: translate(-1px, -1px);
+  }
+}
+
+.site-author {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+  align-self: baseline;
+}
+
+
+.header-left {
+  display: flex;
+  align-items: baseline;
+  flex: 1;
+  gap: 0.8rem;
+  flex-wrap: nowrap;
 }
 
 nav {
@@ -286,13 +354,7 @@ footer a {
 
 /* SUBTITLES */
 .subtitle {
-  color: var(--text-muted);
-  font-size: 0.85rem;
-  margin: -1.25em 0 2.5em 0;
-  text-align: left;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  font-weight: 600;
+  display: none;
 }
 
 .draft-label {
@@ -308,7 +370,7 @@ footer a {
 .post-meta {
   color: var(--text-muted);
   font-size: 0.95rem;
-  margin: 0.5em 0 2em 0;
+  margin: 0.2rem 0 1.5rem 0;
   font-family: 'Courier New', Courier, monospace;
 }
 
@@ -317,6 +379,14 @@ hr {
   border: none;
   border-top: 2px solid var(--border-color);
   margin: 2em 0;
+}
+
+.hero-image {
+  width: 50%;
+  max-width: 100%;
+  height: auto;
+  margin: 0.5rem auto 1.5rem auto;
+  display: block;
 }
 
 /* RESPONSIVE */
@@ -335,16 +405,23 @@ hr {
 
   h1.site-title {
     font-size: 1.2rem;
+    white-space: nowrap;
   }
 
   .site-header {
-    flex-wrap: wrap;
-    gap: 1em;
+    flex-wrap: nowrap;
+    gap: 1rem;
+    align-items: baseline;
+  }
+
+  .site-author {
+    font-size: 0.65rem;
   }
 
   .site-title {
     font-size: 0.95rem;
     line-height: 1.3;
+    white-space: nowrap;
   }
 
   nav a {
@@ -385,5 +462,18 @@ hr {
 
   .post-list a {
     font-size: 1.05rem;
+  }
+
+  .hero-image {
+    width: 85%;
+    margin: 1em auto 2em auto;
+    max-width: 100%;
+  }
+
+  .site-tagline {
+    display: block;
+    margin-left: 0;
+    margin-top: 0.2rem;
+    font-size: 0.7rem;
   }
 }
