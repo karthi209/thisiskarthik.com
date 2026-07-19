@@ -1,4 +1,11 @@
-.PHONY: generate clean serve setup optimize-images optimize deploy help
+.PHONY: build check preview generate clean serve server setup optimize-images optimize deploy help
+
+build: generate
+
+check: generate
+	@bash scripts/check-site.sh
+
+preview: serve
 
 generate:
 	@BASE_PATH="$${BASE_PATH:-/}" go run generate.go
@@ -32,6 +39,9 @@ deploy:
 
 help:
 	@echo "▓▓ AVAILABLE COMMANDS:"
+	@echo "  make build       - Generate static site → public/"
+	@echo "  make check       - Build + validate generated site"
+	@echo "  make preview     - Dev server + hot reload (port 5174)"
 	@echo "  make setup       - Install dependencies (Go, WebP, ImageMagick)"
 	@echo "  make generate    - Generate static site → public/"
 	@echo "  make serve       - Dev server + hot reload (port 5174)"
@@ -39,4 +49,3 @@ help:
 	@echo "  make optimize    - Optimize images to WebP"
 	@echo "  make deploy      - Build + deploy to GitHub Pages"
 	@echo "  make help        - Show this message"
-

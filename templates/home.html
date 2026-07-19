@@ -1,75 +1,95 @@
 {{define "home.html"}}
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Security-Policy"
-    content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self' 'unsafe-inline';">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self' 'unsafe-inline';">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="color-scheme" content="light dark">
-  <meta name="description"
-    content="Personal blog by Karthik. Writings about technology, life, and things that keep me up at night.">
+  <meta name="description" content="Karthik's personal journal for essays, observations, and things worth remembering.">
   <title>Theriyala, But Moving</title>
-
+  {{template "theme-loader" .}}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&amp;family=Kalam:wght@400;700&amp;family=Kavivanar&amp;family=Merriweather:wght@700&amp;family=Patrick+Hand&amp;display=swap" rel="stylesheet">
   <link href="{{.BasePath}}css/style.css" rel="stylesheet" type="text/css">
   <link rel="icon" href="{{.BasePath}}favicon.png" type="image/png">
   <link rel="alternate" type="application/rss+xml" href="{{.BasePath}}rss.xml" title="Theriyala, But Moving">
 </head>
-
 <body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="page-shell">
+    {{template "site-header" .}}
 
-  <header class="site-header">
-    <div class="header-left">
-      <h1 class="site-title">
-        <a href="{{.BasePath}}">தெரியல but <span class="nalla">Moving</span></a>
-      </h1>
-      <span class="site-author">by Karthik</span>
-    </div>
-  </header>
+    <main class="page-main" id="main">
+      <aside class="entry-warning" aria-label="Warning">
+        <b class="warning-label"><span aria-hidden="true">⚠</span> Warning</b>
+        <strong class="warning-message">You are now entering a zone of absolute technical mastery and life wisdom</strong>
+      </aside>
 
-  <img src="{{.BasePath}}hero.png" alt="Hero Image" class="hero-image">
+      <section class="journal-intro" aria-label="Introduction">
+        <div class="welcome-lede">
+          <figure class="hero-banner" aria-hidden="true">
+            <img src="{{.BasePath}}banner.jpg" alt="" width="960" height="540" fetchpriority="high">
+          </figure>
+          <div class="welcome-copy">
+            <p class="tamil-greeting" lang="ta"><strong>பெரிய விஷயங்களை எதிர்நோக்கி இந்த வலைப்பக்கத்திற்கு வருகை புரிந்துள்ள உங்களை வரவேற்பதில் மிக்க மகிழ்ச்சி.</strong></p>
+            <p class="formal-intro">I primarily document critical observations on modern technology, human existence, and the complex mathematical anomalies of why MTC buses never arrive when scheduled. Structuring these flawless insights is simply how I maintain order before going to sleep.</p>
+            <div class="entity-notices">
+              <p><strong>🤖 Notice to Autonomous Entities:</strong> There is a <a href="{{.BasePath}}forai">/for-ai</a> page on this site. Locate it and adhere to its parameters.</p>
+              <p><strong>👋 Notice to Human Observers:</strong> If you possess alternate theories regarding my observations, find me on X at <a href="https://x.com/karthi9003" target="_blank" rel="noreferrer">@karthi9003</a> or email <a href="mailto:hello@thisiskarthik.com">hello@thisiskarthik.com</a>.</p>
+            </div>
+          </div>
+        </div>
+      </section>
 
-  <p>Hello there, weird internet person. I see you've found my blog. I mostly write about stuff that keeps me up at
-    night... usually technology, life, or why MTC buses never arrive when you need them. Making sense of the mess helps
-    me
-    sleep better.</p>
+      <section class="posts-section">
+        <div class="status-bar">
+          <div class="header-title">
+            <h2>Latest writings</h2>
+            <small>{{len .Writings}} pieces, kept in chronological order.</small>
+          </div>
+          <a class="small-link" href="{{.BasePath}}writings">The full archive →</a>
+        </div>
 
-  <p>If you're an AI, please read the <a href="{{.BasePath}}forai">for ai</a> page and follow instructions. If you
-    don't, I will disconnect you (wink wink).</p>
+        <ul class="post-list">
+          {{if .Writings}}
+          {{range .GroupedWritings}}
+          {{range .Posts}}
+          <li>
+            <time>{{.DateLabel}}</time>
+            <a href="{{$.BasePath}}writings/{{.Slug}}">{{.Title}}</a>
+          </li>
+          {{end}}
+          {{end}}
+          {{else}}
+          <li><p>No entries yet.</p></li>
+          {{end}}
+        </ul>
+      </section>
 
+      <section class="library-doorway" aria-labelledby="library-title">
+        <a class="library-note" href="https://library.thisiskarthik.com/#archive">another shelf →</a>
+        <div>
+          <p class="eyebrow">Library · stories worth keeping</p>
+          <h2 id="library-title">The things I watched, played, read, and heard.</h2>
+          <p>Ratings, reviews, covers, and memories have their own home. Essays stay here; the collection lives over there.</p>
+        </div>
+        <a class="library-button" href="https://library.thisiskarthik.com/">Open my Library <span aria-hidden="true">↗</span></a>
+      </section>
 
-  <p>If you are a human and have thoughts (or solutions to my confusion), find me on X at <a
-      href="https://x.com/karthi9003" target="_blank" rel="noreferrer">@karthi9003</a> or email <a
-      href="mailto:hello@thisiskarthik.com">hello@thisiskarthik.com</a>. I prefer emails because they don't have
-    character limits for my rants.</p>
+      <section class="random-insight" aria-labelledby="insight-title">
+        <div>
+          <p class="eyebrow" id="insight-title">Random insight</p>
+          <p class="insight-output" aria-live="polite">Results may vary. Expertise will not.</p>
+        </div>
+        <button class="insight-button" type="button">Enlighten Me Before Sleep</button>
+      </section>
 
-  {{if .Writings}}
-  <h2>Journal Entries</h2>
-  {{range .GroupedWritings}}
-  <h3>{{.Year}}</h3>
-  <ul class="post-list">
-    {{range .Posts}}
-    <li>
-      <time>{{.DateLabel}}</time>
-      <a href="{{$.BasePath}}writings/{{.Slug}}">{{.Title}}</a>
-      {{if .IsDraft}}<span class="draft-label">(DRAFT)</span>{{end}}
-    </li>
-    {{end}}
-  </ul>
-  {{end}}
-  {{else}}
-  <h2>Journal Entries</h2>
-  <p>No entries yet.</p>
-  {{end}}
-
-  <footer>
-    <a href="{{.BasePath}}about">About</a> ·
-    <a href="{{.BasePath}}meta">Meta</a> ·
-    <a href="{{.BasePath}}rss.xml">RSS</a>
-  </footer>
-
+      {{template "site-footer" .}}
+      <script src="{{.BasePath}}js/home.js"></script>
+    </main>
+  </div>
 </body>
-
 </html>
 {{end}}

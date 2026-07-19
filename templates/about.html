@@ -10,46 +10,42 @@
   <meta name="color-scheme" content="light dark">
   <meta name="description" content="About Karthik - Systems engineer, writer, and creator of this blog">
   <title>About - Theriyala, But Moving</title>
-
+  {{template "theme-loader" .}}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&amp;family=Kalam:wght@400;700&amp;family=Kavivanar&amp;family=Patrick+Hand&amp;display=swap" rel="stylesheet">
   <link href="{{.BasePath}}css/style.css" rel="stylesheet" type="text/css">
   <link rel="icon" href="{{.BasePath}}favicon.png" type="image/png">
   <link rel="alternate" type="application/rss+xml" href="{{.BasePath}}rss.xml" title="Theriyala, But Moving">
 </head>
 
 <body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="page-shell">
+    {{template "site-header" .}}
 
-  <header class="site-header">
-    <div class="header-left">
-      <div class="site-title">
-        <a href="{{.BasePath}}">தெரியல but <span class="nalla">Moving</span></a>
-      </div>
-    </div>
-  </header>
+    <main class="page-main prose-page" id="main">
+      <h1>About</h1>
 
-  <h1>About</h1>
+      <p>Hello there! I see you've found the About page. So, I suppose I should tell you a little about me and this site.
+      </p>
 
-  <p>Hello there! I see you've found the About page. So, I suppose I should tell you a little about me and this site.
-  </p>
+      <p>I'm Karthik. I live in Chennai, India, and I work as a systems engineer by day. At night, I'm a vampire. I....oh.
+        No. Sorry. Forget I ever said that.</p>
 
-  <p>I'm Karthik. I live in Chennai, India, and I work as a systems engineer by day. At night, I'm a vampire. I....oh.
-    No. Sorry. Forget I ever said that.</p>
+      <p>Apart from my day job, I love writing, cartography, programming, talking about public transit, and many other
+        things. I'd probably need a whole day to explain them all.</p>
 
-  <p>Apart from my day job, I love writing, cartography, programming, talking about public transit, and many other
-    things. I'd probably need a whole day to explain them all.</p>
+      <p>That's one of the reasons I created this site. It gives me a place to organise my thoughts while also being able to
+        share them.</p>
 
-  <p>That's one of the reasons I created this site. It gives me a place to organise my thoughts while also being able to
-    share them.</p>
+      <p>You can reach me via <a href="mailto:hello@thisiskarthik.com">email</a>, <a href="https://x.com/karthi9003"
+          target="_blank" rel="noreferrer">Twitter</a>, or <a href="https://github.com/karthi209" target="_blank"
+          rel="noreferrer">GitHub</a>.</p>
 
-  <p>You can reach me via <a href="mailto:hello@thisiskarthik.com">email</a>, <a href="https://x.com/karthi9003"
-      target="_blank" rel="noreferrer">Twitter</a>, or <a href="https://github.com/karthi209" target="_blank"
-      rel="noreferrer">GitHub</a>.</p>
-
-  <footer>
-    <a href="{{.BasePath}}about">About</a> ·
-    <a href="{{.BasePath}}meta">Meta</a> ·
-    <a href="{{.BasePath}}rss.xml">RSS</a>
-  </footer>
-
+      {{template "site-footer" .}}
+    </main>
+  </div>
 </body>
 
 </html>

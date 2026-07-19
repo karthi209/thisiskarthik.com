@@ -10,43 +10,39 @@
   <meta name="color-scheme" content="light dark">
   <meta name="description" content="{{.Post.Title}} - Writings by Karthik">
   <title>{{.Post.Title}} - Theriyala, But Moving</title>
-
+  {{template "theme-loader" .}}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&amp;family=Kalam:wght@400;700&amp;family=Kavivanar&amp;family=Patrick+Hand&amp;display=swap" rel="stylesheet">
   <link href="{{.BasePath}}css/style.css" rel="stylesheet" type="text/css">
   <link rel="icon" href="{{.BasePath}}favicon.png" type="image/png">
   <link rel="alternate" type="application/rss+xml" href="{{.BasePath}}rss.xml" title="Theriyala, But Moving">
 </head>
 
 <body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="page-shell">
+    {{template "site-header" .}}
 
-  <header class="site-header">
-    <div class="header-left">
-      <div class="site-title">
-        <a href="{{.BasePath}}">தெரியல but <span class="nalla">Moving</span></a>
-      </div>
-    </div>
-  </header>
+    <main class="page-main" id="main">
+      <article class="post-article">
+        <h1>{{.Post.Title}}</h1>
 
-  <article>
-    <h1>{{.Post.Title}}</h1>
+        <p class="post-meta">
+          {{.Post.DateLabelFormal}}
+          {{if .Post.Category}} · {{.Post.Category}}{{end}}
+        </p>
 
-    <p class="post-meta">
-      {{.Post.DateLabelFormal}}
-      {{if .Post.Category}} · {{.Post.Category}}{{end}}
-    </p>
+        {{if .Post.Content}}
+        {{.Post.Content}}
+        {{else}}
+        <p>Content not available.</p>
+        {{end}}
+      </article>
 
-    {{if .Post.Content}}
-    {{.Post.Content}}
-    {{else}}
-    <p>Content not available.</p>
-    {{end}}
-  </article>
-
-  <footer>
-    <a href="{{.BasePath}}about">About</a> ·
-    <a href="{{.BasePath}}meta">Meta</a> ·
-    <a href="{{.BasePath}}rss.xml">RSS</a>
-  </footer>
-
+      {{template "site-footer" .}}
+    </main>
+  </div>
 </body>
 
 </html>

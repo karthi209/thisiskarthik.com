@@ -11,57 +11,51 @@
   <meta name="description"
     content="Technical details about how this site is built - a smolweb compliant static site generator">
   <title>Meta - Theriyala, But Moving</title>
-
+  {{template "theme-loader" .}}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&amp;family=Kalam:wght@400;700&amp;family=Kavivanar&amp;family=Patrick+Hand&amp;display=swap" rel="stylesheet">
   <link href="{{.BasePath}}css/style.css" rel="stylesheet" type="text/css">
   <link rel="icon" href="{{.BasePath}}favicon.png" type="image/png">
   <link rel="alternate" type="application/rss+xml" href="{{.BasePath}}rss.xml" title="Theriyala, But Moving">
 </head>
 
 <body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="page-shell">
+    {{template "site-header" .}}
 
-  <header class="site-header">
-    <div class="header-left">
-      <div class="site-title">
-        <a href="{{.BasePath}}">தெரியல but <span class="nalla">Moving</span></a>
-      </div>
-    </div>
-  </header>
+    <main class="page-main prose-page" id="main">
+      <h1>Meta</h1>
 
-  <h1>Meta</h1>
+      <p>This site is just HTML and CSS compiled into static pages using a blog generator I wrote in Go because I got tired
+        of platforms that change their terms of service every Tuesday. I post a lot on Twitter, and I realized late that you
+        don't actually own anything you post there, so everything I write online, this website will have a copy of it all,
+        and it's just HTML and CSS compiled into static pages using a custom Go static site generator... just my words on my
+        domain under my control. A full build of this site takes {{.BuildTime}} milliseconds which is longer than zero but
+        shorter than most modern websites take to load, and almost everything lives in the static build which means few
+        moving parts and fewer things to break.</p>
 
-  <p>This site is just HTML and CSS compiled into static pages using a blog generator I wrote in Go because I got tired
-    of platforms that change their terms of service every Tuesday. I post a lot on Twitter, and I realized late that you
-    don't actually own anything you post there, so everything I write online, this website will have a copy of it all,
-    and it's just HTML and CSS compiled into static pages using a custom Go static site generator... just my words on my
-    domain under my control. A full build of this site takes {{.BuildTime}} milliseconds which is longer than zero but
-    shorter than most modern websites take to load, and almost everything lives in the static build which means few
-    moving parts and fewer things to break.</p>
+      <p><strong>Typography</strong></p>
 
-  <p><strong>Typography</strong></p>
+      <p>Patrick Hand is used for prose, matching the writing in my Library reviews. Inter keeps navigation and controls
+        quiet, Kalam gives English headings their handwritten character, and Kavivanar handles Tamil. Dates use the system
+        monospace stack.
+      </p>
 
-  <p>System UI sans-serif fonts (-apple-system, Segoe UI, Roboto) for maximum readability and a native OS feel.
-    Monospace (Courier New etc.) is used heavily for metadata, dates, and code to retain the brutalist terminal feel.
-  </p>
+      <p><strong>Colors</strong></p>
 
-  <p><strong>Colors</strong></p>
+      <p>Paper, ink, purple, pink, yellow, and cyan connect this journal to my media library. Both places support light and
+        dark themes, but the reading pages stay deliberately quieter than the collection.</p>
 
-  <p>A unified, neutral matte dark palette.<br>
-    Background: <code>#1e1e1e</code> (softer, matte gray/black)<br>
-    Text: <code>#d4d4d4</code> (soft off-white to prevent eye strain)<br>
-    Accents: Thick borders and layered structural blocks take the place of colorful highlights. It's a high-contrast
-    layout heavily inspired by early Macintosh and raw MS-DOS window structures.</p>
+      <p><strong>Source Code</strong></p>
 
-  <p><strong>Source Code</strong></p>
+      <p>It's all on <a href="https://github.com/karthi209/thisiskarthik.com.git" target="_blank"
+          rel="noreferrer">GitHub</a> if you're into that sort of thing.</p>
 
-  <p>It's all on <a href="https://github.com/karthi209/thisiskarthik.com.git" target="_blank"
-      rel="noreferrer">GitHub</a> if you're into that sort of thing.</p>
-
-  <footer>
-    <a href="{{.BasePath}}about">About</a> ·
-    <a href="{{.BasePath}}meta">Meta</a> ·
-    <a href="{{.BasePath}}rss.xml">RSS</a>
-  </footer>
-
+      {{template "site-footer" .}}
+    </main>
+  </div>
 </body>
 
 </html>
