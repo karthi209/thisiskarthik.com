@@ -1,4 +1,4 @@
-module the-book-of-odds-and-ends
+module for-later-when-i-forget
 
 go 1.24.0
 

@@ -4,9 +4,11 @@ function syncThemeToggle() {
   if (!themeToggle) return;
   const isDark = document.documentElement.dataset.theme === 'dark';
   themeToggle.setAttribute('aria-pressed', String(isDark));
-  themeToggle.setAttribute('aria-label', `Switch to ${isDark ? 'light' : 'dark'} theme`);
+  themeToggle.setAttribute('aria-label', `switch to ${isDark ? 'light' : 'dark'} theme`);
   const label = themeToggle.querySelector('.theme-label');
-  if (label) label.textContent = isDark ? 'Light' : 'Dark';
+  if (label) label.textContent = isDark ? 'light' : 'dark';
+  const mark = themeToggle.querySelector('.theme-mark');
+  if (mark) mark.textContent = isDark ? '❧' : '☙';
 }
 
 function persistTheme(theme) {

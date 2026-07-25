@@ -20,6 +20,9 @@ title: Evening light
 time: 18:30
 mood: content
 tags: chennai, life
+image: /images/2026/07/ticket.webp
+image_alt: a small paper ticket kept from the day
+image_caption: the ticket i almost threw away.
 draft: false
 ```
 
@@ -27,3 +30,7 @@ The title is optional; when present, it appears in bold above the note. There is
 slug, category, or separate page to maintain. Run `make note` to create and open a
 correctly named entry for today. Longer pieces belong in `content/posts/` and only
 appear in the Essays section.
+
+Use `image` only when the note needs one small artifact: a ticket, a photo, a
+receipt, a map crop, something that helps the memory breathe. Most days can stay
+plain.

@@ -1,4 +1,4 @@
-{{define "writings.html"}}
+{{define "essays.html"}}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,13 +8,13 @@
     content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self' 'unsafe-inline';">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="color-scheme" content="light dark">
-  <meta name="description" content="Archive of all blog posts and writings by Karthik">
+  <meta name="description" content="essay archive by karthik">
   <title>essays — for later, when i forget</title>
   {{template "theme-loader" .}}
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&amp;family=Kalam:wght@400;700&amp;display=swap" rel="stylesheet">
-  <link href="{{.BasePath}}css/permanent.css?v=51" rel="stylesheet" type="text/css">
+  <link href="{{.BasePath}}css/permanent.css?v=57" rel="stylesheet" type="text/css">
   <link rel="icon" href="{{.BasePath}}favicon.png" type="image/png">
   <link rel="alternate" type="application/rss+xml" href="{{.BasePath}}rss.xml" title="for later, when i forget">
 </head>
@@ -28,9 +28,9 @@
       <p class="eyebrow">the longer ones</p>
       <h1>essays</h1>
 
-      {{if .Writings}}
+      {{if .Essays}}
       <div class="timeline essay-timeline" aria-label="Essay timeline">
-        {{range .GroupedWritings}}
+        {{range .GroupedEssays}}
         <section class="timeline-year" aria-labelledby="essay-year-{{.Year}}">
           <h2 id="essay-year-{{.Year}}"><span>{{.Year}}</span></h2>
           <ol class="timeline-list">
@@ -43,8 +43,8 @@
                   <span class="timeline-weekday">{{.WeekdayShort}}</span>
                 </time>
               </div>
-              <article class="timeline-note essay-index-note">
-                <h3 class="timeline-entry-title"><a href="{{$.BasePath}}writings/{{.Slug}}">{{.Title}}</a></h3>
+              <article class="timeline-note essay-index-note" data-archive-number="{{.ArchiveNo}}">
+                <h3 class="timeline-entry-title"><a href="{{$.BasePath}}essays/{{.Slug}}">{{.Title}}</a></h3>
                 <p class="note-details"><span>long read</span><span>{{.ReadingTime}} min</span></p>
               </article>
             </li>

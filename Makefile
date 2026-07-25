@@ -2,7 +2,7 @@
 
 build: generate
 
-check: test generate
+check: test clean generate
 	@bash scripts/check-site.sh
 
 test:

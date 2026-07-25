@@ -51,7 +51,7 @@ func getBasePath() string {
 	return path
 }
 
-// Post represents a writing
+// Post represents an essay stored in content/posts.
 type Post struct {
 	ID        string `json:"id"`
 	Title     string `json:"title"`
@@ -86,6 +86,9 @@ type JournalEntry struct {
 	TimeLabel    string
 	Mood         string
 	Tags         []string
+	Image        string
+	ImageAlt     string
+	ImageCaption string
 	IsDraft      bool
 }
 
@@ -104,6 +107,10 @@ type TimelineItem struct {
 	Content      template.HTML
 	Mood         string
 	Tags         []string
+	Image        string
+	ImageAlt     string
+	ImageCaption string
+	ArchiveNo    string
 }
 
 type TimelineYear struct {
@@ -113,22 +120,22 @@ type TimelineYear struct {
 
 // Template data structures
 type HomePageData struct {
-	PageType        string
-	Title           string
-	BasePath        string
-	Writings        []PostTemplateData
-	GroupedWritings []YearGroup
-	Timeline        []TimelineYear
-	DayCount        int
-	FirstYear       int
+	PageType      string
+	Title         string
+	BasePath      string
+	Essays        []PostTemplateData
+	GroupedEssays []YearGroup
+	Timeline      []TimelineYear
+	DayCount      int
+	FirstYear     int
 }
 
-type WritingsPageData struct {
-	PageType        string
-	Title           string
-	BasePath        string
-	Writings        []PostTemplateData
-	GroupedWritings []YearGroup
+type EssaysPageData struct {
+	PageType      string
+	Title         string
+	BasePath      string
+	Essays        []PostTemplateData
+	GroupedEssays []YearGroup
 }
 
 type YearGroup struct {
@@ -152,6 +159,7 @@ type PostTemplateData struct {
 	ReadingTime  int
 	IsDraft      bool
 	CreatedAt    time.Time
+	ArchiveNo    string
 }
 
 type PostPageData struct {
@@ -243,7 +251,7 @@ func main() {
 		fmt.Printf("▓▓ LOADING %d POST%s...\n", len(postFiles), strings.ToUpper(plural(len(postFiles))))
 	}
 
-	// Process all posts
+	// Process all essays
 	var posts []Post
 	for _, filePath := range postFiles {
 		post, err := processPostFile(filePath)
@@ -266,7 +274,7 @@ func main() {
 		fmt.Printf("▓▓ PROCESSED %d POST%s\n", len(posts), strings.ToUpper(plural(len(posts))))
 	}
 
-	// Convert posts to template data
+	// Convert essays to template data
 	postTemplateData := make([]PostTemplateData, 0, len(posts))
 	for _, post := range posts {
 		if post.IsDraft {
@@ -292,9 +300,10 @@ func main() {
 			CreatedAt:    createdAt,
 		})
 	}
+	assignPostArchiveNumbers(postTemplateData)
 
-	// Group posts by year
-	groupedWritings := groupPostsByYear(postTemplateData)
+	// Group essays by year
+	groupedEssays := groupPostsByYear(postTemplateData)
 
 	journalEntries, err := loadJournalEntries(journalDir)
 	if err != nil && !os.IsNotExist(err) {
@@ -304,12 +313,12 @@ func main() {
 
 	// Generate pages
 	fmt.Println("▓▓ GENERATING PAGES...")
-	if err := generateHomePage(templates, postTemplateData, groupedWritings, timeline, dayCount, firstYear); err != nil {
+	if err := generateHomePage(templates, postTemplateData, groupedEssays, timeline, dayCount, firstYear); err != nil {
 		fmt.Printf("▓▓ ERROR: home page failed: %v\n", err)
 	}
 
-	if err := generateWritingsPage(templates, postTemplateData, groupedWritings); err != nil {
-		fmt.Printf("▓▓ ERROR: writings page failed: %v\n", err)
+	if err := generateEssaysPage(templates, postTemplateData, groupedEssays); err != nil {
+		fmt.Printf("▓▓ ERROR: essays page failed: %v\n", err)
 	}
 
 	for _, post := range postTemplateData {
@@ -322,8 +331,10 @@ func main() {
 		fmt.Printf("▓▓ ERROR: about page failed: %v\n", err)
 	}
 
-	if err := generateForAIPage(templates); err != nil {
-		fmt.Printf("▓▓ ERROR: forai page failed: %v\n", err)
+	if templates.Lookup("forai.html") != nil {
+		if err := generateForAIPage(templates); err != nil {
+			fmt.Printf("▓▓ ERROR: forai page failed: %v\n", err)
+		}
 	}
 
 	buildDuration := time.Since(buildStart)
@@ -388,34 +399,34 @@ func loadTemplates() (*template.Template, error) {
 
 func generateHomePage(templates *template.Template, posts []PostTemplateData, grouped []YearGroup, timeline []TimelineYear, dayCount, firstYear int) error {
 	data := HomePageData{
-		PageType:        "home",
-		Title:           "Home",
-		BasePath:        basePath,
-		Writings:        posts,
-		GroupedWritings: grouped,
-		Timeline:        timeline,
-		DayCount:        dayCount,
-		FirstYear:       firstYear,
+		PageType:      "home",
+		Title:         "Home",
+		BasePath:      basePath,
+		Essays:        posts,
+		GroupedEssays: grouped,
+		Timeline:      timeline,
+		DayCount:      dayCount,
+		FirstYear:     firstYear,
 	}
 
 	return writeTemplate(templates, "home.html", filepath.Join(outputDir, "index.html"), data)
 }
 
-func generateWritingsPage(templates *template.Template, posts []PostTemplateData, grouped []YearGroup) error {
-	data := WritingsPageData{
-		PageType:        "writings",
-		Title:           "Writings",
-		BasePath:        basePath,
-		Writings:        posts,
-		GroupedWritings: grouped,
+func generateEssaysPage(templates *template.Template, posts []PostTemplateData, grouped []YearGroup) error {
+	data := EssaysPageData{
+		PageType:      "essays",
+		Title:         "essays",
+		BasePath:      basePath,
+		Essays:        posts,
+		GroupedEssays: grouped,
 	}
 
-	return writeTemplate(templates, "writings.html", filepath.Join(outputDir, "writings", "index.html"), data)
+	return writeTemplate(templates, "essays.html", filepath.Join(outputDir, "essays", "index.html"), data)
 }
 
 func generatePostPage(templates *template.Template, post PostTemplateData) error {
-	// Create writings/{slug}/index.html structure
-	postDir := filepath.Join(outputDir, "writings", post.Slug)
+	// Create essays/{slug}/index.html structure
+	postDir := filepath.Join(outputDir, "essays", post.Slug)
 	if err := os.MkdirAll(postDir, 0755); err != nil {
 		return err
 	}
@@ -620,6 +631,12 @@ func groupPostsByYear(posts []PostTemplateData) []YearGroup {
 	return result
 }
 
+func assignPostArchiveNumbers(posts []PostTemplateData) {
+	for i := range posts {
+		posts[i].ArchiveNo = formatArchiveNumber(len(posts) - i)
+	}
+}
+
 func loadJournalEntries(dir string) ([]JournalEntry, error) {
 	files, err := findMarkdownFiles(dir)
 	if err != nil {
@@ -682,6 +699,8 @@ func processJournalFile(path string) (JournalEntry, error) {
 		timeLabel = entryDate.Format("3:04 pm")
 	}
 
+	image := rewriteAssetPath(meta["image"])
+
 	return JournalEntry{
 		Title:        meta["title"],
 		Content:      template.HTML(htmlContent),
@@ -695,6 +714,9 @@ func processJournalFile(path string) (JournalEntry, error) {
 		TimeLabel:    timeLabel,
 		Mood:         meta["mood"],
 		Tags:         tags,
+		Image:        image,
+		ImageAlt:     meta["image_alt"],
+		ImageCaption: meta["image_caption"],
 		IsDraft:      strings.EqualFold(meta["draft"], "true"),
 	}, nil
 }
@@ -729,6 +751,14 @@ func parseJournalDate(dateValue, timeValue string) (time.Time, error) {
 		}
 	}
 	return time.Time{}, fmt.Errorf("invalid date %q", dateValue)
+}
+
+func rewriteAssetPath(path string) string {
+	path = strings.TrimSpace(path)
+	if path == "" || basePath == "/" || !strings.HasPrefix(path, "/") {
+		return path
+	}
+	return basePath + strings.TrimPrefix(path, "/")
 }
 
 func renderMarkdown(content []byte) (string, error) {
@@ -783,6 +813,9 @@ func buildTimeline(entries []JournalEntry) ([]TimelineYear, int, int, int) {
 			Content:      entry.Content,
 			Mood:         entry.Mood,
 			Tags:         entry.Tags,
+			Image:        entry.Image,
+			ImageAlt:     entry.ImageAlt,
+			ImageCaption: entry.ImageCaption,
 		})
 		days[entry.DateISO] = true
 	}
@@ -790,6 +823,10 @@ func buildTimeline(entries []JournalEntry) ([]TimelineYear, int, int, int) {
 	sort.SliceStable(items, func(i, j int) bool {
 		return items[i].Date.After(items[j].Date)
 	})
+
+	for i := range items {
+		items[i].ArchiveNo = formatArchiveNumber(len(items) - i)
+	}
 
 	var years []TimelineYear
 	for _, item := range items {
@@ -804,6 +841,10 @@ func buildTimeline(entries []JournalEntry) ([]TimelineYear, int, int, int) {
 		firstYear = items[len(items)-1].Year
 	}
 	return years, len(items), len(days), firstYear
+}
+
+func formatArchiveNumber(number int) string {
+	return fmt.Sprintf("%03d", number)
 }
 
 func formatDate(dateStr string) string {
@@ -1192,7 +1233,7 @@ func copyImages() error {
 
 func generateRSSFeed(posts []PostTemplateData) error {
 	if len(posts) == 0 {
-		return nil // No posts, skip RSS generation
+		return nil // No essays, skip RSS generation
 	}
 
 	rssPath := filepath.Join(outputDir, "rss.xml")
@@ -1233,7 +1274,7 @@ func generateRSSFeed(posts []PostTemplateData) error {
 <channel>
 <title>for later, when i forget</title>
 <link>%s</link>
-<description>writings and observations by karthik</description>
+<description>essays and observations by karthik</description>
 <language>en-us</language>
 <lastBuildDate>%s</lastBuildDate>
 <atom:link href="%srss.xml" rel="self" type="application/rss+xml"/>
@@ -1247,7 +1288,7 @@ func generateRSSFeed(posts []PostTemplateData) error {
 
 	for i := 0; i < maxItems; i++ {
 		post := posts[i]
-		postURL := fmt.Sprintf("%s%swritings/%s", siteURL, basePath, post.Slug)
+		postURL := fmt.Sprintf("%s%sessays/%s", siteURL, basePath, post.Slug)
 
 		// Use CreatedAt time directly
 		pubDate := post.CreatedAt.UTC().Format(time.RFC1123Z)

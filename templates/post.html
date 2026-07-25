@@ -8,13 +8,13 @@
     content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self' 'unsafe-inline';">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="color-scheme" content="light dark">
-  <meta name="description" content="{{.Post.Title}} - Writings by Karthik">
+  <meta name="description" content="{{.Post.Title}} - essay by karthik">
   <title>{{.Post.Title}} — for later, when i forget</title>
   {{template "theme-loader" .}}
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&amp;family=Kalam:wght@400;700&amp;display=swap" rel="stylesheet">
-  <link href="{{.BasePath}}css/permanent.css?v=51" rel="stylesheet" type="text/css">
+  <link href="{{.BasePath}}css/permanent.css?v=57" rel="stylesheet" type="text/css">
   <link rel="icon" href="{{.BasePath}}favicon.png" type="image/png">
   <link rel="alternate" type="application/rss+xml" href="{{.BasePath}}rss.xml" title="for later, when i forget">
 </head>
@@ -26,7 +26,7 @@
 
     <main class="page-main" id="main">
       <article class="post-article">
-        <a class="back-link" href="{{.BasePath}}writings">← All essays</a>
+        <a class="back-link" href="{{.BasePath}}essays">← all essays</a>
         <h1>{{.Post.Title}}</h1>
 
         <p class="post-meta">

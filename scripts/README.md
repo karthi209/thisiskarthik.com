@@ -85,7 +85,7 @@ make optimize
 
 ### Image Types & Sizes
 
-- **content** (default): Blog post images, max 1200px width, maintains aspect ratio
+- **content** (default): Essay images, max 1200px width, maintains aspect ratio
 - **cover**: Featured/cover images, 1200×630px (1.9:1 ratio), crops to fit
 - **small**: Icons or small utility assets, max 400×400px, maintains aspect ratio
 
