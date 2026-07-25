@@ -10,14 +10,14 @@
   <meta name="color-scheme" content="light dark">
   <meta name="description"
     content="Technical details about how this site is built - a smolweb compliant static site generator">
-  <title>Meta - Theriyala, But Moving</title>
+  <title>meta — for later, when i forget</title>
   {{template "theme-loader" .}}
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&amp;family=Kalam:wght@400;700&amp;family=Kavivanar&amp;family=Patrick+Hand&amp;display=swap" rel="stylesheet">
-  <link href="{{.BasePath}}css/style.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&amp;family=Kalam:wght@400;700&amp;display=swap" rel="stylesheet">
+  <link href="{{.BasePath}}css/permanent.css?v=51" rel="stylesheet" type="text/css">
   <link rel="icon" href="{{.BasePath}}favicon.png" type="image/png">
-  <link rel="alternate" type="application/rss+xml" href="{{.BasePath}}rss.xml" title="Theriyala, But Moving">
+  <link rel="alternate" type="application/rss+xml" href="{{.BasePath}}rss.xml" title="for later, when i forget">
 </head>
 
 <body>
@@ -26,7 +26,7 @@
     {{template "site-header" .}}
 
     <main class="page-main prose-page" id="main">
-      <h1>Meta</h1>
+      <h1>meta</h1>
 
       <p>This site is just HTML and CSS compiled into static pages using a blog generator I wrote in Go because I got tired
         of platforms that change their terms of service every Tuesday. I post a lot on Twitter, and I realized late that you
@@ -38,15 +38,13 @@
 
       <p><strong>Typography</strong></p>
 
-      <p>Patrick Hand is used for prose, matching the writing in my Library reviews. Inter keeps navigation and controls
-        quiet, Kalam gives English headings their handwritten character, and Kavivanar handles Tamil. Dates use the system
-        monospace stack.
-      </p>
+      <p>Kalam keeps the headings loose and personal, while Atkinson Hyperlegible makes the entries comfortable to read.
+        It feels handwritten without asking every paragraph to behave like handwriting.</p>
 
       <p><strong>Colors</strong></p>
 
-      <p>Paper, ink, purple, pink, yellow, and cyan connect this journal to my media library. Both places support light and
-        dark themes, but the reading pages stay deliberately quieter than the collection.</p>
+      <p>The journal uses white paper, warm dark ink, and a restrained brick accent, with dull teal and mustard
+        appearing only in small rules and metadata.</p>
 
       <p><strong>Source Code</strong></p>
 

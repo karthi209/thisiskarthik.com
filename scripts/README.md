@@ -87,7 +87,7 @@ make optimize
 
 - **content** (default): Blog post images, max 1200px width, maintains aspect ratio
 - **cover**: Featured/cover images, 1200×630px (1.9:1 ratio), crops to fit
-- **small**: Icons/illustrations, max 400×400px, maintains aspect ratio
+- **small**: Icons or small utility assets, max 400×400px, maintains aspect ratio
 
 ### Examples
 
@@ -109,4 +109,3 @@ make optimize
 - Shows file size reduction percentage
 - Skips files already in WebP format
 - Preserves directory structure
-

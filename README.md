@@ -1,62 +1,90 @@
-# Theriyala, But Moving
+# for later, when i forget
 
-**A personal journal with a little bit of character.**
+a small static journal by karthik.
 
+this site is built for short daily notes first: ordinary things, remembered quickly, laid out on a compact ink timeline. essays still have their own archive, but the homepage stays personal and dense instead of turning into a newspaper.
+
+## the shape
+
+- `content/journal/` holds small timeline notes.
+- `content/posts/` holds longer essays.
+- `content/images/` holds images used inside essays.
+- `templates/` holds the go html templates.
+- `static/` holds the few permanent assets: css, favicon, theme script, and the squiggly spine.
+- `public/` is generated output and is safe to rebuild.
+
+## writing
+
+make a new small note:
+
+```bash
+make note
+```
+
+the smallest useful note looks like this:
+
+```markdown
+---
+date: 2026-07-25
 ---
 
-## What is this?
-
-This is the source code for my personal blogsite, and I built it because I got tired of platforms that change their terms of service every Tuesday. I post a lot on Twitter, and I realized late that you don't actually own anything you post there, so everything I write online, this website will have a copy of it all, and it's just HTML and CSS compiled into static pages using a custom Go static site generator... just my words on my domain under my control.
-
-This journal is one half of a pair. Structured ratings, reviews, and collection entries live in [Karthik's Library](https://library.thisiskarthik.com/), while broader essays—including essays about media—stay here. The sites share an identity and theme preference, but they build and deploy independently.
-
-## Structure
-
-The repository structure is pretty straightforward, and it's organized into a few key directories that make sense when you look at them.
-
-- `content/` : The actual writing (Markdown files)
-- `templates/` : How pages get assembled (Go HTML templates, with shared shell partials)
-- `static/` : CSS, fonts, images, the usual stuff
-- `public/` : The compiled output, that we deploy to static servers like gtihub pages and yadayada
-
-## How to Build
-
-The site uses a custom static site generator written in Go, and it's intentionally simple, and if you can't read the code and understand it in one sitting, I've failed.
-
-### Build Commands
-
-```bash
-make build      # Compile the site to /public directory
-make check      # Build and validate pages, navigation, theme assets, and RSS
-make preview    # Dev server with hot reload (port 5174)
-make setup      # Install dependencies (Go, WebP, ImageMagick)
-make generate   # Compile the site to /public directory
-make serve      # Dev server with hot reload (port 5174)
-make optimize   # Optimize images to WebP
-make deploy     # Build and deploy to GitHub Pages
-make clean      # Remove generated files
+something i want to remember.
 ```
 
-### Manual Build
+optional fields:
 
-```bash
-go run generate.go  # Build site
-go run serve.go     # Dev server
+```yaml
+title: kept this moment
+time: 22:10
+mood: content enough
+tags: life, chennai
+draft: false
 ```
 
-## Tech Stack
+longer pieces go in `content/posts/`. they appear only in the essays section, not on the homepage timeline.
 
-- **Generator**: Custom Go static site generator
-- **Markdown**: Goldmark for parsing
-- **Templates**: Go's `html/template` package
-- **Font**: Patrick Hand for prose, Inter for interface text, Kalam for English display, Kavivanar for Tamil, and the system monospace stack for metadata
-- **Styling**: Pure vanilla CSS, no frameworks
-- **Deployment**: Simple static directory, GitHub Pages target
+## design
 
-## Design
+the design is intentionally plain white paper and warm ink. there are no cards, no editorial boxes, no decorative backgrounds, and no art-credit trail pretending the site is more illustrated than it is.
 
-- **Theme**: Paper-and-ink light and dark palettes shared conceptually with the Library.
-- **Accent**: Purple, pink, yellow, and cyan handwritten details around a quieter reading surface.
-- **Typography**: Patrick Hand for prose, Inter for interface text, Kalam for English display, and Kavivanar for Tamil.
-- **Navigation**: A shared Karthik site switcher connects the independently deployed Journal and Library.
-- **Responsive**: Reading widths and controls adapt for desktop, tablet, and mobile.
+the timeline spine, month/date labels, quote marks, and small metadata use the same hand-drawn language. the rendered site is lowercase on purpose, including essay titles, because the voice should feel like a journal rather than a publication.
+
+## responsive behavior
+
+the layout is designed around one reading column:
+
+- desktop: wide enough for comfortable essay reading, with the spine offset beside the notes.
+- tablet: the same timeline rhythm, with tighter spacing and no layout shift between timeline and essays.
+- mobile: a narrower date rail, shorter weekday labels, and compact note spacing so the page scans without horizontal scrolling.
+
+`make check` validates the generated pages, key assets, responsive-friendly timeline markup, rss, removed legacy links, and cleanup rules for unused css/js.
+
+## commands
+
+```bash
+make build      # generate public/
+make check      # tests, build, and generated-site validation
+make test       # go tests for timeline parsing and ordering
+make note       # create today's short journal note
+make preview    # local dev server on port 5174
+make serve      # same as preview
+make clean      # remove public/
+make optimize   # optimize content/images to webp
+make deploy     # build and deploy to github pages
+```
+
+manual equivalents:
+
+```bash
+go run generate.go
+go run serve.go
+```
+
+## deploy checklist
+
+```bash
+make check
+make deploy
+```
+
+the deploy target builds the static site and publishes `public/`.

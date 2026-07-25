@@ -24,6 +24,7 @@ import (
 var (
 	contentDir      = "content"
 	postsDir        = filepath.Join(contentDir, "posts")
+	journalDir      = filepath.Join(contentDir, "journal")
 	imagesDir       = filepath.Join(contentDir, "images")
 	outputDir       = "public"
 	templatesDir    = "templates"
@@ -71,6 +72,45 @@ type Frontmatter struct {
 	IsDraft  bool
 }
 
+// JournalEntry is a short, title-optional note that lives directly on the timeline.
+type JournalEntry struct {
+	Title        string
+	Content      template.HTML
+	Date         time.Time
+	DateISO      string
+	Day          string
+	Month        string
+	Weekday      string
+	WeekdayShort string
+	Year         int
+	TimeLabel    string
+	Mood         string
+	Tags         []string
+	IsDraft      bool
+}
+
+// TimelineItem lets short notes and longer essays share one chronology.
+type TimelineItem struct {
+	Kind         string
+	Title        string
+	Date         time.Time
+	DateISO      string
+	Day          string
+	Month        string
+	Weekday      string
+	WeekdayShort string
+	Year         int
+	TimeLabel    string
+	Content      template.HTML
+	Mood         string
+	Tags         []string
+}
+
+type TimelineYear struct {
+	Year  int
+	Items []TimelineItem
+}
+
 // Template data structures
 type HomePageData struct {
 	PageType        string
@@ -78,6 +118,9 @@ type HomePageData struct {
 	BasePath        string
 	Writings        []PostTemplateData
 	GroupedWritings []YearGroup
+	Timeline        []TimelineYear
+	DayCount        int
+	FirstYear       int
 }
 
 type WritingsPageData struct {
@@ -95,17 +138,20 @@ type YearGroup struct {
 }
 
 type PostTemplateData struct {
-	Title           string
-	Slug            string
-	DateLabel       string
-	DateLabelFormal string
-	Year            int
-	Category        string
-	CategoryUpper   string
-	Content         template.HTML
-	ReadingTime     int
-	IsDraft         bool
-	CreatedAt       time.Time
+	Title        string
+	Slug         string
+	DateLabel    string
+	DateISO      string
+	Day          string
+	Month        string
+	Weekday      string
+	WeekdayShort string
+	Year         int
+	Category     string
+	Content      template.HTML
+	ReadingTime  int
+	IsDraft      bool
+	CreatedAt    time.Time
 }
 
 type PostPageData struct {
@@ -128,7 +174,6 @@ type MetaPageData struct {
 	BuildYear int
 	BuildTime string
 }
-
 
 // plural returns "s" if count is not 1, empty string otherwise
 func plural(count int) string {
@@ -229,29 +274,37 @@ func main() {
 		}
 		createdAt, _ := time.Parse(time.RFC3339, post.CreatedAt)
 		dateLabel := formatDate(post.CreatedAt)
-		dateLabelFormal := formatDateFormal(post.CreatedAt)
 		readingTime := calculateReadingTime(post.Content)
 		postTemplateData = append(postTemplateData, PostTemplateData{
-			Title:           post.Title,
-			Slug:            post.Slug,
-			DateLabel:       dateLabel,
-			DateLabelFormal: dateLabelFormal,
-			Year:            createdAt.Year(),
-			Category:        post.Category,
-			CategoryUpper:   strings.ToUpper(post.Category),
-			Content:         template.HTML(post.Content),
-			ReadingTime:     readingTime,
-			IsDraft:         post.IsDraft,
-			CreatedAt:       createdAt,
+			Title:        post.Title,
+			Slug:         post.Slug,
+			DateLabel:    dateLabel,
+			DateISO:      createdAt.Format("2006-01-02"),
+			Day:          createdAt.Format("02"),
+			Month:        createdAt.Format("Jan"),
+			Weekday:      strings.ToLower(createdAt.Format("Monday")),
+			WeekdayShort: strings.ToLower(createdAt.Format("Mon")),
+			Year:         createdAt.Year(),
+			Category:     post.Category,
+			Content:      template.HTML(post.Content),
+			ReadingTime:  readingTime,
+			IsDraft:      post.IsDraft,
+			CreatedAt:    createdAt,
 		})
 	}
 
 	// Group posts by year
 	groupedWritings := groupPostsByYear(postTemplateData)
 
+	journalEntries, err := loadJournalEntries(journalDir)
+	if err != nil && !os.IsNotExist(err) {
+		fmt.Printf("▓▓ WARNING: journal entries could not be loaded: %v\n", err)
+	}
+	timeline, _, dayCount, firstYear := buildTimeline(journalEntries)
+
 	// Generate pages
 	fmt.Println("▓▓ GENERATING PAGES...")
-	if err := generateHomePage(templates, postTemplateData, groupedWritings); err != nil {
+	if err := generateHomePage(templates, postTemplateData, groupedWritings, timeline, dayCount, firstYear); err != nil {
 		fmt.Printf("▓▓ ERROR: home page failed: %v\n", err)
 	}
 
@@ -333,13 +386,16 @@ func loadTemplates() (*template.Template, error) {
 	return tmpl, nil
 }
 
-func generateHomePage(templates *template.Template, posts []PostTemplateData, grouped []YearGroup) error {
+func generateHomePage(templates *template.Template, posts []PostTemplateData, grouped []YearGroup, timeline []TimelineYear, dayCount, firstYear int) error {
 	data := HomePageData{
 		PageType:        "home",
 		Title:           "Home",
 		BasePath:        basePath,
 		Writings:        posts,
 		GroupedWritings: grouped,
+		Timeline:        timeline,
+		DayCount:        dayCount,
+		FirstYear:       firstYear,
 	}
 
 	return writeTemplate(templates, "home.html", filepath.Join(outputDir, "index.html"), data)
@@ -464,7 +520,7 @@ func writeTemplate(templates *template.Template, templateName, outputPath string
 // formatHTML formats HTML with proper indentation using simple regex-based approach
 func formatHTML(input []byte) ([]byte, error) {
 	inputStr := string(input)
-	
+
 	// Preserve DOCTYPE
 	doctype := ""
 	if strings.HasPrefix(strings.TrimSpace(inputStr), "<!DOCTYPE") {
@@ -475,34 +531,34 @@ func formatHTML(input []byte) ([]byte, error) {
 			inputStr = strings.TrimSpace(inputStr[doctypeIdx+idx+1:])
 		}
 	}
-	
+
 	// Simple formatting: add newlines and indentation
 	// Replace >< with >\n< (except for inline content)
 	inputStr = regexp.MustCompile(`>\s*<`).ReplaceAllString(inputStr, ">\n<")
-	
+
 	// Add indentation
 	lines := strings.Split(inputStr, "\n")
 	var result []string
 	indent := 0
 	indentStr := "  "
-	
+
 	voidElements := map[string]bool{
 		"area": true, "base": true, "br": true, "col": true, "embed": true,
 		"hr": true, "img": true, "input": true, "link": true, "meta": true,
 		"param": true, "source": true, "track": true, "wbr": true,
 	}
-	
+
 	inlineElements := map[string]bool{
 		"a": true, "span": true, "strong": true, "em": true, "code": true,
 		"b": true, "i": true, "small": true, "sub": true, "sup": true,
 	}
-	
+
 	for _, line := range lines {
 		trimmed := strings.TrimSpace(line)
 		if trimmed == "" {
 			continue
 		}
-		
+
 		// Decrease indent for closing tags
 		if strings.HasPrefix(trimmed, "</") {
 			indent--
@@ -510,31 +566,31 @@ func formatHTML(input []byte) ([]byte, error) {
 				indent = 0
 			}
 		}
-		
+
 		// Add line with indentation
 		result = append(result, strings.Repeat(indentStr, indent)+trimmed)
-		
+
 		// Increase indent for opening tags (not void, not self-closing, not inline-only)
 		if strings.HasPrefix(trimmed, "<") && !strings.HasPrefix(trimmed, "</") {
 			// Extract tag name
 			tagName := strings.Fields(strings.TrimPrefix(trimmed, "<"))[0]
 			tagName = strings.TrimSuffix(tagName, ">")
 			tagName = strings.ToLower(tagName)
-			
+
 			// Check if self-closing
 			isSelfClosing := strings.HasSuffix(trimmed, "/>")
-			
+
 			if !voidElements[tagName] && !isSelfClosing && !inlineElements[tagName] {
 				indent++
 			}
 		}
 	}
-	
+
 	formatted := strings.Join(result, "\n")
 	if doctype != "" {
 		formatted = doctype + formatted
 	}
-	
+
 	return []byte(formatted), nil
 }
 
@@ -562,6 +618,192 @@ func groupPostsByYear(posts []PostTemplateData) []YearGroup {
 	})
 
 	return result
+}
+
+func loadJournalEntries(dir string) ([]JournalEntry, error) {
+	files, err := findMarkdownFiles(dir)
+	if err != nil {
+		return nil, err
+	}
+
+	entries := make([]JournalEntry, 0, len(files))
+	for _, path := range files {
+		if strings.EqualFold(filepath.Base(path), "README.md") {
+			continue
+		}
+		entry, err := processJournalFile(path)
+		if err != nil || entry.IsDraft {
+			continue
+		}
+		entries = append(entries, entry)
+	}
+
+	sort.Slice(entries, func(i, j int) bool {
+		return entries[i].Date.After(entries[j].Date)
+	})
+	return entries, nil
+}
+
+func processJournalFile(path string) (JournalEntry, error) {
+	raw, err := os.ReadFile(path)
+	if err != nil {
+		return JournalEntry{}, err
+	}
+
+	meta, body := splitFrontmatter(string(raw))
+	if strings.TrimSpace(body) == "" {
+		return JournalEntry{}, fmt.Errorf("journal entry has no content: %s", path)
+	}
+
+	dateValue := meta["date"]
+	if dateValue == "" {
+		dateValue = strings.TrimSuffix(filepath.Base(path), filepath.Ext(path))
+	}
+	entryDate, err := parseJournalDate(dateValue, meta["time"])
+	if err != nil {
+		return JournalEntry{}, fmt.Errorf("journal entry needs a valid date: %s", path)
+	}
+
+	htmlContent, err := renderMarkdown([]byte(strings.TrimSpace(body)))
+	if err != nil {
+		return JournalEntry{}, err
+	}
+
+	var tags []string
+	for _, tag := range strings.Split(meta["tags"], ",") {
+		tag = strings.TrimSpace(strings.TrimPrefix(tag, "#"))
+		if tag != "" {
+			tags = append(tags, tag)
+		}
+	}
+
+	timeLabel := ""
+	if meta["time"] != "" || strings.Contains(dateValue, "T") {
+		timeLabel = entryDate.Format("3:04 pm")
+	}
+
+	return JournalEntry{
+		Title:        meta["title"],
+		Content:      template.HTML(htmlContent),
+		Date:         entryDate,
+		DateISO:      entryDate.Format("2006-01-02"),
+		Day:          entryDate.Format("02"),
+		Month:        entryDate.Format("Jan"),
+		Weekday:      strings.ToLower(entryDate.Format("Monday")),
+		WeekdayShort: strings.ToLower(entryDate.Format("Mon")),
+		Year:         entryDate.Year(),
+		TimeLabel:    timeLabel,
+		Mood:         meta["mood"],
+		Tags:         tags,
+		IsDraft:      strings.EqualFold(meta["draft"], "true"),
+	}, nil
+}
+
+func splitFrontmatter(raw string) (map[string]string, string) {
+	meta := make(map[string]string)
+	if !strings.HasPrefix(raw, "---") {
+		return meta, raw
+	}
+	parts := strings.SplitN(raw, "---", 3)
+	if len(parts) < 3 {
+		return meta, raw
+	}
+	for _, line := range strings.Split(parts[1], "\n") {
+		key, value, ok := strings.Cut(line, ":")
+		if !ok {
+			continue
+		}
+		meta[strings.ToLower(strings.TrimSpace(key))] = strings.Trim(strings.TrimSpace(value), "\"'")
+	}
+	return meta, strings.TrimSpace(parts[2])
+}
+
+func parseJournalDate(dateValue, timeValue string) (time.Time, error) {
+	dateValue = strings.TrimSpace(dateValue)
+	if timeValue != "" && !strings.Contains(dateValue, "T") {
+		dateValue += "T" + strings.TrimSpace(timeValue)
+	}
+	for _, layout := range []string{time.RFC3339, "2006-01-02T15:04", "2006-01-02 15:04", "2006-01-02"} {
+		if parsed, err := time.Parse(layout, dateValue); err == nil {
+			return parsed, nil
+		}
+	}
+	return time.Time{}, fmt.Errorf("invalid date %q", dateValue)
+}
+
+func renderMarkdown(content []byte) (string, error) {
+	md := goldmark.New(
+		goldmark.WithExtensions(extension.GFM),
+		goldmark.WithParserOptions(parser.WithAutoHeadingID()),
+		goldmark.WithRendererOptions(
+			goldmarkhtml.WithHardWraps(),
+			goldmarkhtml.WithXHTML(),
+		),
+	)
+
+	var rendered strings.Builder
+	if err := md.Convert(content, &rendered); err != nil {
+		return "", fmt.Errorf("could not render markdown: %w", err)
+	}
+
+	htmlStr := strings.ReplaceAll(rendered.String(), "<img ", "<img loading=\"lazy\" decoding=\"async\" ")
+	if basePath != "/" {
+		imgSrcRegex := regexp.MustCompile(`src=["'](/images/[^"']+)["']`)
+		htmlStr = imgSrcRegex.ReplaceAllStringFunc(htmlStr, func(match string) string {
+			submatches := imgSrcRegex.FindStringSubmatch(match)
+			if len(submatches) < 2 {
+				return match
+			}
+			quote := `"`
+			if strings.Contains(match, `'`) {
+				quote = `'`
+			}
+			return `src=` + quote + basePath + strings.TrimPrefix(submatches[1], "/") + quote
+		})
+	}
+	return htmlStr, nil
+}
+
+func buildTimeline(entries []JournalEntry) ([]TimelineYear, int, int, int) {
+	items := make([]TimelineItem, 0, len(entries))
+	days := make(map[string]bool)
+
+	for _, entry := range entries {
+		items = append(items, TimelineItem{
+			Kind:         "note",
+			Title:        entry.Title,
+			Date:         entry.Date,
+			DateISO:      entry.DateISO,
+			Day:          entry.Day,
+			Month:        entry.Month,
+			Weekday:      entry.Weekday,
+			WeekdayShort: entry.WeekdayShort,
+			Year:         entry.Year,
+			TimeLabel:    entry.TimeLabel,
+			Content:      entry.Content,
+			Mood:         entry.Mood,
+			Tags:         entry.Tags,
+		})
+		days[entry.DateISO] = true
+	}
+
+	sort.SliceStable(items, func(i, j int) bool {
+		return items[i].Date.After(items[j].Date)
+	})
+
+	var years []TimelineYear
+	for _, item := range items {
+		if len(years) == 0 || years[len(years)-1].Year != item.Year {
+			years = append(years, TimelineYear{Year: item.Year})
+		}
+		years[len(years)-1].Items = append(years[len(years)-1].Items, item)
+	}
+
+	firstYear := time.Now().Year()
+	if len(items) > 0 {
+		firstYear = items[len(items)-1].Year
+	}
+	return years, len(items), len(days), firstYear
 }
 
 func formatDate(dateStr string) string {
@@ -624,25 +866,25 @@ func calculateReadingTime(content string) int {
 // parseFrontmatter parses simple YAML frontmatter (only handles key: value pairs)
 func parseFrontmatter(yamlContent string, fm *Frontmatter) error {
 	lines := strings.Split(strings.TrimSpace(yamlContent), "\n")
-	
+
 	for _, line := range lines {
 		line = strings.TrimSpace(line)
 		if line == "" || strings.HasPrefix(line, "#") {
 			continue
 		}
-		
+
 		// Simple key: value parser
 		idx := strings.Index(line, ":")
 		if idx <= 0 {
 			continue
 		}
-		
+
 		key := strings.TrimSpace(line[:idx])
 		value := strings.TrimSpace(line[idx+1:])
-		
+
 		// Remove quotes if present
 		value = strings.Trim(value, "\"'")
-		
+
 		switch strings.ToLower(key) {
 		case "title":
 			fm.Title = value
@@ -656,7 +898,7 @@ func parseFrontmatter(yamlContent string, fm *Frontmatter) error {
 			fm.IsDraft = strings.ToLower(value) == "true"
 		}
 	}
-	
+
 	return nil
 }
 
@@ -883,11 +1125,11 @@ func copyStaticFiles() error {
 
 func copyImages() error {
 	if _, err := os.Stat(imagesDir); os.IsNotExist(err) {
-		return fmt.Errorf("no repository of illustrations found; proceeding without")
+		return fmt.Errorf("no image directory found; proceeding without")
 	}
 
 	if err := os.MkdirAll(publicImagesDir, 0755); err != nil {
-		return fmt.Errorf("difficulty in preparing the illustration repository: %w", err)
+		return fmt.Errorf("difficulty in preparing the image directory: %w", err)
 	}
 
 	var copied int
@@ -939,7 +1181,7 @@ func copyImages() error {
 	})
 
 	if err != nil {
-		return fmt.Errorf("difficulty in gathering illustrations: %w", err)
+		return fmt.Errorf("difficulty in gathering images: %w", err)
 	}
 
 	if copied > 0 {
@@ -989,9 +1231,9 @@ func generateRSSFeed(posts []PostTemplateData) error {
 	fmt.Fprintf(file, `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
 <channel>
-<title>The Nonsense Buffer</title>
+<title>for later, when i forget</title>
 <link>%s</link>
-<description>Writings and observations by Karthik</description>
+<description>writings and observations by karthik</description>
 <language>en-us</language>
 <lastBuildDate>%s</lastBuildDate>
 <atom:link href="%srss.xml" rel="self" type="application/rss+xml"/>

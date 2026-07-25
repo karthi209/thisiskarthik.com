@@ -27,10 +27,10 @@ usage() {
     echo "Converts all images to optimized WebP format and removes originals"
     echo ""
     echo "Arguments:"
-    echo "  image_directory    Directory containing images (default: content/images/ and static/images/)"
+    echo "  image_directory    Directory containing images (default: content/images/)"
     echo ""
     echo "Examples:"
-    echo "  $0                    # Process content/images/ and static/images/"
+    echo "  $0                    # Process content/images/"
     echo "  $0 content/images/     # Process specific directory"
     exit 1
 }
@@ -222,8 +222,8 @@ main() {
         # Process specified directory
         dirs=("$1")
     else
-        # Process both default directories
-        dirs=("content/images" "static/images")
+        # Process the default content image directory
+        dirs=("content/images")
     fi
     
     # Process each directory

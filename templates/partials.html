@@ -11,40 +11,28 @@
 
 {{define "site-header"}}
   <header class="site-header">
-    <div class="ecosystem-bar">
-      <nav class="site-switcher" aria-label="Karthik's sites">
-        <a href="https://thisiskarthik.com/" aria-current="page">Journal</a>
-        <a href="https://library.thisiskarthik.com/">Library</a>
-      </nav>
-      <a class="ecosystem-domain" href="https://thisiskarthik.com/">thisiskarthik.com</a>
-      <button class="theme-toggle" type="button" aria-label="Switch to dark theme" aria-pressed="false">
-        <span class="theme-sun" aria-hidden="true">☀</span>
-        <span class="theme-moon" aria-hidden="true">☾</span>
-      </button>
-    </div>
-
     <div class="journal-identity">
-      <a class="site-title" href="{{.BasePath}}" aria-label="தெரியல but Moving"><span class="title-tamil">தெரியல</span><span class="title-but">but</span><span class="title-moving">Moving</span></a>
+      <a class="site-title" href="{{.BasePath}}" aria-label="for later, when i forget — by karthik">
+        <span class="masthead-name">for later, when i forget</span>
+        <span class="masthead-byline">by karthik</span>
+      </a>
     </div>
 
     <nav class="site-nav" aria-label="Journal">
-      <a href="{{.BasePath}}"{{if eq .PageType "home"}} aria-current="page"{{end}}>Home</a>
-      <a href="{{.BasePath}}writings"{{if eq .PageType "writings"}} aria-current="page"{{end}}>Writings</a>
-      <a href="{{.BasePath}}about"{{if eq .PageType "about"}} aria-current="page"{{end}}>About</a>
-      <a href="{{.BasePath}}meta"{{if eq .PageType "meta"}} aria-current="page"{{end}}>Meta</a>
-      <a href="{{.BasePath}}rss.xml">RSS</a>
+      <a href="{{.BasePath}}"{{if eq .PageType "home"}} aria-current="page"{{end}}>timeline</a>
+      <a href="{{.BasePath}}writings"{{if eq .PageType "writings"}} aria-current="page"{{end}}>essays</a>
+      <a href="{{.BasePath}}about"{{if eq .PageType "about"}} aria-current="page"{{end}}>about</a>
     </nav>
   </header>
 {{end}}
 
 {{define "site-footer"}}
   <footer class="site-footer">
-    <p>© {{if eq .PageType "meta"}}{{.BuildYear}}{{else}}2026{{end}} Karthik · Personal journal</p>
+    <p>© {{if eq .PageType "meta"}}{{.BuildYear}}{{else}}2026{{end}} karthik</p>
     <nav aria-label="Footer">
-      <a href="{{.BasePath}}about">About</a>
-      <a href="{{.BasePath}}meta">Meta</a>
-      <a href="{{.BasePath}}rss.xml">RSS</a>
-      <a href="https://library.thisiskarthik.com/">Library ↗</a>
+      <a href="{{.BasePath}}about">about</a>
+      <a href="{{.BasePath}}meta">meta</a>
+      <a href="{{.BasePath}}rss.xml">rss</a>
     </nav>
   </footer>
   <script src="{{.BasePath}}js/theme.js"></script>
