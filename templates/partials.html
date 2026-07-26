@@ -21,6 +21,8 @@
     <nav class="site-nav" aria-label="Journal">
       <a href="{{.BasePath}}"{{if eq .PageType "home"}} aria-current="page"{{end}}>timeline</a>
       <a href="{{.BasePath}}essays"{{if eq .PageType "essays"}} aria-current="page"{{end}}>essays</a>
+      <a href="{{.BasePath}}library"{{if eq .PageType "library"}} aria-current="page"{{end}}>library</a>
+      <a href="{{.BasePath}}photos"{{if eq .PageType "photos"}} aria-current="page"{{end}}>photos</a>
       <a href="{{.BasePath}}about"{{if eq .PageType "about"}} aria-current="page"{{end}}>about</a>
       <button class="theme-toggle" type="button" aria-pressed="false">
         <span class="theme-mark" aria-hidden="true">☙</span>

@@ -10,12 +10,33 @@ page_count=0
 while IFS= read -r page; do
   page_count=$((page_count + 1))
   grep -q 'js/theme.js' "$page"
+  grep -q 'name="viewport"' "$page"
 done < <(find public -name index.html -type f -print)
 
 if [ "$page_count" -lt 6 ]; then
   echo "Expected at least six generated HTML pages; found $page_count." >&2
   exit 1
 fi
+
+if grep -RqiE 'user-scalable=no|maximum-scale=1' public templates --include='*.html'; then
+  echo "Mobile zoom restrictions leaked into a page." >&2
+  exit 1
+fi
+
+for page in \
+  public/library/index.html \
+  public/library/films/index.html \
+  public/library/tv/index.html \
+  public/library/games/index.html \
+  public/library/books/index.html \
+  public/library/music/index.html \
+  public/photos/index.html
+do
+  if [ ! -f "$page" ]; then
+    echo "Generated site is missing $page." >&2
+    exit 1
+  fi
+done
 
 grep -q "karthik-theme" public/js/theme.js
 grep -q "theme-toggle" public/index.html
@@ -24,11 +45,41 @@ grep -q "☙" public/index.html
 grep -q "❧" public/js/theme.js
 grep -q "animation: none" public/css/permanent.css
 grep -q "class=\"timeline\"" public/index.html
-grep -q "memories, before they become stories" public/index.html
-grep -q "started in 2026, still writing" public/index.html
+grep -q "daily journal" public/index.html
+grep -q "life, more or less in the order it happened" public/index.html
+grep -q 'class="timeline-origin">the beginning' public/index.html
 grep -q "for later, when i forget" public/index.html
 grep -q "masthead-byline\">by karthik" public/index.html
 grep -q "class=\"timeline essay-timeline\"" public/essays/index.html
+grep -q 'href="/library"' public/index.html
+grep -q 'href="/photos"' public/index.html
+grep -q 'aria-current="page">library' public/library/index.html
+grep -q 'aria-current="page">photos' public/photos/index.html
+grep -q 'href="/library/films"' public/library/index.html
+grep -q 'href="/library/tv"' public/library/index.html
+grep -q 'href="/library/games"' public/library/index.html
+grep -q 'href="/library/books"' public/library/index.html
+grep -q 'href="/library/music"' public/library/index.html
+grep -q 'class="section-deck"' public/library/index.html
+grep -q "stories that stayed after the lights came back on" public/library/index.html
+grep -q "worlds explored, finished or left unfinished" public/library/index.html
+grep -q "class=\"library-index\"" public/library/index.html
+grep -q "nothing recorded here yet" public/library/index.html
+grep -q '<h2 class="library-index-title" id="library-index-films">' public/library/index.html
+grep -Eq "[0-9]+ films remembered" public/library/index.html
+grep -q "2016 — 2026" public/library/index.html
+grep -q "Blood Diamond" public/library/films/index.html
+grep -q "Red Dead Redemption 2" public/library/games/index.html
+grep -q "films remembered" public/library/films/index.html
+grep -q "class=\"library-scope\"" public/library/films/index.html
+grep -Eq "<span>[0-9]+ entries</span>" public/library/films/index.html
+if grep -q "data-archive-number" public/library/films/index.html; then
+  echo "Library accession numbers leaked into the films archive." >&2
+  exit 1
+fi
+grep -q "no photographs here yet" public/photos/index.html
+grep -q "photo-figure img" public/css/permanent.css
+grep -q "height: auto" public/css/permanent.css
 grep -q 'data-archive-number="003"' public/index.html
 grep -q 'data-archive-number="001"' public/index.html
 grep -q "timeline-month-marker\">Jul" public/index.html
@@ -111,4 +162,9 @@ if grep -Eqi 'placeholder game|neocities mode' public/index.html; then
   exit 1
 fi
 
-echo "Validated $page_count journal pages, navigation, theme assets, and RSS."
+if grep -Eqi 'camera model|aperture|shutter speed|exif|<dt>|masonry' public/photos/index.html templates/photo.html templates/photos.html; then
+  echo "Portfolio or camera metadata leaked into Photos." >&2
+  exit 1
+fi
+
+echo "Validated $page_count site pages, navigation, theme assets, and RSS."

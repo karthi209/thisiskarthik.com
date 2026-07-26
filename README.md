@@ -8,7 +8,9 @@ this site is built for short daily notes first: ordinary things, remembered quic
 
 - `content/journal/` holds small timeline notes.
 - `content/posts/` holds longer essays.
-- `content/images/` holds images used inside essays.
+- `content/library/` holds chronological film, television, game, book, and music notes.
+- `content/photos/` holds photograph records and captions.
+- `content/images/` holds images used across the site.
 - `templates/` holds the go html templates.
 - `static/` holds the few permanent assets: css, favicon, theme script, and the squiggly spine.
 - `public/` is generated output and is safe to rebuild.
@@ -42,6 +44,9 @@ draft: false
 ```
 
 longer pieces go in `content/posts/`. they appear only in the essays section, not on the homepage timeline.
+
+library entries and photographs have their own small formats documented in
+`content/library/README.md` and `content/photos/README.md`.
 
 ## design
 

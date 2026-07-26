@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"html/template"
 	"io/fs"
+	"math"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -25,6 +26,8 @@ var (
 	contentDir      = "content"
 	postsDir        = filepath.Join(contentDir, "posts")
 	journalDir      = filepath.Join(contentDir, "journal")
+	libraryDir      = filepath.Join(contentDir, "library")
+	photosDir       = filepath.Join(contentDir, "photos")
 	imagesDir       = filepath.Join(contentDir, "images")
 	outputDir       = "public"
 	templatesDir    = "templates"
@@ -32,6 +35,64 @@ var (
 	publicImagesDir = filepath.Join(outputDir, "images")
 	basePath        = getBasePath()
 )
+
+type LibrarySection struct {
+	Key          string
+	Title        string
+	Verb         string
+	Description  string
+	CountOne     string
+	CountMany    string
+	ArchiveLabel string
+}
+
+var librarySections = []LibrarySection{
+	{
+		Key:          "films",
+		Title:        "films",
+		Verb:         "watched",
+		Description:  "stories that stayed after the lights came back on.",
+		CountOne:     "film remembered",
+		CountMany:    "films remembered",
+		ArchiveLabel: "films remembered",
+	},
+	{
+		Key:          "tv",
+		Title:        "tv series",
+		Verb:         "watched",
+		Description:  "longer stories, lived with for a while.",
+		CountOne:     "series",
+		CountMany:    "series",
+		ArchiveLabel: "series remembered",
+	},
+	{
+		Key:          "games",
+		Title:        "games",
+		Verb:         "played",
+		Description:  "worlds explored, finished or left unfinished.",
+		CountOne:     "game",
+		CountMany:    "games",
+		ArchiveLabel: "worlds explored",
+	},
+	{
+		Key:          "books",
+		Title:        "books",
+		Verb:         "read",
+		Description:  "pages that remained after the book was closed.",
+		CountOne:     "book",
+		CountMany:    "books",
+		ArchiveLabel: "books remembered",
+	},
+	{
+		Key:          "music",
+		Title:        "music",
+		Verb:         "listened",
+		Description:  "sounds returned to across different parts of life.",
+		CountOne:     "music entry",
+		CountMany:    "music entries",
+		ArchiveLabel: "sounds remembered",
+	},
+}
 
 // getBasePath returns the base path for assets and links
 // Reads from BASE_PATH environment variable, defaults to "/"
@@ -118,6 +179,60 @@ type TimelineYear struct {
 	Items []TimelineItem
 }
 
+type LibraryEntry struct {
+	Section      string
+	Title        string
+	ReleaseYear  int
+	Rating       float64
+	RatingStars  string
+	RatingLabel  string
+	Date         time.Time
+	DateISO      string
+	DateLabel    string
+	Day          string
+	Month        string
+	WeekdayShort string
+	Year         int
+	HasFullDate  bool
+	Content      template.HTML
+	ArchiveNo    string
+	IsDraft      bool
+}
+
+type LibraryYear struct {
+	Year    int
+	Entries []LibraryEntry
+}
+
+type PhotoEntry struct {
+	Title       string
+	Slug        string
+	Date        time.Time
+	DateISO     string
+	DateLabel   string
+	Day         string
+	Month       string
+	MonthLong   string
+	MonthNumber int
+	Year        int
+	Image       string
+	ImageAlt    string
+	Caption     string
+	ArchiveNo   string
+	IsDraft     bool
+}
+
+type PhotoMonth struct {
+	Name   string
+	Number int
+	Photos []PhotoEntry
+}
+
+type PhotoYear struct {
+	Year   int
+	Months []PhotoMonth
+}
+
 // Template data structures
 type HomePageData struct {
 	PageType      string
@@ -181,6 +296,44 @@ type MetaPageData struct {
 	BasePath  string
 	BuildYear int
 	BuildTime string
+}
+
+type LibraryIndexPageData struct {
+	PageType string
+	Title    string
+	BasePath string
+	Sections []LibraryIndexSection
+}
+
+type LibraryIndexSection struct {
+	LibrarySection
+	HasEntries bool
+	CountLabel string
+	YearsLabel string
+}
+
+type LibraryPageData struct {
+	PageType   string
+	Title      string
+	BasePath   string
+	Section    LibrarySection
+	Years      []LibraryYear
+	ScopeCount string
+	YearsLabel string
+}
+
+type PhotosPageData struct {
+	PageType string
+	Title    string
+	BasePath string
+	Years    []PhotoYear
+}
+
+type PhotoPageData struct {
+	PageType string
+	Title    string
+	BasePath string
+	Photo    PhotoEntry
 }
 
 // plural returns "s" if count is not 1, empty string otherwise
@@ -311,6 +464,16 @@ func main() {
 	}
 	timeline, _, dayCount, firstYear := buildTimeline(journalEntries)
 
+	libraryEntries, err := loadLibraryEntries(libraryDir)
+	if err != nil && !os.IsNotExist(err) {
+		fmt.Printf("▓▓ WARNING: library entries could not be loaded: %v\n", err)
+	}
+
+	photos, err := loadPhotos(photosDir)
+	if err != nil && !os.IsNotExist(err) {
+		fmt.Printf("▓▓ WARNING: photos could not be loaded: %v\n", err)
+	}
+
 	// Generate pages
 	fmt.Println("▓▓ GENERATING PAGES...")
 	if err := generateHomePage(templates, postTemplateData, groupedEssays, timeline, dayCount, firstYear); err != nil {
@@ -329,6 +492,24 @@ func main() {
 
 	if err := generateAboutPage(templates); err != nil {
 		fmt.Printf("▓▓ ERROR: about page failed: %v\n", err)
+	}
+
+	if err := generateLibraryIndexPage(templates, libraryEntries); err != nil {
+		fmt.Printf("▓▓ ERROR: library index failed: %v\n", err)
+	}
+	for _, section := range librarySections {
+		if err := generateLibraryPage(templates, section, libraryEntries[section.Key]); err != nil {
+			fmt.Printf("▓▓ ERROR: library %s page failed: %v\n", section.Key, err)
+		}
+	}
+
+	if err := generatePhotosPage(templates, photos); err != nil {
+		fmt.Printf("▓▓ ERROR: photos page failed: %v\n", err)
+	}
+	for _, photo := range photos {
+		if err := generatePhotoPage(templates, photo); err != nil {
+			fmt.Printf("▓▓ ERROR: photo page %s failed: %v\n", photo.Slug, err)
+		}
 	}
 
 	if templates.Lookup("forai.html") != nil {
@@ -454,6 +635,64 @@ func generateAboutPage(templates *template.Template) error {
 	}
 
 	return writeTemplate(templates, "about.html", filepath.Join(aboutDir, "index.html"), data)
+}
+
+func generateLibraryIndexPage(templates *template.Template, entries map[string][]LibraryEntry) error {
+	data := LibraryIndexPageData{
+		PageType: "library",
+		Title:    "library",
+		BasePath: basePath,
+		Sections: buildLibraryIndexSections(entries),
+	}
+	return writeTemplate(templates, "library.html", filepath.Join(outputDir, "library", "index.html"), data)
+}
+
+func generateLibraryPage(templates *template.Template, section LibrarySection, entries []LibraryEntry) error {
+	summary := summarizeLibrarySection(section, entries)
+	scopeCount := fmt.Sprintf("%d entries", len(entries))
+	if len(entries) == 1 {
+		scopeCount = "1 entry"
+	}
+	data := LibraryPageData{
+		PageType:   "library",
+		Title:      section.Title,
+		BasePath:   basePath,
+		Section:    section,
+		Years:      groupLibraryEntries(entries),
+		ScopeCount: scopeCount,
+		YearsLabel: summary.YearsLabel,
+	}
+	return writeTemplate(
+		templates,
+		"library-section.html",
+		filepath.Join(outputDir, "library", section.Key, "index.html"),
+		data,
+	)
+}
+
+func generatePhotosPage(templates *template.Template, photos []PhotoEntry) error {
+	data := PhotosPageData{
+		PageType: "photos",
+		Title:    "photos",
+		BasePath: basePath,
+		Years:    groupPhotos(photos),
+	}
+	return writeTemplate(templates, "photos.html", filepath.Join(outputDir, "photos", "index.html"), data)
+}
+
+func generatePhotoPage(templates *template.Template, photo PhotoEntry) error {
+	data := PhotoPageData{
+		PageType: "photos",
+		Title:    photo.Title,
+		BasePath: basePath,
+		Photo:    photo,
+	}
+	return writeTemplate(
+		templates,
+		"photo.html",
+		filepath.Join(outputDir, "photos", photo.Slug, "index.html"),
+		data,
+	)
 }
 
 func generateForAIPage(templates *template.Template) error {
@@ -841,6 +1080,269 @@ func buildTimeline(entries []JournalEntry) ([]TimelineYear, int, int, int) {
 		firstYear = items[len(items)-1].Year
 	}
 	return years, len(items), len(days), firstYear
+}
+
+func loadLibraryEntries(dir string) (map[string][]LibraryEntry, error) {
+	result := make(map[string][]LibraryEntry, len(librarySections))
+	if _, err := os.Stat(dir); err != nil {
+		return result, err
+	}
+
+	for _, section := range librarySections {
+		sectionDir := filepath.Join(dir, section.Key)
+		files, err := findMarkdownFiles(sectionDir)
+		if os.IsNotExist(err) {
+			continue
+		}
+		if err != nil {
+			return result, err
+		}
+
+		for _, path := range files {
+			if strings.EqualFold(filepath.Base(path), "README.md") {
+				continue
+			}
+			entry, err := processLibraryFile(path, section.Key)
+			if err != nil || entry.IsDraft {
+				continue
+			}
+			result[section.Key] = append(result[section.Key], entry)
+		}
+
+		sort.SliceStable(result[section.Key], func(i, j int) bool {
+			return result[section.Key][i].Date.After(result[section.Key][j].Date)
+		})
+		for i := range result[section.Key] {
+			result[section.Key][i].ArchiveNo = formatArchiveNumber(len(result[section.Key]) - i)
+		}
+	}
+	return result, nil
+}
+
+func processLibraryFile(path, section string) (LibraryEntry, error) {
+	raw, err := os.ReadFile(path)
+	if err != nil {
+		return LibraryEntry{}, err
+	}
+	meta, body := splitFrontmatter(string(raw))
+	if strings.TrimSpace(meta["title"]) == "" {
+		return LibraryEntry{}, fmt.Errorf("library entry needs a title: %s", path)
+	}
+	if strings.TrimSpace(body) == "" {
+		return LibraryEntry{}, fmt.Errorf("library entry needs a note: %s", path)
+	}
+
+	entryDate, dateISO, dateLabel, hasFullDate, err := parseLibraryDate(meta["date"])
+	if err != nil {
+		return LibraryEntry{}, fmt.Errorf("library entry needs a valid date: %s", path)
+	}
+	rating, err := strconv.ParseFloat(meta["rating"], 64)
+	if err != nil || rating < 0.5 || rating > 5 || math.Mod(rating*2, 1) != 0 {
+		return LibraryEntry{}, fmt.Errorf("library entry rating must be between 0.5 and 5 in half-star steps: %s", path)
+	}
+
+	releaseYear := 0
+	if meta["release_year"] != "" {
+		releaseYear, err = strconv.Atoi(meta["release_year"])
+		if err != nil || releaseYear < 1 {
+			return LibraryEntry{}, fmt.Errorf("library entry has an invalid release year: %s", path)
+		}
+	}
+
+	fullStars := int(rating)
+	ratingStars := strings.Repeat("★", fullStars)
+	remainingStars := 5 - fullStars
+	if rating-float64(fullStars) == 0.5 {
+		ratingStars += "½"
+		remainingStars--
+	}
+	ratingStars += strings.Repeat("☆", remainingStars)
+
+	htmlContent, err := renderMarkdown([]byte(strings.TrimSpace(body)))
+	if err != nil {
+		return LibraryEntry{}, err
+	}
+	entry := LibraryEntry{
+		Section:     section,
+		Title:       meta["title"],
+		ReleaseYear: releaseYear,
+		Rating:      rating,
+		RatingStars: ratingStars,
+		RatingLabel: fmt.Sprintf("%g out of 5", rating),
+		Date:        entryDate,
+		DateISO:     dateISO,
+		DateLabel:   dateLabel,
+		Year:        entryDate.Year(),
+		HasFullDate: hasFullDate,
+		Content:     template.HTML(htmlContent),
+		IsDraft:     strings.EqualFold(meta["draft"], "true"),
+	}
+	if hasFullDate {
+		entry.Day = entryDate.Format("02")
+		entry.Month = entryDate.Format("Jan")
+		entry.WeekdayShort = strings.ToLower(entryDate.Format("Mon"))
+	}
+	return entry, nil
+}
+
+func parseLibraryDate(value string) (time.Time, string, string, bool, error) {
+	value = strings.TrimSpace(value)
+	if len(value) == 4 {
+		year, err := strconv.Atoi(value)
+		if err == nil && year > 0 {
+			return time.Date(year, 1, 1, 0, 0, 0, 0, time.UTC), value, value, false, nil
+		}
+	}
+	entryDate, err := parseJournalDate(value, "")
+	if err != nil {
+		return time.Time{}, "", "", false, err
+	}
+	return entryDate, entryDate.Format("2006-01-02"), entryDate.Format("2 Jan 2006"), true, nil
+}
+
+func groupLibraryEntries(entries []LibraryEntry) []LibraryYear {
+	var years []LibraryYear
+	for _, entry := range entries {
+		if len(years) == 0 || years[len(years)-1].Year != entry.Year {
+			years = append(years, LibraryYear{Year: entry.Year})
+		}
+		years[len(years)-1].Entries = append(years[len(years)-1].Entries, entry)
+	}
+	return years
+}
+
+func buildLibraryIndexSections(entries map[string][]LibraryEntry) []LibraryIndexSection {
+	sections := make([]LibraryIndexSection, 0, len(librarySections))
+	for _, section := range librarySections {
+		sections = append(sections, summarizeLibrarySection(section, entries[section.Key]))
+	}
+	return sections
+}
+
+func summarizeLibrarySection(section LibrarySection, entries []LibraryEntry) LibraryIndexSection {
+	summary := LibraryIndexSection{LibrarySection: section}
+	if len(entries) == 0 {
+		return summary
+	}
+
+	summary.HasEntries = true
+	countText := section.CountMany
+	if len(entries) == 1 {
+		countText = section.CountOne
+	}
+	summary.CountLabel = fmt.Sprintf("%d %s", len(entries), countText)
+
+	earliestYear := entries[0].Year
+	latestYear := entries[0].Year
+	for _, entry := range entries[1:] {
+		if entry.Year < earliestYear {
+			earliestYear = entry.Year
+		}
+		if entry.Year > latestYear {
+			latestYear = entry.Year
+		}
+	}
+	if earliestYear == latestYear {
+		summary.YearsLabel = fmt.Sprintf("%d", latestYear)
+	} else {
+		summary.YearsLabel = fmt.Sprintf("%d — %d", earliestYear, latestYear)
+	}
+	return summary
+}
+
+func loadPhotos(dir string) ([]PhotoEntry, error) {
+	files, err := findMarkdownFiles(dir)
+	if err != nil {
+		return nil, err
+	}
+	photos := make([]PhotoEntry, 0, len(files))
+	seenSlugs := make(map[string]bool)
+	for _, path := range files {
+		if strings.EqualFold(filepath.Base(path), "README.md") {
+			continue
+		}
+		photo, err := processPhotoFile(path)
+		if err != nil || photo.IsDraft || seenSlugs[photo.Slug] {
+			continue
+		}
+		seenSlugs[photo.Slug] = true
+		photos = append(photos, photo)
+	}
+	sort.SliceStable(photos, func(i, j int) bool {
+		return photos[i].Date.After(photos[j].Date)
+	})
+	for i := range photos {
+		photos[i].ArchiveNo = formatArchiveNumber(len(photos) - i)
+	}
+	return photos, nil
+}
+
+func processPhotoFile(path string) (PhotoEntry, error) {
+	raw, err := os.ReadFile(path)
+	if err != nil {
+		return PhotoEntry{}, err
+	}
+	meta, _ := splitFrontmatter(string(raw))
+	title := strings.TrimSpace(meta["title"])
+	if title == "" {
+		return PhotoEntry{}, fmt.Errorf("photo needs a title: %s", path)
+	}
+	photoDate, err := parseJournalDate(meta["date"], "")
+	if err != nil {
+		return PhotoEntry{}, fmt.Errorf("photo needs a valid date: %s", path)
+	}
+	image := rewriteAssetPath(meta["image"])
+	if image == "" {
+		return PhotoEntry{}, fmt.Errorf("photo needs an image: %s", path)
+	}
+	if strings.TrimSpace(meta["image_alt"]) == "" {
+		return PhotoEntry{}, fmt.Errorf("photo needs image alt text: %s", path)
+	}
+	slug := meta["slug"]
+	if slug == "" {
+		slug = generateSlug(title)
+	} else if generateSlug(slug) != slug {
+		return PhotoEntry{}, fmt.Errorf("photo slug must contain only lowercase letters, numbers, and hyphens: %s", path)
+	}
+	if slug == "" {
+		return PhotoEntry{}, fmt.Errorf("photo needs a valid slug: %s", path)
+	}
+
+	return PhotoEntry{
+		Title:       title,
+		Slug:        slug,
+		Date:        photoDate,
+		DateISO:     photoDate.Format("2006-01-02"),
+		DateLabel:   photoDate.Format("2 Jan 2006"),
+		Day:         photoDate.Format("02"),
+		Month:       photoDate.Format("Jan"),
+		MonthLong:   photoDate.Format("January"),
+		MonthNumber: int(photoDate.Month()),
+		Year:        photoDate.Year(),
+		Image:       image,
+		ImageAlt:    meta["image_alt"],
+		Caption:     meta["caption"],
+		IsDraft:     strings.EqualFold(meta["draft"], "true"),
+	}, nil
+}
+
+func groupPhotos(photos []PhotoEntry) []PhotoYear {
+	var years []PhotoYear
+	for _, photo := range photos {
+		if len(years) == 0 || years[len(years)-1].Year != photo.Year {
+			years = append(years, PhotoYear{Year: photo.Year})
+		}
+		year := &years[len(years)-1]
+		if len(year.Months) == 0 || year.Months[len(year.Months)-1].Number != photo.MonthNumber {
+			year.Months = append(year.Months, PhotoMonth{
+				Name:   photo.MonthLong,
+				Number: photo.MonthNumber,
+			})
+		}
+		month := &year.Months[len(year.Months)-1]
+		month.Photos = append(month.Photos, photo)
+	}
+	return years
 }
 
 func formatArchiveNumber(number int) string {

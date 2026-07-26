@@ -1,0 +1,53 @@
+{{define "library.html"}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self' 'unsafe-inline';">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <meta name="description" content="Chronological library of films, television, games, books, and music.">
+  <title>library - for later, when i forget</title>
+  {{template "theme-loader" .}}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&amp;family=Kalam:wght@400;700&amp;display=swap" rel="stylesheet">
+  <link href="{{.BasePath}}css/permanent.css?v=70" rel="stylesheet" type="text/css">
+  <link rel="icon" href="{{.BasePath}}favicon.png" type="image/png">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="page-shell">
+    {{template "site-header" .}}
+    <main class="page-main archive-page" id="main">
+      <header class="section-header library-page-intro">
+        <p class="eyebrow">the collection</p>
+        <h1>library</h1>
+        <p class="section-deck">all the films, books, games and music that i've enjoyed.</p>
+      </header>
+      <nav aria-label="Library sections">
+        <ol class="library-index">
+          {{range .Sections}}
+          <li class="library-index-item">
+            <section aria-labelledby="library-index-{{.Key}}">
+              <h2 class="library-index-title" id="library-index-{{.Key}}">
+                <a href="{{$.BasePath}}library/{{.Key}}">{{.Title}}</a>
+              </h2>
+              <p class="library-index-description">{{.Description}}</p>
+              {{if .HasEntries}}
+              <p class="library-index-summary">{{.CountLabel}}</p>
+              <p class="library-index-years">{{.YearsLabel}}</p>
+              {{else}}
+              <p class="library-index-empty">nothing recorded here yet.</p>
+              {{end}}
+            </section>
+          </li>
+          {{end}}
+        </ol>
+      </nav>
+      {{template "site-footer" .}}
+    </main>
+  </div>
+</body>
+</html>
+{{end}}

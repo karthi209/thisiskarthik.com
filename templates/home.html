@@ -6,13 +6,13 @@
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self' 'unsafe-inline';">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="color-scheme" content="light dark">
-  <meta name="description" content="For Later, When I Forget — Karthik's timeline of small notes from ordinary days.">
-  <title>for later, when i forget — by karthik</title>
+  <meta name="description" content="For Later, When I Forget">
+  <title>for later, when i forget - by karthik</title>
   {{template "theme-loader" .}}
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&amp;family=Kalam:wght@400;700&amp;display=swap" rel="stylesheet">
-  <link href="{{.BasePath}}css/permanent.css?v=57" rel="stylesheet" type="text/css">
+  <link href="{{.BasePath}}css/permanent.css?v=70" rel="stylesheet" type="text/css">
   <link rel="icon" href="{{.BasePath}}favicon.png" type="image/png">
   <link rel="alternate" type="application/rss+xml" href="{{.BasePath}}rss.xml" title="for later, when i forget">
 </head>
@@ -22,10 +22,10 @@
     {{template "site-header" .}}
 
     <main class="page-main timeline-page" id="main">
-      <header class="timeline-intro">
-        <p class="eyebrow">daily journal</p>
-        <h1>memories, before they become stories.</h1>
-        <p class="intro-note">started in {{.FirstYear}}, still writing.</p>
+      <header class="section-header timeline-intro">
+        <p class="eyebrow">the daily journal</p>
+        <h1>timeline</h1>
+        <p class="section-deck">life, more or less in the order it happened.</p>
       </header>
 
       <section class="timeline" aria-label="Journal timeline">
@@ -66,6 +66,7 @@
             </ol>
           </section>
           {{end}}
+          <p class="timeline-origin">the beginning</p>
         {{else}}
           <div class="empty-timeline">
             <p>The timeline begins with the next thing worth remembering.</p>

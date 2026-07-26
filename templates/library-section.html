@@ -1,0 +1,70 @@
+{{define "library-section.html"}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self' 'unsafe-inline';">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <meta name="description" content="{{.Section.Title}} in Karthik's chronological library.">
+  <title>{{.Section.Title}} — library — for later, when i forget</title>
+  {{template "theme-loader" .}}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&amp;family=Kalam:wght@400;700&amp;display=swap" rel="stylesheet">
+  <link href="{{.BasePath}}css/permanent.css?v=70" rel="stylesheet" type="text/css">
+  <link rel="icon" href="{{.BasePath}}favicon.png" type="image/png">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="page-shell">
+    {{template "site-header" .}}
+    <main class="page-main archive-page" id="main">
+      <a class="back-link" href="{{.BasePath}}library">← library</a>
+      <header class="section-header archive-intro--timeline">
+        <p class="eyebrow">{{.Section.ArchiveLabel}}</p>
+        <h1>{{.Section.Title}}</h1>
+        {{if .Years}}
+        <p class="library-scope"><span>{{.ScopeCount}}</span><span>{{.YearsLabel}}</span></p>
+        {{end}}
+      </header>
+      {{if .Years}}
+      <div class="timeline library-timeline" aria-label="{{.Section.Title}} timeline">
+        {{range .Years}}
+        <section class="timeline-year" aria-labelledby="library-{{$.Section.Key}}-year-{{.Year}}">
+          <h2 id="library-{{$.Section.Key}}-year-{{.Year}}"><span>{{.Year}}</span></h2>
+          <ol class="timeline-list">
+            {{range .Entries}}
+            <li class="timeline-item library-item">
+              <div class="timeline-date">
+                <time datetime="{{.DateISO}}">
+                  {{if .HasFullDate}}
+                  <span class="timeline-month-marker">{{.Month}}</span>
+                  <span class="timeline-day">{{.Day}}</span>
+                  <span class="timeline-weekday">{{.WeekdayShort}}</span>
+                  {{else}}
+                  <span class="timeline-month-marker">year</span>
+                  <span class="timeline-day timeline-year-only">{{.Year}}</span>
+                  {{end}}
+                </time>
+              </div>
+              <article class="timeline-note library-entry">
+                <h3 class="timeline-entry-title">{{.Title}}{{if .ReleaseYear}} <span class="release-year">({{.ReleaseYear}})</span>{{end}}</h3>
+                <p class="note-details"><span>{{$.Section.Verb}}</span><span><time datetime="{{.DateISO}}">{{.DateLabel}}</time></span><span class="library-rating" aria-label="rating: {{.RatingLabel}}">{{.RatingStars}}</span></p>
+                <div class="timeline-content library-note">{{.Content}}</div>
+              </article>
+            </li>
+            {{end}}
+          </ol>
+        </section>
+        {{end}}
+      </div>
+      {{else}}
+      <p class="empty-archive">nothing recorded here yet.</p>
+      {{end}}
+      {{template "site-footer" .}}
+    </main>
+  </div>
+</body>
+</html>
+{{end}}
