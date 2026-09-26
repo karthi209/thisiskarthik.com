@@ -6,13 +6,9 @@
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self' 'unsafe-inline';">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="color-scheme" content="light dark">
-  <meta name="description" content="Chronological library of films, television, games, books, and music.">
-  <title>library - for later, when i forget</title>
-  {{template "theme-loader" .}}
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&amp;family=Kalam:wght@400;700&amp;display=swap" rel="stylesheet">
-  <link href="{{.BasePath}}css/permanent.css?v=70" rel="stylesheet" type="text/css">
+  <meta name="description" content="Personal games and books archives.">
+  <title>games &amp; books - for later, when i forget</title>
+  <link href="{{.BasePath}}css/permanent.css?v=95" rel="stylesheet" type="text/css">
   <link rel="icon" href="{{.BasePath}}favicon.png" type="image/png">
 </head>
 <body>
@@ -22,8 +18,8 @@
     <main class="page-main archive-page" id="main">
       <header class="section-header library-page-intro">
         <p class="eyebrow">the collection</p>
-        <h1>library</h1>
-        <p class="section-deck">all the films, books, games and music that i've enjoyed.</p>
+        <h1>games &amp; books</h1>
+        <p class="section-deck">worlds i've spent time in, on screen and on paper.</p>
       </header>
       <nav aria-label="Library sections">
         <ol class="library-index">
@@ -31,7 +27,7 @@
           <li class="library-index-item">
             <section aria-labelledby="library-index-{{.Key}}">
               <h2 class="library-index-title" id="library-index-{{.Key}}">
-                <a href="{{$.BasePath}}library/{{.Key}}">{{.Title}}</a>
+                <a href="{{$.BasePath}}{{if eq .Key "games"}}games{{else if eq .Key "books"}}books{{else}}library/{{.Key}}{{end}}">{{.Title}}</a>
               </h2>
               <p class="library-index-description">{{.Description}}</p>
               {{if .HasEntries}}
@@ -45,6 +41,7 @@
           {{end}}
         </ol>
       </nav>
+      <p class="game-meta"><a href="{{.BasePath}}library/films">older film notes →</a></p>
       {{template "site-footer" .}}
     </main>
   </div>

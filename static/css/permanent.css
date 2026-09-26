@@ -1,3 +1,11 @@
+@font-face {
+  font-family: "Fraunces";
+  font-style: normal;
+  font-weight: 600 800;
+  font-display: swap;
+  src: url("../fonts/fraunces-latin.woff2") format("woff2");
+}
+
 :root {
   color-scheme: light dark;
   --page-bg: #ffffff;
@@ -13,28 +21,11 @@
   --notebook-yellow: #77736b;
   --label-ink: #ffffff;
   --spine-filter: none;
-  --serif: "Atkinson Hyperlegible", system-ui, sans-serif;
-  --display: "Kalam", "Bradley Hand", cursive;
-  --mono: "Atkinson Hyperlegible", system-ui, sans-serif;
+  --serif: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --display: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --mono: ui-monospace, "SFMono-Regular", Consolas, "Liberation Mono", monospace;
   --dry-rule: linear-gradient(transparent, transparent);
   --spine-squiggle: url("../spine-squiggle.svg");
-}
-
-html[data-theme="dark"] {
-  color-scheme: dark;
-  --page-bg: #161512;
-  --paper-edge: #161512;
-  --paper: #161512;
-  --node-fill: #161512;
-  --image-paper: #201e1a;
-  --ink: #eee7db;
-  --muted: #aaa197;
-  --faint: #38342f;
-  --accent: #c0a485;
-  --notebook-blue: #95a4a0;
-  --notebook-yellow: #b2a271;
-  --label-ink: #161512;
-  --spine-filter: invert(1) sepia(.18) saturate(.75) brightness(1.45);
 }
 
 *,
@@ -61,7 +52,12 @@ html {
 body {
   margin: 0;
   color: var(--ink);
-  background: var(--page-bg);
+  background-color: #e8e3d7;
+  background-image: url("../images/site-wallpaper.webp");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
   font: 400 17px/1.58 var(--serif);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -133,7 +129,7 @@ img {
   margin: 8px auto;
   background: var(--paper);
   border: 0;
-  box-shadow: none;
+  box-shadow: 0 8px 32px rgb(33 31 28 / 12%);
   clip-path: none;
   filter: none;
 }
@@ -162,8 +158,7 @@ img {
   border: 0;
 }
 
-.site-nav a,
-.theme-toggle {
+.site-nav a {
   color: var(--muted);
   background: transparent;
   border: 0;
@@ -175,39 +170,8 @@ img {
   text-transform: lowercase;
 }
 
-.site-nav a:hover,
-.theme-toggle:hover {
+.site-nav a:hover {
   color: var(--ink);
-}
-
-.theme-toggle {
-  display: inline-grid;
-  width: 18px;
-  min-width: 18px;
-  height: 18px;
-  padding: 0;
-  place-items: center;
-  line-height: 1;
-}
-
-.theme-toggle[aria-pressed="true"] {
-  color: var(--accent);
-}
-
-.theme-mark {
-  display: block;
-  font: 700 18px/1 var(--display);
-  text-shadow: .16px .12px color-mix(in srgb, var(--ink) 50%, transparent);
-}
-
-.theme-label {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
 }
 
 .journal-identity {
@@ -1346,12 +1310,6 @@ img {
     padding: 8px 3px;
   }
 
-  .theme-toggle {
-    width: 40px;
-    min-width: 40px;
-    height: 40px;
-  }
-
   .page-main {
     padding: 12px 10px 14px;
   }
@@ -1577,5 +1535,1846 @@ img {
   .site-footer,
   .back-link {
     display: none;
+  }
+}
+
+/* Games: a small indie-web log on the shared paper-texture desktop. */
+.games-page {
+  --games-font: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --games-mono: ui-monospace, "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  --games-accent: #a522ce;
+  min-height: 100vh;
+  color: #151419;
+  background-color: #e8e3d7;
+  background-image: url("../images/site-wallpaper.webp");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  font-family: var(--games-font);
+  text-transform: none;
+}
+.games-site-shell { width: min(980px, calc(100% - 16px)); margin: 8px auto 40px; }
+.games-site-shell .site-header { color: #211f1c; }
+.games-site-shell .site-title, .games-site-shell .site-nav a { color: #514d47; }
+.games-site-shell .masthead-name { color: #211f1c; }
+.games-site-shell .masthead-byline, .games-site-shell .site-nav a[aria-current="page"] { color: #d59be0; }
+.games-layout { width: min(820px, 100%); margin: 0 auto; }
+.games-paper { padding: 38px 34px 22px; color: #17151a; background: #f7f6f7; border: 6px double var(--games-accent); box-shadow: 7px 7px 0 rgb(0 0 0 / 24%); font: 400 14px/1.55 var(--games-font); }
+.games-intro { margin: 0 0 30px; text-align: center; }
+.games-intro h1 { max-width: none; font: 750 30px/1.2 var(--games-font); letter-spacing: -.035em; }
+.games-intro h1::before, .games-intro h1::after { content: "✦"; margin: 0 14px; color: #a6a900; font-size: 17px; vertical-align: 3px; }
+.games-intro .section-deck { max-width: none; margin-top: 10px; color: #4d4850; font: 400 14px/1.5 var(--games-font); }
+.games-section { margin-block: 28px; }
+.games-section > h2 { margin: 0 0 6px; padding-bottom: 7px; border-bottom: 1px solid #d8d2da; font: 700 15px/1.4 var(--games-font); letter-spacing: 0; }
+.game-title { min-width: 0; margin: 0; font: 600 15px/1.45 var(--games-font); letter-spacing: -.01em; overflow-wrap: anywhere; }
+.game-hours { flex-shrink: 0; color: #27232a; font: 400 12px/1.5 var(--games-mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.game-meta { color: #716b73; font: 400 12px/1.65 var(--games-mono); }
+.game-meta { display: flex; flex-wrap: wrap; column-gap: 8px; margin: 3px 0 0; }
+.game-meta > span + span::before { content: "·"; margin-right: 8px; }
+.game-status { text-transform: capitalize; }
+.game-thoughts { margin: 5px 0 0; max-width: 70ch; color: #514b54; font: 400 13px/1.55 var(--games-font); overflow-wrap: anywhere; }
+.game-year { margin-top: 20px; }
+.game-year-title { margin: 0; padding: 3px 0 4px; color: #17151a; font: 700 17px/1.4 var(--games-font); letter-spacing: -.01em; font-variant-numeric: tabular-nums; }
+.game-year-title::before { content: "•"; margin-right: 10px; color: var(--games-accent); }
+.game-undated { margin-top: 22px; }
+.game-undated > h3 { margin: 0; font: 700 17px/1.4 var(--games-font); letter-spacing: -.01em; }
+.game-undated > .game-meta { margin-bottom: 4px; font-family: var(--games-font); font-size: 12px; }
+.game-favorite { color: var(--games-accent); font-size: 12px; }
+.games-paper .site-footer { margin-top: 28px; color: #716b73; border-top: 1px solid #d8d2da; font-family: var(--games-font); }
+.games-paper .site-footer a { color: #514b54; }
+@media (max-width: 480px) {
+ .game-title { font-size: 14px; }
+ .game-meta { font-size: 12px; }
+}
+
+@media (max-width: 560px) {
+ .games-layout { width: 100%; margin: 0 auto 20px; }
+ .games-paper { padding: 25px 14px 15px; border-width: 4px; box-shadow: 4px 4px 0 rgb(0 0 0 / 22%); }
+ .games-intro { margin-bottom: 24px; }
+ .games-intro h1 { font-size: 27px; }
+ .games-intro h1::before, .games-intro h1::after { margin-inline: 8px; font-size: 13px; }
+ .games-intro .section-deck { font-size: 13px; }
+ .game-title { font-size: 14px; }
+}
+
+/* Game log views: chronology stays primary; recorded hours offer a second lens. */
+.game-view-switch {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin: -9px 0 24px;
+  padding: 0;
+  border: 0;
+}
+
+.game-view-switch button {
+  padding: 5px 9px;
+  color: #716b73;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  font: 600 12px/1.25 var(--mono);
+}
+
+.game-view-switch button:hover {
+  color: #6f1986;
+  background: #eee7f1;
+}
+
+.game-view-switch button.is-active {
+  color: #6f1986;
+  border-color: #a522ce;
+  background: #f4edf6;
+}
+
+[data-game-panel][hidden] {
+  display: none;
+}
+
+.game-playtime-list {
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: played-rank;
+}
+
+.game-playtime-list > li {
+  counter-increment: played-rank;
+  border-bottom: 1px dotted #d8d2da;
+}
+
+.game-playtime-list > li::before {
+  content: counter(played-rank, decimal-leading-zero);
+  float: left;
+  width: 28px;
+  padding-top: 6px;
+  color: #8a818c;
+  font: 400 10px/1.5 var(--mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.game-playtime-list .game-entry {
+  margin-left: 28px;
+}
+
+.game-playtime-list .game-entry > summary {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  padding: 4px 3px;
+}
+
+.game-playtime-list .game-hours {
+  color: #716b73;
+}
+
+@media (max-width: 560px) {
+  .game-view-switch {
+    margin-bottom: 20px;
+  }
+
+  .game-view-switch button {
+    min-height: 38px;
+  }
+}
+
+/* Coloured inks and saved scraps keep the notebook from feeling uniform. */
+.games-page {
+  --game-plum: #875486;
+  --game-blue: #477d91;
+  --game-coral: #b75e54;
+  --game-green: #66805e;
+  --game-gold: #a77a2b;
+}
+
+.games-paper {
+  background:
+    linear-gradient(115deg, rgb(246 218 226 / 34%), transparent 23%),
+    linear-gradient(300deg, rgb(213 232 223 / 38%), transparent 27%),
+    #fbf8ee;
+  border-color: var(--game-plum);
+}
+
+.game-view-switch button:nth-child(1).is-active {
+  color: #70426f;
+  border-color: #a86aa5;
+  background: #f3e5f0;
+}
+
+.game-view-switch button:nth-child(2).is-active {
+  color: #356b7d;
+  border-color: #68a0b2;
+  background: #e4f1f4;
+}
+
+.games-history > h2 {
+  color: #356b7d;
+  background: linear-gradient(90deg, rgb(116 183 202 / 21%), transparent 78%);
+  border-left-color: var(--game-blue);
+}
+
+.games-backlog > h2 {
+  color: #8f433d;
+  background: linear-gradient(90deg, rgb(221 132 118 / 20%), transparent 78%);
+  border-left-color: var(--game-coral);
+}
+
+.games-playtime > h2 {
+  color: #6c4e12;
+  background: linear-gradient(90deg, rgb(224 184 92 / 23%), transparent 78%);
+  border-left-color: var(--game-gold);
+}
+
+.game-year {
+  --year-ink: var(--game-plum);
+  --year-wash: rgb(164 107 160 / 11%);
+}
+
+.game-year:nth-of-type(4n + 1) {
+  --year-ink: var(--game-blue);
+  --year-wash: rgb(92 160 181 / 12%);
+}
+
+.game-year:nth-of-type(4n + 2) {
+  --year-ink: var(--game-coral);
+  --year-wash: rgb(205 103 91 / 11%);
+}
+
+.game-year:nth-of-type(4n + 3) {
+  --year-ink: var(--game-green);
+  --year-wash: rgb(111 139 101 / 12%);
+}
+
+.game-year-title::before {
+  color: var(--year-ink);
+}
+
+.game-year .game-name-list > li::before {
+  color: var(--year-ink);
+}
+
+.game-year .game-entry > summary:hover {
+  background: linear-gradient(90deg, var(--year-wash), transparent 92%);
+}
+
+.game-entry--playing .game-entry-details {
+  background-color: #f4edc8;
+  border-left-color: #b39036;
+}
+
+.game-entry--completed .game-entry-details {
+  background-color: #f5e7e5;
+  border-left-color: #bd7169;
+}
+
+.game-entry--backlog .game-entry-details {
+  background-color: #e8f0f2;
+  border-left-color: #6595a4;
+}
+
+.game-entry--played .game-entry-details {
+  background-color: #e9f0e2;
+  border-left-color: #718b68;
+}
+
+.game-entry--paused .game-entry-details {
+  background-color: #eee7f2;
+  border-left-color: #92719e;
+}
+
+.game-entry--dropped .game-entry-details {
+  background-color: #ece8e1;
+  border-left-color: #8b7d6d;
+}
+
+.game-entry-note--with-artifact {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 108px;
+  gap: 14px;
+}
+
+.game-entry-writing {
+  min-width: 0;
+}
+
+.game-personal-label {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px 8px;
+  margin: 0 80px 8px 0;
+  color: #7b3f52;
+  font: italic 600 14px/1.4 var(--journal-body);
+}
+
+.game-personal-label span {
+  color: var(--ui-muted);
+  font: 700 8px/1.8 var(--journal-ui);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.game-resume-note {
+  margin: 11px 0 2px;
+  padding: 8px 10px;
+  color: #315d6c;
+  background: rgb(197 226 232 / 52%);
+  border: 1px dashed rgb(53 107 125 / 35%);
+  transform: rotate(-.18deg);
+}
+
+.game-resume-note strong {
+  display: block;
+  margin-bottom: 2px;
+  font: 700 8px/1.4 var(--journal-ui);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.game-resume-note p {
+  margin: 0;
+  font: italic 400 14px/1.45 var(--journal-body);
+}
+
+.game-artifact {
+  align-self: start;
+  margin: 24px 0 0;
+  padding: 4px 4px 10px;
+  background: #fffaf0;
+  box-shadow: 1px 2px 5px rgb(55 57 43 / 20%);
+  transform: rotate(1.2deg);
+}
+
+.game-artifact img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  filter: saturate(.9) contrast(.96);
+}
+
+.game-entry[open] .game-memory-mark {
+  color: var(--game-coral);
+}
+
+@media (max-width: 460px) {
+  .game-entry-note--with-artifact {
+    grid-template-columns: minmax(0, 1fr) 76px;
+    gap: 9px;
+  }
+
+  .game-personal-label {
+    margin-right: 0;
+  }
+
+  .game-artifact {
+    margin-top: 28px;
+    padding: 3px 3px 8px;
+  }
+}
+
+/* Shared indie room: the rest of the site now lives beside the game log. */
+body:not(.games-page) {
+  --serif: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --mono: ui-monospace, "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  --display: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  min-height: 100vh;
+  color: #17151a;
+  background-color: #e8e3d7;
+  background-image: url("../images/site-wallpaper.webp");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  font: 400 15px/1.58 var(--serif);
+  text-transform: none;
+}
+
+body:not(.games-page) .page-shell {
+  width: min(900px, calc(100% - 16px));
+  margin: 8px auto 40px;
+  background: transparent;
+}
+
+body:not(.games-page) .site-header {
+  padding: 12px 22px 10px;
+  color: #211f1c;
+}
+
+body:not(.games-page) .site-title,
+body:not(.games-page) .site-nav a {
+  color: #514d47;
+}
+
+body:not(.games-page) .masthead-name {
+  color: #211f1c;
+  font: 750 clamp(30px, 5vw, 40px)/1.05 var(--serif);
+  letter-spacing: -.035em;
+}
+
+body:not(.games-page) .masthead-byline,
+body:not(.games-page) .site-nav a[aria-current="page"] {
+  color: #d59be0;
+}
+
+body:not(.games-page) .masthead-byline {
+  font: italic 400 14px/1.2 Georgia, "Times New Roman", serif;
+}
+
+body:not(.games-page) .journal-identity {
+  padding: 12px 0 13px;
+}
+
+body:not(.games-page) .site-nav {
+  gap: 8px 18px;
+}
+
+body:not(.games-page) .site-nav a {
+  padding-bottom: 3px;
+  font: 600 14px/1.2 var(--serif);
+}
+
+body:not(.games-page) .site-nav a:hover {
+  color: #17151a;
+}
+
+body:not(.games-page) .page-main {
+  --paper: #f7f6f7;
+  --node-fill: #f7f6f7;
+  --image-paper: #fff;
+  --ink: #17151a;
+  --muted: #716b73;
+  --faint: #d8d2da;
+  --accent: #7a258f;
+  --notebook-blue: #5b6572;
+  --label-ink: #fff;
+  width: min(760px, 100%);
+  margin: 50px auto 0;
+  padding: 38px 34px 22px;
+  color: var(--ink);
+  background: var(--paper);
+  border: 6px double #a522ce;
+  box-shadow: 7px 7px 0 rgb(0 0 0 / 24%);
+}
+
+body:not(.games-page) .section-header {
+  margin-bottom: 24px;
+  padding: 0;
+  text-align: center;
+}
+
+body:not(.games-page) .section-header::before,
+body:not(.games-page) .section-header::after,
+body:not(.games-page) .timeline-page::before,
+body:not(.games-page) .timeline-year > h2::before,
+body:not(.games-page) .timeline-year > h2::after,
+body:not(.games-page) .timeline-item::before,
+body:not(.games-page) .timeline-item::after,
+body:not(.games-page) .timeline-date::before,
+body:not(.games-page) .timeline-date::after,
+body:not(.games-page) .timeline-origin::before,
+body:not(.games-page) .timeline-origin::after,
+body:not(.games-page) .library-index-item::before,
+body:not(.games-page) .library-index-title::before,
+body:not(.games-page) .library-index-title::after,
+body:not(.games-page) .photo-month::before {
+  display: none;
+}
+
+body:not(.games-page) .section-header h1,
+body:not(.games-page) .prose-page > h1,
+body:not(.games-page) .post-article > h1,
+body:not(.games-page) .photo-page > h1 {
+  max-width: none;
+  margin: 0;
+  font: 750 clamp(28px, 5vw, 34px)/1.15 var(--serif);
+  letter-spacing: -.035em;
+}
+
+body:not(.games-page) .section-header h1::before,
+body:not(.games-page) .section-header h1::after {
+  content: "✦";
+  margin: 0 12px;
+  color: #a6a900;
+  font-size: 14px;
+  vertical-align: 3px;
+}
+
+body:not(.games-page) .eyebrow {
+  margin-bottom: 5px;
+  color: #7a258f;
+  font: 600 11px/1.3 var(--mono);
+  letter-spacing: .05em;
+}
+
+body:not(.games-page) .section-header .section-deck {
+  max-width: 52ch;
+  margin: 9px auto 0;
+  color: var(--muted);
+  font: 400 14px/1.5 var(--serif);
+}
+
+body:not(.games-page) .timeline,
+body:not(.games-page) .timeline-page {
+  padding-top: 0;
+}
+
+body:not(.games-page) .timeline-year {
+  margin-top: 24px;
+}
+
+body:not(.games-page) .timeline-year > h2 {
+  display: block;
+  margin: 0 0 5px;
+  padding: 0 0 7px;
+  border-bottom: 1px solid var(--faint);
+  font: 700 16px/1.3 var(--serif);
+  letter-spacing: -.01em;
+}
+
+body:not(.games-page) .timeline-year > h2 span {
+  min-width: 0;
+  padding: 0;
+  background: transparent;
+}
+
+body:not(.games-page) .timeline-item {
+  display: grid;
+  grid-template-columns: 76px minmax(0, 1fr);
+  gap: 12px;
+  border-bottom: 1px dotted #d8d2da;
+}
+
+body:not(.games-page) .timeline-date {
+  padding: 10px 0 8px;
+}
+
+body:not(.games-page) .timeline-date time {
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: start;
+  align-items: baseline;
+  gap: 4px;
+  width: auto;
+}
+
+body:not(.games-page) .timeline-month-marker,
+body:not(.games-page) .timeline-day,
+body:not(.games-page) .timeline-weekday {
+  margin: 0;
+  padding: 0;
+  color: var(--muted);
+  background: transparent;
+  font: 500 11px/1.4 var(--mono);
+  letter-spacing: 0;
+}
+
+body:not(.games-page) .timeline-weekday {
+  display: none;
+}
+
+body:not(.games-page) .timeline-note {
+  margin: 0;
+  padding: 9px 0 10px;
+}
+
+body:not(.games-page) .timeline-note::after {
+  display: none;
+}
+
+body:not(.games-page) .timeline-entry-title,
+body:not(.games-page) .photo-month a,
+body:not(.games-page) .library-index-title {
+  padding: 0;
+  font: 650 16px/1.35 var(--serif);
+  letter-spacing: -.012em;
+  text-shadow: none;
+  text-transform: none;
+}
+
+body:not(.games-page) .timeline-content,
+body:not(.games-page) .note-details {
+  text-transform: none;
+}
+
+body:not(.games-page) .timeline-content p {
+  max-width: none;
+  font-size: 14px;
+  line-height: 1.58;
+}
+
+body:not(.games-page) .note-details,
+body:not(.games-page) .library-scope,
+body:not(.games-page) .post-meta,
+body:not(.games-page) .photo-date {
+  color: var(--muted);
+  font: 400 11px/1.5 var(--mono);
+}
+
+body:not(.games-page) .timeline-origin {
+  margin-top: 12px;
+  padding: 0;
+  color: var(--muted);
+  font: 400 11px/1.4 var(--mono);
+}
+
+body:not(.games-page) .about-page > .section-header,
+body:not(.games-page) .about-page > p,
+body:not(.games-page) .archive-intro--timeline + .empty-archive {
+  max-width: 62ch;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+body:not(.games-page) .library-index-item {
+  padding: 13px 0;
+  border-bottom: 1px dotted var(--faint);
+}
+
+body:not(.games-page) .library-index-item + .library-index-item {
+  margin-top: 0;
+}
+
+body:not(.games-page) .library-index-description {
+  font-size: 14px;
+}
+
+body:not(.games-page) .photo-month {
+  display: grid;
+  grid-template-columns: 76px minmax(0, 1fr);
+  gap: 12px;
+  padding: 9px 0;
+  border-bottom: 1px dotted var(--faint);
+}
+
+body:not(.games-page) .photo-month > h3 {
+  padding: 2px 0;
+  background: transparent;
+  font: 600 12px/1.3 var(--mono);
+}
+
+body:not(.games-page) .photo-month > ol {
+  padding-left: 0;
+}
+
+body:not(.games-page) .prose-page,
+body:not(.games-page) .post-article {
+  max-width: 64ch;
+}
+
+body:not(.games-page) .post-article > h1,
+body:not(.games-page) .photo-page > h1 {
+  margin-bottom: 7px;
+}
+
+body:not(.games-page) .post-meta {
+  margin: 0 0 18px !important;
+  padding: 0;
+  color: var(--muted);
+  background: transparent;
+  clip-path: none;
+}
+
+body:not(.games-page) .post-article h2 { font-size: 22px; }
+body:not(.games-page) .post-article h3 { font-size: 18px; }
+body:not(.games-page) .post-article h4 { font-size: 16px; }
+
+body:not(.games-page) .site-footer {
+  margin-top: 28px;
+  padding-top: 12px;
+  border-top: 1px solid var(--faint);
+  font: 400 11px/1.5 var(--mono);
+}
+
+@media (max-width: 620px) {
+  body:not(.games-page) .page-shell {
+    width: calc(100% - 10px);
+    margin-top: 5px;
+  }
+
+  body:not(.games-page) .site-header {
+    padding: 10px 8px 8px;
+  }
+
+  body:not(.games-page) .masthead-name {
+    max-width: none;
+    font-size: clamp(25px, 8vw, 32px);
+  }
+
+  body:not(.games-page) .site-nav {
+    gap: 0 10px;
+  }
+
+  body:not(.games-page) .site-nav a {
+    min-height: 36px;
+    padding: 8px 1px;
+    font-size: 13px;
+  }
+
+  body:not(.games-page) .page-main {
+    width: 100%;
+    margin-top: 38px;
+    padding: 25px 14px 15px;
+    border-width: 4px;
+    box-shadow: 4px 4px 0 rgb(0 0 0 / 22%);
+  }
+
+  body:not(.games-page) .section-header h1::before,
+  body:not(.games-page) .section-header h1::after {
+    margin-inline: 7px;
+    font-size: 11px;
+  }
+
+  body:not(.games-page) .timeline-item,
+  body:not(.games-page) .photo-month {
+    grid-template-columns: 58px minmax(0, 1fr);
+    gap: 8px;
+  }
+
+  body:not(.games-page) .timeline-note {
+    padding-left: 0;
+  }
+
+  body:not(.games-page) .about-page > .section-header,
+  body:not(.games-page) .about-page > p {
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+/* Cozy game-journal skin: warm surfaces and restrained menu-like details. */
+:root {
+  color-scheme: light;
+  --ui-ink: #30342b;
+  --ui-muted: #6f705f;
+  --ui-sage: #65705b;
+  --ui-sage-dark: #434b3d;
+  --ui-bronze: #a1783f;
+  --ui-bronze-dark: #76542d;
+  --ui-paper: #f3eedf;
+  --ui-paper-deep: #e9e0c9;
+  --ui-rule: #c9bea3;
+}
+
+.games-page,
+body:not(.games-page) {
+  color: var(--ui-ink);
+}
+
+.games-site-shell .site-header,
+body:not(.games-page) .site-header {
+  color: var(--ui-ink);
+  text-shadow: 0 1px rgb(255 255 255 / 55%);
+}
+
+.games-site-shell .site-title,
+.games-site-shell .site-nav a,
+body:not(.games-page) .site-title,
+body:not(.games-page) .site-nav a {
+  color: var(--ui-sage-dark);
+}
+
+.games-site-shell .masthead-name,
+body:not(.games-page) .masthead-name {
+  color: #292d26;
+}
+
+.games-site-shell .masthead-byline,
+.games-site-shell .site-nav a[aria-current="page"],
+body:not(.games-page) .masthead-byline,
+body:not(.games-page) .site-nav a[aria-current="page"] {
+  color: var(--ui-bronze-dark);
+}
+
+.site-nav {
+  border-color: rgb(67 75 61 / 24%);
+}
+
+.site-nav a {
+  border-radius: 3px;
+}
+
+.site-nav a:hover {
+  color: #242820 !important;
+  background: rgb(243 238 223 / 58%);
+}
+
+.site-nav a[aria-current="page"]::after {
+  height: 3px;
+  background: var(--ui-bronze);
+  box-shadow: 0 1px 0 rgb(255 255 255 / 60%);
+}
+
+body:not(.games-page) .page-main,
+.games-paper {
+  --paper: var(--ui-paper);
+  --node-fill: var(--ui-paper);
+  --image-paper: #faf7ed;
+  --ink: var(--ui-ink);
+  --muted: var(--ui-muted);
+  --faint: var(--ui-rule);
+  --accent: var(--ui-bronze-dark);
+  --games-accent: var(--ui-bronze-dark);
+  color: var(--ui-ink);
+  background:
+    radial-gradient(circle at 12px 12px, rgb(161 120 63 / 46%) 0 2px, transparent 2.5px),
+    radial-gradient(circle at calc(100% - 12px) 12px, rgb(161 120 63 / 46%) 0 2px, transparent 2.5px),
+    linear-gradient(135deg, rgb(255 255 255 / 38%), transparent 34%),
+    var(--ui-paper);
+  border: 2px solid var(--ui-sage);
+  border-radius: 7px;
+  box-shadow:
+    inset 0 0 0 4px rgb(255 255 255 / 38%),
+    inset 0 0 32px rgb(118 84 45 / 7%),
+    0 0 0 1px var(--ui-bronze-dark),
+    0 16px 38px rgb(55 57 43 / 28%);
+}
+
+.page-main::before,
+.games-paper::before {
+  height: 6px;
+  background: linear-gradient(
+    90deg,
+    var(--ui-sage-dark) 0 18%,
+    var(--ui-bronze) 18% 24%,
+    var(--ui-paper-deep) 24% 76%,
+    var(--ui-bronze) 76% 82%,
+    var(--ui-sage-dark) 82%
+  );
+  border-bottom: 1px solid rgb(67 75 61 / 38%);
+}
+
+body:not(.games-page) .section-header h1,
+.games-intro h1 {
+  color: var(--ui-sage-dark);
+  text-shadow: 0 1px #fff, 0 2px rgb(118 84 45 / 14%);
+}
+
+body:not(.games-page) .section-header h1::before,
+body:not(.games-page) .section-header h1::after,
+.games-intro h1::before,
+.games-intro h1::after {
+  color: var(--ui-bronze);
+}
+
+body:not(.games-page) .eyebrow,
+.games-intro .section-deck {
+  color: var(--ui-muted);
+}
+
+.games-section > h2,
+body:not(.games-page) .timeline-year > h2,
+.library-section > h2,
+.photo-month > h3 {
+  color: var(--ui-sage-dark);
+  border-color: var(--ui-rule);
+}
+
+.games-section > h2 {
+  padding: 6px 9px;
+  background: linear-gradient(90deg, rgb(101 112 91 / 14%), transparent 78%);
+  border-left: 3px solid var(--ui-bronze);
+}
+
+.game-year-title,
+.game-undated > h3 {
+  color: var(--ui-sage-dark);
+}
+
+.game-name-list > li::marker,
+.game-favorite {
+  color: var(--ui-bronze-dark);
+}
+
+.game-entry > summary,
+.timeline-item,
+.library-index-item,
+.photo-month li {
+  border-radius: 4px;
+}
+
+.game-entry > summary:hover,
+.timeline-item:hover,
+.library-index-item:hover,
+.photo-month li:hover {
+  color: var(--ui-sage-dark);
+  background: rgb(101 112 91 / 10%);
+}
+
+.game-entry[open] > summary {
+  color: var(--ui-bronze-dark);
+}
+
+.game-entry-details {
+  color: var(--ui-ink);
+  background: var(--ui-paper-deep);
+  border-left-color: var(--ui-bronze);
+  box-shadow: inset 0 0 0 1px rgb(118 84 45 / 12%);
+}
+
+.game-entry-details dt,
+.game-meta,
+.note-details,
+.post-meta,
+.photo-date {
+  color: var(--ui-muted);
+}
+
+.site-footer {
+  color: var(--ui-muted) !important;
+  border-color: var(--ui-rule) !important;
+}
+
+.site-footer a {
+  color: var(--ui-sage-dark) !important;
+}
+
+@media (max-width: 620px) {
+  body:not(.games-page) .page-main,
+  .games-paper {
+    border-radius: 5px;
+    box-shadow:
+      inset 0 0 0 3px rgb(255 255 255 / 34%),
+      0 0 0 1px var(--ui-bronze-dark),
+      0 8px 22px rgb(55 57 43 / 24%);
+  }
+}
+
+/* The public log shows names first; facts and memories unfold on request. */
+.game-name-list {
+  margin: 7px 0 0;
+  padding-left: 25px;
+  list-style: circle;
+}
+
+.game-name-list > li {
+  padding: 2px 0;
+}
+
+.game-name-list > li::marker {
+  color: var(--games-accent);
+  font-size: .9em;
+}
+
+.game-entry > summary {
+  width: fit-content;
+  padding: 2px 3px;
+  cursor: pointer;
+  list-style: none;
+}
+
+.game-entry > summary::-webkit-details-marker {
+  display: none;
+}
+
+.game-entry > summary:hover {
+  color: #6f1986;
+  background: #eee7f1;
+}
+
+.game-entry > summary:focus-visible {
+  outline: 2px solid var(--games-accent);
+  outline-offset: 2px;
+}
+
+.game-entry[open] > summary {
+  color: #6f1986;
+  font-weight: 700;
+}
+
+.game-entry-details {
+  max-width: 530px;
+  margin: 4px 0 8px 4px;
+  padding: 8px 10px;
+  color: #4e4851;
+  background: #eeecef;
+  border-left: 2px solid var(--games-accent);
+  font-size: 13px;
+}
+
+.game-entry-details dl {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px 18px;
+  margin: 0;
+}
+
+.game-entry-details dl > div {
+  display: flex;
+  gap: 5px;
+}
+
+.game-entry-details dt {
+  color: #756d78;
+  font: 400 11px/1.6 var(--games-mono);
+  text-transform: lowercase;
+}
+
+.game-entry-details dd {
+  margin: 0;
+  font: 500 12px/1.5 var(--games-font);
+  text-transform: capitalize;
+}
+
+.game-entry-details .game-thoughts {
+  margin: 7px 0 0;
+  padding-top: 7px;
+  border-top: 1px solid #d7d0d9;
+}
+
+/* One typography system on every route; the small byline uses a local serif. */
+.masthead-name {
+  max-width: none;
+  font: 750 clamp(30px, 5vw, 40px)/1.05 var(--serif);
+  letter-spacing: -.035em;
+}
+
+.masthead-byline {
+  font: italic 400 14px/1.2 Georgia, "Times New Roman", serif;
+}
+
+/* Final alignment and interaction pass. */
+.site-header {
+  width: min(760px, 100%);
+  margin-inline: auto;
+}
+
+.site-nav {
+  padding-block: 7px;
+  border-top: 1px solid rgb(33 31 28 / 16%);
+  border-bottom: 1px solid rgb(33 31 28 / 16%);
+}
+
+.site-nav a[aria-current="page"] {
+  position: relative;
+}
+
+.site-nav a[aria-current="page"]::after {
+  display: block;
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: -8px;
+  left: 0;
+  height: 2px;
+  background: #d59be0;
+}
+
+.page-main,
+.games-paper {
+  position: relative;
+  overflow: hidden;
+}
+
+.page-main::before,
+.games-paper::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #a522ce 0 20%, #d3a933 20% 25%, transparent 25% 100%);
+}
+
+.timeline-item:hover,
+.library-index-item:hover,
+.photo-month li:hover {
+  background: rgb(165 34 206 / 6%);
+}
+
+.timeline-item,
+.library-index-item,
+.photo-month li {
+  border-radius: 2px;
+}
+
+.timeline-entry-title a,
+.library-index-title a,
+.photo-month a,
+.game-entry > summary {
+  text-underline-offset: .18em;
+}
+
+.timeline-entry-title a:focus-visible,
+.library-index-title a:focus-visible,
+.photo-month a:focus-visible {
+  border-radius: 2px;
+}
+
+@media (max-width: 620px) {
+  .site-nav {
+    justify-content: center;
+    gap-inline: 9px;
+    padding-block: 4px;
+  }
+
+  .site-nav a[aria-current="page"]::after {
+    bottom: -5px;
+  }
+}
+
+.site-nav a {
+  font: 600 14px/1.2 var(--serif);
+}
+
+.games-paper {
+  font: 400 15px/1.58 var(--serif);
+}
+
+.games-intro h1,
+.section-header h1,
+.prose-page > h1,
+.post-article > h1,
+.photo-page > h1 {
+  font-family: var(--serif);
+}
+
+.games-intro h1 {
+  font-size: clamp(28px, 5vw, 34px);
+}
+
+.games-section > h2,
+.game-title,
+.game-thoughts,
+.game-year-title,
+.game-undated > h3,
+.games-paper .site-footer {
+  font-family: var(--serif);
+}
+
+.game-meta,
+.game-entry-details dt {
+  font-family: var(--mono);
+}
+
+/* Every route uses the same centered title block inside its paper panel. */
+.prose-page,
+.post-article {
+  margin-inline: auto;
+}
+
+.post-header .post-meta {
+  width: auto;
+  margin: 9px auto 0 !important;
+}
+
+.photo-header .photo-date {
+  display: block;
+  margin-top: 9px;
+}
+
+.post-header + :where(p, h2, h3, blockquote, ul, ol),
+.prose-page > .section-header + p {
+  margin-top: 0;
+}
+
+@media (max-width: 620px) {
+  .masthead-name {
+    font-size: clamp(25px, 8vw, 32px);
+  }
+
+  .site-nav a {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 560px) {
+  .games-site-shell { width: calc(100% - 10px); margin-top: 5px; }
+  .game-name-list {
+    padding-left: 22px;
+  }
+
+  .game-name-list > li {
+    padding-block: 3px;
+  }
+
+  .game-entry > summary {
+    max-width: 100%;
+  }
+
+  .game-entry-details {
+    margin-left: 0;
+  }
+}
+
+/* Final type and spacing system shared by every page. */
+:root {
+  --journal-body: Charter, "Bitstream Charter", "Sitka Text", Cambria, Georgia, serif;
+  --journal-display: "Avenir Next", Avenir, "Trebuchet MS", ui-sans-serif, system-ui, sans-serif;
+  --journal-ui: "Avenir Next", Avenir, "Segoe UI", ui-sans-serif, system-ui, sans-serif;
+}
+
+.games-page,
+body:not(.games-page),
+.games-paper {
+  font-family: var(--journal-body);
+}
+
+.games-site-shell .site-header,
+body:not(.games-page) .site-header {
+  padding: 16px 22px 0;
+}
+
+.journal-identity {
+  padding: 0 0 16px;
+}
+
+.masthead-name {
+  font-family: var(--journal-display);
+  font-weight: 750;
+  letter-spacing: -.04em;
+}
+
+.masthead-byline {
+  margin-top: 7px;
+  font-family: var(--journal-body);
+}
+
+.site-nav {
+  gap: 8px 20px;
+  padding-block: 9px;
+  font-family: var(--journal-ui);
+}
+
+.site-nav a {
+  font-family: var(--journal-ui);
+  font-weight: 650;
+  letter-spacing: .015em;
+}
+
+.site-nav a[aria-current="page"]::after {
+  bottom: -10px;
+  height: 3px;
+  background: var(--ui-bronze);
+}
+
+body:not(.games-page) .page-main,
+.games-layout {
+  margin-top: 30px;
+}
+
+.games-layout {
+  margin-right: auto;
+  margin-left: auto;
+}
+
+body:not(.games-page) .page-main,
+.games-paper {
+  padding: 42px 38px 26px;
+  font-size: 16px;
+  line-height: 1.62;
+}
+
+.page-main::before,
+.games-paper::before {
+  height: 6px;
+  background: linear-gradient(
+    90deg,
+    var(--ui-sage-dark) 0 18%,
+    var(--ui-bronze) 18% 24%,
+    var(--ui-paper-deep) 24% 76%,
+    var(--ui-bronze) 76% 82%,
+    var(--ui-sage-dark) 82%
+  );
+}
+
+.section-header,
+body:not(.games-page) .section-header,
+.games-intro {
+  margin: 0 0 30px;
+  padding: 0 0 23px;
+  text-align: center;
+}
+
+.timeline-intro,
+.archive-intro--timeline,
+.library-page-intro {
+  padding-left: 0;
+}
+
+.section-header .eyebrow {
+  margin: 0 0 7px;
+  font-family: var(--journal-ui);
+  font-size: 11px;
+  line-height: 1.35;
+  letter-spacing: .1em;
+}
+
+.section-header h1,
+.games-intro h1,
+.prose-page > h1,
+.post-article > h1,
+.photo-page > h1 {
+  font-family: var(--journal-display);
+  font-weight: 750;
+  line-height: 1.12;
+  letter-spacing: -.035em;
+}
+
+.section-header .section-deck,
+.games-intro .section-deck {
+  margin-top: 11px;
+  font-family: var(--journal-body);
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+.games-section > h2,
+.timeline-year > h2,
+.post-article h2,
+.post-article h3,
+.library-index-title,
+.timeline-entry-title,
+.photo-month a,
+.game-title,
+.game-year-title,
+.game-undated > h3 {
+  font-family: var(--journal-display);
+}
+
+.timeline-item,
+.library-index-item,
+.photo-month li {
+  border-radius: 4px;
+}
+
+.timeline-content,
+.post-article,
+.prose-page,
+.library-index-description,
+.game-thoughts {
+  font-family: var(--journal-body);
+}
+
+.post-meta,
+.photo-date,
+.note-details,
+.game-meta,
+.game-entry-details dt {
+  font-family: var(--journal-ui);
+  letter-spacing: .02em;
+}
+
+@media (max-width: 620px) {
+  .games-site-shell .site-header,
+  body:not(.games-page) .site-header {
+    padding: 12px 10px 0;
+  }
+
+  .journal-identity {
+    padding-bottom: 12px;
+  }
+
+  .site-nav {
+    gap: 0 11px;
+    padding-block: 5px;
+  }
+
+  .site-nav a[aria-current="page"]::after {
+    bottom: -6px;
+  }
+
+  body:not(.games-page) .page-main,
+  .games-layout {
+    margin-top: 22px;
+  }
+
+  body:not(.games-page) .page-main,
+  .games-paper {
+    padding: 30px 17px 18px;
+    font-size: 15.5px;
+  }
+
+  .section-header,
+  body:not(.games-page) .section-header,
+  .games-intro {
+    margin-bottom: 24px;
+    padding-bottom: 19px;
+  }
+}
+
+/* Keep timeline ornament overrides last so legacy timeline CSS cannot win. */
+body:not(.games-page) .timeline-page::before,
+body:not(.games-page) .timeline-intro::before,
+body:not(.games-page) .timeline-intro::after {
+  display: none;
+  content: none;
+}
+
+body:not(.games-page) .timeline-intro {
+  background: transparent;
+}
+
+body:not(.games-page) .timeline-intro h1::before,
+body:not(.games-page) .timeline-intro h1::after {
+  display: inline;
+  content: "✦";
+  margin-inline: 12px;
+  color: var(--ui-bronze);
+  font-size: 14px;
+  vertical-align: 3px;
+}
+
+@media (max-width: 620px) {
+  body:not(.games-page) .timeline-intro h1::before,
+  body:not(.games-page) .timeline-intro h1::after {
+    margin-inline: 8px;
+    font-size: 11px;
+  }
+}
+
+/* Outer layout wrappers must not paint a second sheet over the wallpaper. */
+.page-shell,
+body:not(.games-page) .page-shell,
+.games-site-shell {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  filter: none;
+}
+
+.page-shell::before,
+.page-shell::after,
+.games-site-shell::before,
+.games-site-shell::after {
+  display: none;
+  content: none;
+}
+
+/* A shared wide sheet with the original readable content measures intact. */
+body:not(.games-page) .page-main {
+  isolation: isolate;
+  overflow: visible;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+body:not(.games-page) .page-main::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: min(820px, calc(100vw - 16px));
+  translate: -50% 0;
+  background:
+    radial-gradient(circle at 12px 12px, rgb(161 120 63 / 46%) 0 2px, transparent 2.5px),
+    radial-gradient(circle at calc(100% - 12px) 12px, rgb(161 120 63 / 46%) 0 2px, transparent 2.5px),
+    linear-gradient(135deg, rgb(255 255 255 / 38%), transparent 34%),
+    var(--ui-paper);
+  border: 2px solid var(--ui-sage);
+  border-radius: 7px;
+  box-shadow:
+    inset 0 0 0 4px rgb(255 255 255 / 38%),
+    inset 0 0 32px rgb(118 84 45 / 7%),
+    0 0 0 1px var(--ui-bronze-dark),
+    0 16px 38px rgb(55 57 43 / 28%);
+}
+
+body:not(.games-page) .page-main::before {
+  right: auto;
+  left: 50%;
+  z-index: 1;
+  width: min(820px, calc(100vw - 16px));
+  translate: -50% 0;
+  border-radius: 6px 6px 0 0;
+}
+
+/* Expressive display type; reading text and archive rows stay deliberately calm. */
+.masthead-name,
+.section-header h1,
+.games-intro h1,
+.prose-page > h1,
+.post-article > h1,
+.photo-page > h1,
+.games-section > h2,
+.timeline-year > h2,
+.post-article h2,
+.post-article h3,
+.library-index-title,
+.game-year-title,
+.game-undated > h3 {
+  font-family: "Fraunces", Georgia, serif;
+  font-optical-sizing: auto;
+}
+
+.section-header h1,
+.games-intro h1,
+.prose-page > h1,
+.post-article > h1,
+.photo-page > h1 {
+  font-weight: 750;
+  letter-spacing: -.025em;
+}
+
+.games-section > h2,
+.timeline-year > h2,
+.post-article h2,
+.post-article h3,
+.library-index-title,
+.game-year-title,
+.game-undated > h3 {
+  font-weight: 680;
+  letter-spacing: -.012em;
+}
+
+@media (max-width: 620px) {
+  body:not(.games-page) .page-main::before,
+  body:not(.games-page) .page-main::after {
+    width: 100%;
+  }
+}
+
+/* Game archive notebook: an index first, with facts and memories tucked inside. */
+.game-rediscovery {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 10px;
+  min-height: 24px;
+  margin: -13px 0 23px;
+  color: var(--ui-muted);
+  font: 400 11px/1.4 var(--journal-ui);
+}
+
+.game-rediscovery button {
+  padding: 1px 2px 2px;
+  color: var(--ui-sage-dark);
+  background: transparent;
+  border: 0;
+  border-bottom: 1px dotted var(--ui-bronze-dark);
+  font: inherit;
+  font-style: italic;
+  cursor: pointer;
+}
+
+.game-rediscovery button::before {
+  content: "↝ ";
+  color: var(--ui-bronze-dark);
+}
+
+.game-rediscovery button:hover,
+.game-rediscovery button:focus-visible {
+  color: var(--ui-bronze-dark);
+}
+
+.game-rediscovery [aria-live] {
+  max-width: 34ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.now-playing-scrap {
+  position: relative;
+  margin: 13px 5px 32px;
+  padding: 17px 18px 14px;
+  background: #f1e7bf;
+  border: 1px solid rgb(118 84 45 / 28%);
+  box-shadow: 2px 3px 0 rgb(67 75 61 / 11%);
+  transform: rotate(-.25deg);
+}
+
+.now-playing-scrap::before {
+  content: "";
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  width: 68px;
+  height: 15px;
+  background: rgb(218 203 161 / 72%);
+  border-inline: 1px solid rgb(118 84 45 / 10%);
+  transform: translateX(-50%) rotate(1.5deg);
+}
+
+.now-playing-scrap > h2 {
+  padding: 0 0 6px;
+  background: transparent;
+  border-left: 0;
+  border-bottom-style: dotted;
+}
+
+.game-year {
+  transition: opacity 160ms ease;
+}
+
+.game-year--faded {
+  opacity: .72;
+}
+
+.game-year--faded:hover,
+.game-year--faded:focus-within {
+  opacity: 1;
+}
+
+.game-year-title {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  border-bottom: 1px solid rgb(67 75 61 / 13%);
+}
+
+.game-year-title::before {
+  content: "~";
+  margin-right: -4px;
+  font-family: Georgia, serif;
+  font-weight: 400;
+}
+
+.game-year-title small {
+  margin-left: auto;
+  color: var(--ui-muted);
+  font: 400 10px/1.4 var(--journal-ui);
+  letter-spacing: .025em;
+}
+
+.game-name-list,
+.game-playtime-list {
+  margin-top: 7px;
+  padding: 0;
+  list-style: none;
+  counter-reset: notebook-index;
+}
+
+.game-name-list > li,
+.game-playtime-list > li {
+  position: relative;
+  padding: 0;
+  border-bottom: 1px solid rgb(67 75 61 / 7%);
+  counter-increment: notebook-index;
+}
+
+.game-name-list > li::before,
+.game-playtime-list > li::before {
+  content: counter(notebook-index, decimal-leading-zero);
+  position: absolute;
+  top: 7px;
+  left: 0;
+  float: none;
+  width: 27px;
+  padding: 0;
+  color: var(--ui-muted);
+  font: 400 9px/1.5 var(--journal-ui);
+  font-variant-numeric: tabular-nums;
+}
+
+.game-name-list .game-entry,
+.game-playtime-list .game-entry {
+  margin-left: 30px;
+}
+
+.game-entry > summary,
+.game-playtime-list .game-entry > summary {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  width: 100%;
+  max-width: none;
+  padding: 4px 3px 5px;
+}
+
+.game-entry > summary:hover {
+  background: linear-gradient(90deg, rgb(101 112 91 / 10%), transparent 92%);
+}
+
+.game-title {
+  flex: 0 1 auto;
+}
+
+.game-leader {
+  flex: 1 1 22px;
+  min-width: 10px;
+  border-bottom: 1px dotted rgb(67 75 61 / 42%);
+  transform: translateY(-3px);
+}
+
+.game-memory-mark {
+  flex: 0 0 auto;
+  color: var(--ui-bronze-dark);
+  font-size: 10px;
+}
+
+.game-entry-details {
+  position: relative;
+  max-width: none;
+  margin: 2px 3px 10px 0;
+  padding: 12px 14px 11px;
+  background-color: #f4efdf;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 23px,
+    rgb(83 104 113 / 11%) 23px,
+    rgb(83 104 113 / 11%) 24px
+  );
+  border: 0;
+  border-left: 2px solid rgb(162 80 65 / 48%);
+  box-shadow: 1px 2px 4px rgb(55 57 43 / 10%);
+}
+
+.game-entry-details dl {
+  padding-right: 78px;
+}
+
+.game-status-stamp {
+  position: absolute;
+  top: 9px;
+  right: 10px;
+  padding: 2px 5px 1px;
+  color: rgb(113 45 49 / 78%);
+  border: 1px solid currentColor;
+  font: 700 8px/1.25 var(--journal-ui);
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  transform: rotate(2deg);
+}
+
+.game-status-stamp--playing {
+  color: rgb(50 91 72 / 82%);
+  transform: rotate(-2deg);
+}
+
+.game-status-stamp--backlog {
+  color: rgb(100 92 76 / 74%);
+}
+
+.game-entry-details .game-thoughts {
+  margin-top: 10px;
+  padding: 9px 4px 2px;
+  color: #51483e;
+  border-top: 1px dashed rgb(118 84 45 / 24%);
+  font: italic 400 15px/1.55 var(--journal-body);
+}
+
+@media (max-width: 560px) {
+  .game-rediscovery {
+    align-items: center;
+    flex-direction: column;
+    gap: 3px;
+    margin-top: -10px;
+  }
+
+  .now-playing-scrap {
+    margin-inline: 0;
+    padding-inline: 12px;
+  }
+
+  .game-year-title small {
+    font-size: 9px;
+  }
+
+  .game-name-list .game-entry,
+  .game-playtime-list .game-entry {
+    margin-left: 25px;
+  }
+
+  .game-name-list > li::before,
+  .game-playtime-list > li::before {
+    width: 22px;
+    font-size: 8px;
+  }
+
+  .game-entry > summary,
+  .game-playtime-list .game-entry > summary {
+    gap: 5px;
+    padding-block: 6px;
+  }
+
+  .game-title {
+    font-size: 13.5px;
+  }
+
+  .game-entry-details {
+    padding-inline: 10px;
+  }
+
+  .game-entry-details dl {
+    padding-right: 0;
+    padding-top: 22px;
+  }
+}
+
+/* Wide decorative sheets; the actual content columns keep their current width. */
+body:not(.games-page) .page-main {
+  --panel-border: var(--ui-sage);
+  --panel-surface:
+    radial-gradient(circle at 12px 12px, rgb(161 120 63 / 46%) 0 2px, transparent 2.5px),
+    radial-gradient(circle at calc(100% - 12px) 12px, rgb(161 120 63 / 46%) 0 2px, transparent 2.5px),
+    linear-gradient(135deg, rgb(255 255 255 / 38%), transparent 34%),
+    var(--ui-paper);
+}
+
+.games-paper {
+  --panel-border: var(--game-plum, var(--ui-sage));
+  --panel-surface:
+    linear-gradient(115deg, rgb(246 218 226 / 34%), transparent 23%),
+    linear-gradient(300deg, rgb(213 232 223 / 38%), transparent 27%),
+    #fbf8ee;
+}
+
+body:not(.games-page) .page-main,
+.games-paper {
+  isolation: isolate;
+  overflow: visible;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+body:not(.games-page) .page-main::after,
+.games-paper::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: min(960px, calc(100vw - 20px));
+  translate: -50% 0;
+  background: var(--panel-surface);
+  border: 2px solid var(--panel-border);
+  border-radius: 7px;
+  box-shadow:
+    inset 0 0 0 4px rgb(255 255 255 / 38%),
+    inset 0 0 32px rgb(118 84 45 / 7%),
+    0 0 0 1px var(--ui-bronze-dark),
+    0 16px 38px rgb(55 57 43 / 28%);
+}
+
+body:not(.games-page) .page-main::before,
+.games-paper::before {
+  right: auto;
+  left: 50%;
+  width: min(960px, calc(100vw - 20px));
+  translate: -50% 0;
+}
+
+/* Match the Fraunces heading treatment on every route at winning specificity. */
+body:not(.games-page) .site-header .masthead-name,
+.games-site-shell .site-header .masthead-name,
+body:not(.games-page) .page-main .section-header h1,
+body:not(.games-page) .page-main .prose-page > h1,
+body:not(.games-page) .page-main .post-article > h1,
+body:not(.games-page) .page-main .photo-page > h1,
+.games-paper .games-intro h1 {
+  font-family: "Fraunces", Georgia, serif;
+  font-optical-sizing: auto;
+  font-weight: 750;
+  letter-spacing: -.025em;
+}
+
+@media (max-width: 980px) {
+  body:not(.games-page) .page-main::before,
+  body:not(.games-page) .page-main::after,
+  .games-paper::before,
+  .games-paper::after {
+    width: calc(100vw - 16px);
   }
 }

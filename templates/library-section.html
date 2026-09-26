@@ -7,12 +7,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="color-scheme" content="light dark">
   <meta name="description" content="{{.Section.Title}} in Karthik's chronological library.">
-  <title>{{.Section.Title}} — library — for later, when i forget</title>
-  {{template "theme-loader" .}}
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&amp;family=Kalam:wght@400;700&amp;display=swap" rel="stylesheet">
-  <link href="{{.BasePath}}css/permanent.css?v=70" rel="stylesheet" type="text/css">
+  <title>{{.Section.Title}} — for later, when i forget</title>
+  <link href="{{.BasePath}}css/permanent.css?v=95" rel="stylesheet" type="text/css">
   <link rel="icon" href="{{.BasePath}}favicon.png" type="image/png">
 </head>
 <body>
@@ -20,7 +16,7 @@
   <div class="page-shell">
     {{template "site-header" .}}
     <main class="page-main archive-page" id="main">
-      <a class="back-link" href="{{.BasePath}}library">← library</a>
+      {{if eq .Section.Key "games"}}<a class="back-link" href="{{.BasePath}}games">← games</a>{{else}}<a class="back-link" href="{{.BasePath}}">← timeline</a>{{end}}
       <header class="section-header archive-intro--timeline">
         <p class="eyebrow">{{.Section.ArchiveLabel}}</p>
         <h1>{{.Section.Title}}</h1>
@@ -28,6 +24,7 @@
         <p class="library-scope"><span>{{.ScopeCount}}</span><span>{{.YearsLabel}}</span></p>
         {{end}}
       </header>
+      {{if eq .Section.Key "games"}}<p class="section-deck"><a href="{{.BasePath}}games">the game log →</a></p>{{end}}
       {{if .Years}}
       <div class="timeline library-timeline" aria-label="{{.Section.Title}} timeline">
         {{range .Years}}

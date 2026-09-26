@@ -25,9 +25,10 @@ fi
 echo -e "${BLUE}Base path: ${YELLOW}$BASE_PATH${NC}"
 echo ""
 
-# Step 1: Build the site
+# Step 1: Build the site from an empty output directory so stale or sensitive
+# files can never ride along from an earlier run.
 echo -e "${BLUE}[1/6] Building site...${NC}"
-if BASE_PATH="$BASE_PATH" make generate; then
+if BASE_PATH="$BASE_PATH" make clean generate; then
     echo -e "${GREEN}✓${NC} Site built successfully"
 else
     echo -e "${RED}✗${NC} Build failed"
@@ -42,13 +43,34 @@ if [ ! -d "public" ] || [ -z "$(ls -A public)" ]; then
     exit 1
 fi
 
-# Step 2: Get the current branch name
-CURRENT_BRANCH=$(git branch --show-current)
-echo -e "${BLUE}[2/6] Current branch: ${YELLOW}$CURRENT_BRANCH${NC}"
+# Step 2: Snapshot the generated site before stashing changes. The public/
+# directory may contain staged or otherwise tracked files, so stashing first
+# can remove the build that we are about to deploy.
+echo -e "${BLUE}[2/6] Preparing deployment files...${NC}"
+TEMP_DIR=$(mktemp -d)
+if ! cp -a public/. "$TEMP_DIR/"; then
+    echo -e "${RED}Error: Failed to copy public folder${NC}"
+    rm -rf "$TEMP_DIR"
+    exit 1
+fi
+
+# Refuse to deploy environment files even if one somehow reaches public/.
+SENSITIVE_FILE=$(find "$TEMP_DIR" -type f \( -name '.env' -o -name '.env.*' \) -print -quit)
+if [ -n "$SENSITIVE_FILE" ]; then
+    echo -e "${RED}Error: Refusing to deploy sensitive file: ${SENSITIVE_FILE#"$TEMP_DIR"/}${NC}"
+    rm -rf "$TEMP_DIR"
+    exit 1
+fi
+echo -e "${GREEN}✓${NC} Files prepared"
 echo ""
 
-# Step 3: Check for uncommitted changes and stash if needed
-echo -e "${BLUE}[3/6] Checking repository status...${NC}"
+# Step 3: Get the current branch name
+CURRENT_BRANCH=$(git branch --show-current)
+echo -e "${BLUE}[3/6] Current branch: ${YELLOW}$CURRENT_BRANCH${NC}"
+echo ""
+
+# Step 4: Check for uncommitted changes and stash if needed
+echo -e "${BLUE}[4/6] Checking repository status...${NC}"
 HAS_CHANGES=false
 HAS_UNTRACKED=false
 STASH_APPLIED=false
@@ -79,33 +101,16 @@ else
 fi
 echo ""
 
-# Step 4: Create temporary directory and copy public folder
-echo -e "${BLUE}[4/6] Preparing deployment files...${NC}"
-TEMP_DIR=$(mktemp -d)
-cp -r public/* "$TEMP_DIR/" 2>/dev/null || {
-    echo -e "${RED}Error: Failed to copy public folder${NC}"
-    rm -rf "$TEMP_DIR"
-    exit 1
-}
-echo -e "${GREEN}✓${NC} Files prepared"
-echo ""
-
-# Step 5: Setup gh-pages branch
+# Step 5: Create a fresh orphan deployment commit. Keeping deployment history
+# can leave deleted secrets reachable through older gh-pages commits.
 echo -e "${BLUE}[5/6] Setting up gh-pages branch...${NC}"
-if git show-ref --verify --quiet refs/heads/gh-pages; then
-    # Branch exists, checkout and reset it
-    git checkout gh-pages
-    git rm -rf . 2>/dev/null || true
-    echo -e "${GREEN}✓${NC} Switched to existing gh-pages branch"
-else
-    # Branch doesn't exist, create orphan branch
-    git checkout --orphan gh-pages
-    git rm -rf . 2>/dev/null || true
-    echo -e "${GREEN}✓${NC} Created new gh-pages branch"
-fi
+DEPLOY_BRANCH="gh-pages-deploy-$$"
+git checkout --orphan "$DEPLOY_BRANCH"
+git rm -rf . 2>/dev/null || true
+echo -e "${GREEN}✓${NC} Created clean deployment branch"
 
 # Copy files from temp directory to root
-cp -r "$TEMP_DIR"/* .
+cp -a "$TEMP_DIR"/. .
 rm -rf "$TEMP_DIR"
 
 # Create CNAME file for custom domain
@@ -117,25 +122,21 @@ echo -e "${GREEN}✓${NC} Created CNAME file for custom domain"
 git add -A
 
 # Commit
-if git diff --staged --quiet; then
-    echo -e "${YELLOW}No changes to deploy (site unchanged)${NC}"
-else
-    DEPLOY_TIME=$(date '+%Y-%m-%d %H:%M:%S')
-    git commit -m "Deploy site: $DEPLOY_TIME" || {
-        echo -e "${YELLOW}Nothing to commit${NC}"
-    }
-    echo -e "${GREEN}✓${NC} Changes committed"
-fi
+DEPLOY_TIME=$(date '+%Y-%m-%d %H:%M:%S')
+git commit -m "Deploy site: $DEPLOY_TIME"
+git branch -f gh-pages HEAD
+echo -e "${GREEN}✓${NC} Changes committed"
 echo ""
 
 # Step 6: Push to GitHub
 echo -e "${BLUE}[6/6] Pushing to GitHub...${NC}"
-if git push origin gh-pages --force; then
+if git push origin HEAD:gh-pages --force; then
     echo -e "${GREEN}✓${NC} Pushed to GitHub Pages"
 else
     echo -e "${RED}✗${NC} Failed to push to GitHub"
     echo -e "${YELLOW}Returning to $CURRENT_BRANCH branch...${NC}"
     git checkout "$CURRENT_BRANCH" 2>/dev/null || true
+    git branch -D "$DEPLOY_BRANCH" 2>/dev/null || true
     
     # Restore stashed changes if we stashed them
     if [ "$STASH_APPLIED" = true ]; then
@@ -152,6 +153,7 @@ echo -e "${BLUE}Returning to $CURRENT_BRANCH branch...${NC}"
 git checkout "$CURRENT_BRANCH" 2>/dev/null || {
     echo -e "${YELLOW}Warning: Could not return to $CURRENT_BRANCH branch${NC}"
 }
+git branch -D "$DEPLOY_BRANCH" 2>/dev/null || true
 
 # Restore stashed changes if we stashed them
 if [ "$STASH_APPLIED" = true ]; then
@@ -181,4 +183,3 @@ fi
 echo ""
 echo -e "${YELLOW}Note:${NC} It may take a few minutes for GitHub Pages to update"
 echo ""
-

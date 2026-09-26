@@ -1,0 +1,197 @@
+{
+  "a-plague-tale-innocence": {
+    "provider": "steam",
+    "hours": 5,
+    "last_played": "2026-02-21T11:11:25Z"
+  },
+  "alan-wake": {
+    "provider": "steam",
+    "hours": 0
+  },
+  "assassins-creed-origins": {
+    "provider": "steam",
+    "hours": 1.48,
+    "last_played": "2026-05-03T16:33:58Z"
+  },
+  "assassins-creed-unity": {
+    "provider": "steam",
+    "hours": 2.13,
+    "last_played": "2026-05-31T12:50:05Z"
+  },
+  "assetto-corsa": {
+    "provider": "steam",
+    "hours": 0.22,
+    "last_played": "2026-05-03T09:29:12Z"
+  },
+  "control-ultimate-edition": {
+    "provider": "steam",
+    "hours": 0.5,
+    "last_played": "2026-08-29T17:39:14Z"
+  },
+  "cyberpunk-2077": {
+    "provider": "steam",
+    "hours": 62.7,
+    "last_played": "2026-09-18T17:57:23Z"
+  },
+  "detroit-become-human": {
+    "provider": "steam",
+    "hours": 8.4,
+    "last_played": "2025-11-30T16:06:48Z"
+  },
+  "disco-elysium": {
+    "provider": "steam",
+    "hours": 0.85,
+    "last_played": "2026-07-02T18:53:47Z"
+  },
+  "ea-sports-fc-26": {
+    "provider": "steam",
+    "hours": 1.62,
+    "last_played": "2026-07-10T14:51:53Z"
+  },
+  "elden-ring": {
+    "provider": "lutris",
+    "hours": 5.06,
+    "last_played": "2026-09-26T07:09:34Z"
+  },
+  "ghost-of-tsushima": {
+    "provider": "lutris",
+    "hours": 11.23,
+    "last_played": "2026-09-26T17:25:37Z"
+  },
+  "grand-theft-auto-iv-the-complete-edition": {
+    "provider": "steam",
+    "hours": 0
+  },
+  "hades": {
+    "provider": "steam",
+    "hours": 0.8,
+    "last_played": "2026-09-26T09:10:51Z"
+  },
+  "hellblade": {
+    "provider": "steam",
+    "hours": 9.22,
+    "last_played": "2026-09-20T06:55:12Z"
+  },
+  "hellblade-senua-s-sacrifice-vr-edition": {
+    "provider": "steam",
+    "hours": 0
+  },
+  "hitman-world-of-assassination": {
+    "provider": "steam",
+    "hours": 0.2,
+    "last_played": "2026-08-09T16:50:13Z"
+  },
+  "hogwarts-legacy": {
+    "provider": "steam",
+    "hours": 0
+  },
+  "iron-nest-heavy-turret-simulator": {
+    "provider": "steam",
+    "hours": 0.65,
+    "last_played": "2026-09-17T17:01:05Z"
+  },
+  "kingdom-come-deliverance": {
+    "provider": "steam",
+    "hours": 0
+  },
+  "metro-2033-redux": {
+    "provider": "steam",
+    "hours": 6.55,
+    "last_played": "2026-07-12T13:25:09Z"
+  },
+  "metro-exodus": {
+    "provider": "steam",
+    "hours": 0
+  },
+  "metro-exodus-enhanced-edition": {
+    "provider": "steam",
+    "hours": 0
+  },
+  "metro-last-light-redux": {
+    "provider": "steam",
+    "hours": 0
+  },
+  "no-mans-sky": {
+    "provider": "steam",
+    "hours": 1.68,
+    "last_played": "2026-09-17T16:28:38Z"
+  },
+  "path-of-exile": {
+    "provider": "steam",
+    "hours": 0.18,
+    "last_played": "2026-08-30T18:51:41Z"
+  },
+  "red-dead-redemption-2": {
+    "provider": "steam",
+    "hours": 70.9,
+    "last_played": "2026-09-23T11:41:33Z"
+  },
+  "resident-evil-7-biohazard": {
+    "provider": "steam",
+    "hours": 0
+  },
+  "rise-of-the-tomb-raider": {
+    "provider": "steam",
+    "hours": 6.1,
+    "last_played": "2026-09-19T11:26:27Z"
+  },
+  "shadow-of-the-tomb-raider": {
+    "provider": "steam",
+    "hours": 0.4,
+    "last_played": "2026-09-25T05:43:53Z"
+  },
+  "skyrim-special-edition": {
+    "provider": "steam",
+    "hours": 15.73,
+    "last_played": "2026-09-23T17:09:44Z"
+  },
+  "soma": {
+    "provider": "steam",
+    "hours": 3.9,
+    "last_played": "2026-09-19T14:11:24Z"
+  },
+  "subnautica": {
+    "provider": "steam",
+    "hours": 1,
+    "last_played": "2026-07-04T06:22:48Z"
+  },
+  "the-witcher-2-assassins-of-kings-enhanced-edition": {
+    "provider": "steam",
+    "hours": 3.3,
+    "last_played": "2026-08-29T16:53:42Z"
+  },
+  "the-witcher-3": {
+    "provider": "steam",
+    "hours": 127.3,
+    "last_played": "2026-09-23T15:21:13Z"
+  },
+  "the-witcher-enhanced-edition": {
+    "provider": "steam",
+    "hours": 0.52,
+    "last_played": "2025-11-09T14:46:28Z"
+  },
+  "titanfall-2-1237970": {
+    "provider": "steam",
+    "hours": 0.85,
+    "last_played": "2026-09-20T13:27:05Z"
+  },
+  "tom-clancy-s-rainbow-six-siege": {
+    "provider": "steam",
+    "hours": 6.58,
+    "last_played": "2025-11-14T18:03:50Z"
+  },
+  "tomb-raider": {
+    "provider": "steam",
+    "hours": 0
+  },
+  "uncharted-legacy-of-thieves": {
+    "provider": "steam",
+    "hours": 20.48,
+    "last_played": "2026-09-06T07:50:18Z"
+  },
+  "warframe": {
+    "provider": "steam",
+    "hours": 3.27,
+    "last_played": "2025-12-06T15:34:14Z"
+  }
+}

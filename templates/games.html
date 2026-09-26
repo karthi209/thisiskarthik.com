@@ -1,0 +1,114 @@
+{{define "games.html"}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self' 'unsafe-inline';">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <meta name="description" content="games in Karthik's chronological library.">
+  <title>games — for later, when i forget</title>
+  <link href="{{.BasePath}}css/permanent.css?v=95" rel="stylesheet" type="text/css">
+  <link rel="icon" href="{{.BasePath}}favicon.png" type="image/png">
+</head>
+  <body class="games-page">
+    <a class="skip-link" href="#main">Skip to content</a>
+    <div class="games-site-shell">
+      {{template "site-header" .}}
+      <div class="games-layout">
+        <main class="games-paper archive-page" id="main">
+      <header class="section-header games-intro">
+        <h1>game log</h1>
+        <p class="section-deck">A non-exhaustive record of games I've played, finished, or still remember.</p>
+      </header>
+      <nav class="game-view-switch" aria-label="Arrange game log">
+        <button type="button" class="is-active" data-game-view="years" aria-pressed="true">by year</button>
+        <button type="button" data-game-view="playtime" aria-pressed="false">by playtime</button>
+      </nav>
+      <div class="game-rediscovery">
+        <button type="button" data-random-game>find something I forgot</button>
+        <span data-random-game-message aria-live="polite"></span>
+      </div>
+      <div data-game-panel="years">
+      <section class="games-section now-playing-scrap" aria-labelledby="playing-heading">
+        <h2 id="playing-heading">Currently playing</h2>
+        {{if .Playing}}{{template "game-rows" .Playing}}{{else}}<p class="game-meta">Nothing recorded here just now.</p>{{end}}
+      </section>
+      <section class="games-section games-history" aria-labelledby="history-heading">
+        <h2 id="history-heading">History</h2>
+        {{range .Years}}
+        <section class="game-year{{if .Faded}} game-year--faded{{end}}" aria-labelledby="games-year-{{.Year}}">
+          <h3 class="game-year-title" id="games-year-{{.Year}}"><span>{{.Year}}</span><small>{{.Summary}}</small></h3>
+          {{template "game-rows" .Games}}
+        </section>
+        {{end}}
+        {{if .Undated}}<section class="game-undated" aria-labelledby="games-undated">
+          <h3 id="games-undated">Earlier</h3>
+          <p class="game-meta">Games I remember without a date.</p>
+          {{template "game-rows" .Undated}}
+        </section>{{end}}
+        {{if not (or .Years .Undated)}}<p class="game-meta">Nothing recorded here yet.</p>{{end}}
+      </section>
+      {{if .Backlog}}<section class="games-section games-backlog" aria-labelledby="backlog-heading">
+        <h2 id="backlog-heading">Backlog</h2>
+        <p class="game-meta">Games for another day.</p>
+        {{template "game-rows" .Backlog}}
+      </section>{{end}}
+      </div>
+      <div data-game-panel="playtime" hidden>
+        <section class="games-section games-playtime" aria-labelledby="playtime-heading">
+          <h2 id="playtime-heading">Most played</h2>
+          <p class="game-meta">Recorded playtime, longest first.</p>
+          {{if .Playtime}}{{template "playtime-rows" .Playtime}}{{else}}<p class="game-meta">No playtime recorded yet.</p>{{end}}
+        </section>
+      </div>
+      {{template "site-footer" .}}
+      <script src="{{.BasePath}}js/games.js"></script>
+        </main>
+      </div>
+    </div>
+</body>
+</html>
+{{end}}
+
+{{define "playtime-rows"}}
+<ol class="game-playtime-list">
+  {{range .}}<li id="playtime-{{.ID}}">
+    <details class="game-entry game-entry--{{.Status}}">
+      <summary><span class="game-title">{{.Title}}</span><span class="game-leader" aria-hidden="true"></span><span class="game-hours">{{.HoursLabel}}</span></summary>
+      {{template "game-entry-details" .}}
+    </details>
+  </li>{{end}}
+</ol>
+{{end}}
+
+{{define "game-rows"}}
+<ul class="game-name-list">
+  {{range .}}<li id="game-{{.ID}}"{{if eq .Status "completed"}} data-memory-game data-game-title="{{.Title}}" data-game-date="{{.DateLabel}}"{{end}}>
+    <details class="game-entry game-entry--{{.Status}}">
+      <summary><span class="game-title">{{.Title}}{{if .Favorite}} <span class="game-favorite" aria-label="favourite">♥</span>{{end}}</span><span class="game-leader" aria-hidden="true"></span>{{if .Hours}}<span class="game-hours">{{.HoursLabel}}</span>{{end}}{{if or .Notes .Label .ResumeNote .ArtifactURL}}<span class="game-memory-mark" aria-label="has a memory">✦</span>{{end}}</summary>
+      {{template "game-entry-details" .}}
+    </details>
+  </li>{{end}}
+</ul>
+{{end}}
+
+{{define "game-entry-details"}}
+<div class="game-entry-details">
+  <span class="game-status-stamp game-status-stamp--{{.Status}}">{{.Status}}</span>
+  <div class="game-entry-note{{if .ArtifactURL}} game-entry-note--with-artifact{{end}}">
+    <div class="game-entry-writing">
+      {{if .Label}}<p class="game-personal-label"><span>filed under</span>{{.Label}}</p>{{end}}
+      <dl>
+        {{if .Platform}}<div><dt>Platform</dt><dd>{{.Platform}}</dd></div>{{end}}
+        {{if .Date}}<div><dt>Date</dt><dd><time datetime="{{.Date}}">{{.DateLabel}}</time></dd></div>{{end}}
+        {{if .Hours}}<div><dt>Playtime</dt><dd>{{.HoursLabel}}</dd></div>{{end}}
+        {{if .Rating}}<div><dt>Rating</dt><dd>{{.Rating}} / 5</dd></div>{{end}}
+      </dl>
+      {{if .ResumeNote}}<aside class="game-resume-note"><strong>where I left off</strong><p>{{.ResumeNote}}</p></aside>{{end}}
+      {{if .Notes}}<p class="game-thoughts">{{.Notes}}</p>{{end}}
+    </div>
+    {{if .ArtifactURL}}<figure class="game-artifact"><img src="{{.ArtifactURL}}" alt="{{.ArtifactAlt}}" loading="lazy" decoding="async"></figure>{{end}}
+  </div>
+</div>
+{{end}}

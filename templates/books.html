@@ -1,0 +1,52 @@
+{{define "books.html"}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self' 'unsafe-inline';">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <meta name="description" content="Books Karthik has read or is currently reading.">
+  <title>books — for later, when i forget</title>
+  <link href="{{.BasePath}}css/permanent.css?v=95" rel="stylesheet" type="text/css">
+  <link rel="icon" href="{{.BasePath}}favicon.png" type="image/png">
+</head>
+<body class="games-page books-page">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="games-site-shell">
+    {{template "site-header" .}}
+    <div class="games-layout">
+      <main class="games-paper archive-page" id="main">
+        <header class="section-header games-intro">
+          <h1>book log</h1>
+          <p class="section-deck">Books I've finished and books currently keeping me company.</p>
+        </header>
+        <section class="games-section" aria-labelledby="reading-heading">
+          <h2 id="reading-heading">Currently reading</h2>
+          {{if .Reading}}{{template "book-rows" .Reading}}{{else}}<p class="game-meta">Nothing recorded here just now.</p>{{end}}
+        </section>
+        <section class="games-section" aria-labelledby="read-heading">
+          <h2 id="read-heading">Read</h2>
+          {{if .Read}}{{template "book-rows" .Read}}{{else}}<p class="game-meta">Nothing recorded here yet.</p>{{end}}
+        </section>
+        {{template "site-footer" .}}
+      </main>
+    </div>
+  </div>
+</body>
+</html>
+{{end}}
+
+{{define "book-rows"}}
+<ul class="game-name-list">
+  {{range .}}<li id="book-{{.ID}}">
+    <details class="game-entry">
+      <summary><span class="game-title">{{.Title}}</span></summary>
+      <div class="game-entry-details">
+        <dl><div><dt>Status</dt><dd>{{.Status}}</dd></div></dl>
+        {{if .Notes}}<p class="game-thoughts">{{.Notes}}</p>{{end}}
+      </div>
+    </details>
+  </li>{{end}}
+</ul>
+{{end}}

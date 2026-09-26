@@ -1,0 +1,71 @@
+# Game artwork
+
+Local promotional artwork used only inside expanded game entries.
+Artwork belongs to the respective game publishers. No runtime hotlinks.
+
+- A Plague Tale: Innocence: https://cdn.akamai.steamstatic.com/steam/apps/752590/library_600x900.jpg
+- Alan Wake: https://cdn.akamai.steamstatic.com/steam/apps/108710/library_600x900.jpg
+- Assassin's Creed Origins: https://cdn.akamai.steamstatic.com/steam/apps/582160/library_600x900.jpg
+- Assassin's Creed Unity: https://cdn.akamai.steamstatic.com/steam/apps/289650/library_600x900.jpg
+- Assetto Corsa: https://cdn.akamai.steamstatic.com/steam/apps/244210/library_600x900.jpg
+- Battlefield 2: https://images.launchbox-app.com/d0a92a2c-abd2-4ea8-abfe-941d62fee94e.jpg
+- Battlefield 3: https://cdn.akamai.steamstatic.com/steam/apps/1238820/library_600x900.jpg
+- Call of Duty 4: Modern Warfare: https://cdn.akamai.steamstatic.com/steam/apps/7940/library_600x900.jpg
+- Call of Duty: Black Ops: https://cdn.akamai.steamstatic.com/steam/apps/42700/library_600x900.jpg
+- Call of Duty: Black Ops 2: https://cdn.akamai.steamstatic.com/steam/apps/202970/library_600x900.jpg
+- Call of Duty: Modern Warfare 2: https://cdn.akamai.steamstatic.com/steam/apps/10180/library_600x900.jpg
+- Call of Duty: Modern Warfare 3: https://cdn.akamai.steamstatic.com/steam/apps/42680/library_600x900.jpg
+- Control Ultimate Edition: https://cdn.akamai.steamstatic.com/steam/apps/870780/library_600x900.jpg
+- Crysis: https://cdn.akamai.steamstatic.com/steam/apps/17300/library_600x900.jpg
+- Crysis 2: https://cdn.akamai.steamstatic.com/steam/apps/108800/library_600x900.jpg
+- Crysis 3: https://cdn.akamai.steamstatic.com/steam/apps/1282690/library_600x900.jpg
+- Cyberpunk 2077: existing local Steam promotional art
+- Detroit: Become Human: existing local Steam promotional art
+- Dirt Track Racing 2: https://images.launchbox-app.com/e34886e0-8252-449f-933c-c662930bca00.jpg
+- Disco Elysium: https://cdn.akamai.steamstatic.com/steam/apps/632470/library_600x900.jpg
+- EA SPORTS FC™ 26: https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3405690/2d96aa1b06e453cd62dae9029d412f19e61932c3/header.jpg
+- Elden Ring: existing local Steam promotional art
+- Far Cry 4: https://cdn.akamai.steamstatic.com/steam/apps/298110/library_600x900.jpg
+- Firewatch: https://cdn.akamai.steamstatic.com/steam/apps/383870/library_600x900.jpg
+- Ghost of Tsushima: existing local Steam promotional art
+- Glace: https://images.launchbox-app.com/97444d6c-bdca-4bfc-9fd0-cd8173473f4a.png
+- Grand Theft Auto IV: The Complete Edition: https://cdn.akamai.steamstatic.com/steam/apps/12210/library_600x900.jpg
+- Grand Theft Auto V: https://cdn.akamai.steamstatic.com/steam/apps/271590/library_600x900.jpg
+- Grand Theft Auto: San Andreas: https://cdn.akamai.steamstatic.com/steam/apps/12120/library_600x900.jpg
+- Grand Theft Auto: Vice City: https://cdn.akamai.steamstatic.com/steam/apps/12110/library_600x900.jpg
+- HITMAN World of Assassination: https://cdn.akamai.steamstatic.com/steam/apps/1659040/library_600x900.jpg
+- Hades: https://cdn.akamai.steamstatic.com/steam/apps/1145360/library_600x900.jpg
+- Harry Potter and the Sorcerer's Stone: https://images.launchbox-app.com/r2_67bad026-bea4-45be-a35f-a3542524dc8f.jpg
+- Hellblade: Senua's Sacrifice: https://cdn.akamai.steamstatic.com/steam/apps/414340/library_600x900.jpg
+- Hellblade: Senua's Sacrifice VR Edition: https://cdn.akamai.steamstatic.com/steam/apps/747350/library_600x900.jpg
+- Hogwarts Legacy: https://cdn.akamai.steamstatic.com/steam/apps/990080/library_600x900.jpg
+- IGI 2: https://images.launchbox-app.com/r2_e9ca9d53-03fd-40cb-916f-183b13c4a567.png
+- IRON NEST: Heavy Turret Simulator: https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2950790/e6c9e990560078611472e5dab98e79a405ed33f4/header.jpg
+- Icy Tower: https://images.launchbox-app.com/c41c0548-d311-4f37-a859-b1b09fa90a7d.jpg
+- Kingdom Come: Deliverance: https://cdn.akamai.steamstatic.com/steam/apps/379430/library_600x900.jpg
+- Mass Effect: https://cdn.akamai.steamstatic.com/steam/apps/17460/library_600x900.jpg
+- Mass Effect 2: https://cdn.akamai.steamstatic.com/steam/apps/24980/library_600x900.jpg
+- Mass Effect 3: https://cdn.akamai.steamstatic.com/steam/apps/1238020/library_600x900.jpg
+- Max Payne: https://cdn.akamai.steamstatic.com/steam/apps/12140/library_600x900.jpg
+- Metro 2033 Redux: https://cdn.akamai.steamstatic.com/steam/apps/286690/library_600x900.jpg
+- Metro Exodus: https://cdn.akamai.steamstatic.com/steam/apps/412020/library_600x900.jpg
+- Metro Exodus Enhanced Edition: https://cdn.akamai.steamstatic.com/steam/apps/1449560/library_600x900.jpg
+- Metro: Last Light Redux: https://cdn.akamai.steamstatic.com/steam/apps/287390/library_600x900.jpg
+- Midnight Racing: https://media.senscritique.com/media/000020073612/0/midnight_racing.jpg
+- No Man's Sky: https://cdn.akamai.steamstatic.com/steam/apps/275850/library_600x900.jpg
+- Path of Exile: https://cdn.akamai.steamstatic.com/steam/apps/238960/library_600x900.jpg
+- Red Dead Redemption 2: https://cdn.akamai.steamstatic.com/steam/apps/1174180/library_600x900.jpg
+- Resident Evil 7 Biohazard: https://cdn.akamai.steamstatic.com/steam/apps/418370/library_600x900.jpg
+- Rise of the Tomb Raider: https://cdn.akamai.steamstatic.com/steam/apps/391220/library_600x900.jpg
+- SOMA: existing local Steam promotional art
+- Shadow of the Tomb Raider: https://cdn.akamai.steamstatic.com/steam/apps/750920/library_600x900.jpg
+- Subnautica: https://cdn.akamai.steamstatic.com/steam/apps/264710/library_600x900.jpg
+- The Elder Scrolls V: Skyrim Special Edition: existing local Steam promotional art
+- The Witcher 2: Assassins of Kings Enhanced Edition: https://cdn.akamai.steamstatic.com/steam/apps/20920/library_600x900.jpg
+- The Witcher 3: Wild Hunt: https://cdn.akamai.steamstatic.com/steam/apps/292030/library_600x900.jpg
+- The Witcher: Enhanced Edition: https://cdn.akamai.steamstatic.com/steam/apps/20900/library_600x900.jpg
+- Titanfall® 2: https://cdn.akamai.steamstatic.com/steam/apps/1237970/library_600x900.jpg
+- Tom Clancy's Rainbow Six Siege: https://cdn.akamai.steamstatic.com/steam/apps/359550/library_600x900.jpg
+- Tomb Raider: https://cdn.akamai.steamstatic.com/steam/apps/203160/library_600x900.jpg
+- Uncharted 4: A Thief's End: https://cdn.akamai.steamstatic.com/steam/apps/1659420/library_600x900.jpg
+- Warframe: https://cdn.akamai.steamstatic.com/steam/apps/230410/library_600x900.jpg
