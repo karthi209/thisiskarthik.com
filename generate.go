@@ -2,6 +2,8 @@ package main
 
 import (
 	"bytes"
+	"encoding/json"
+	"errors"
 	"fmt"
 	"html/template"
 	"io/fs"
@@ -15,11 +17,326 @@ import (
 	"strings"
 	"time"
 
+	"for-later-when-i-forget/internal/gamestats"
+
 	"github.com/yuin/goldmark"
 	"github.com/yuin/goldmark/extension"
 	"github.com/yuin/goldmark/parser"
 	goldmarkhtml "github.com/yuin/goldmark/renderer/html"
 )
+
+// Game records are manually maintained; nil hours and ratings mean unknown.
+type Game struct {
+	ID           string              `json:"id,omitempty"`
+	Title        string              `json:"title"`
+	Status       string              `json:"status,omitempty"`
+	Platform     string              `json:"platform,omitempty"`
+	Source       string              `json:"source,omitempty"`
+	Hours        *float64            `json:"-"`
+	Started      string              `json:"started,omitempty"`
+	Finished     string              `json:"finished,omitempty"`
+	Played       string              `json:"played,omitempty"`
+	Rating       *float64            `json:"rating,omitempty"`
+	Favorite     bool                `json:"favorite,omitempty"`
+	Label        string              `json:"label,omitempty"`
+	Notes        string              `json:"notes,omitempty"`
+	ResumeNote   string              `json:"resume_note,omitempty"`
+	Artifact     string              `json:"artifact,omitempty"`
+	ArtifactAlt  string              `json:"artifact_alt,omitempty"`
+	Cover        string              `json:"cover,omitempty"`
+	Portrait     string              `json:"portrait,omitempty"`
+	Tracking     *gamestats.Tracking `json:"tracking,omitempty"`
+	Imported     bool                `json:"imported,omitempty"`
+	PortraitURL  string              `json:"-"`
+	Date         string              `json:"-"`
+	DateLabel    string              `json:"-"`
+	StartedLabel string              `json:"-"`
+	HoursLabel   string              `json:"-"`
+	CoverURL     string              `json:"-"`
+	ArtifactURL  string              `json:"-"`
+}
+
+type GameCollection struct {
+	Games []Game `json:"games"`
+}
+
+type GameYear struct {
+	Year    string
+	Games   []Game
+	Summary string
+	Faded   bool
+}
+
+type GamesPageData struct {
+	PageType, Title, BasePath string
+	Playing, Undated, Backlog []Game
+	Playtime                  []Game
+	Years                     []GameYear
+}
+
+type Book struct {
+	ID     string `json:"id,omitempty"`
+	Title  string `json:"title"`
+	Status string `json:"status"`
+	Notes  string `json:"notes,omitempty"`
+}
+
+type BookCollection struct {
+	Books []Book `json:"books"`
+}
+
+type BooksPageData struct {
+	PageType, Title, BasePath string
+	Reading, Read             []Book
+}
+
+func loadBooks(path string) (BooksPageData, error) {
+	data := BooksPageData{PageType: "books", Title: "books", BasePath: basePath}
+	raw, err := os.ReadFile(path)
+	if err != nil {
+		return data, err
+	}
+	var collection BookCollection
+	decoder := json.NewDecoder(bytes.NewReader(raw))
+	decoder.DisallowUnknownFields()
+	if err := decoder.Decode(&collection); err != nil {
+		return data, err
+	}
+	seen := map[string]bool{}
+	validID := regexp.MustCompile(`^[a-z0-9]+(?:-[a-z0-9]+)*$`)
+	for i, book := range collection.Books {
+		if book.ID == "" {
+			book.ID = generateSlug(book.Title)
+		}
+		if !validID.MatchString(book.ID) || seen[book.ID] || strings.TrimSpace(book.Title) == "" {
+			return data, fmt.Errorf("book %d needs a unique lowercase slug id and title", i+1)
+		}
+		seen[book.ID] = true
+		switch book.Status {
+		case "reading":
+			data.Reading = append(data.Reading, book)
+		case "read":
+			data.Read = append(data.Read, book)
+		default:
+			return data, fmt.Errorf("%s: invalid book status %q", book.ID, book.Status)
+		}
+	}
+	return data, nil
+}
+
+func gameDate(value string) (time.Time, error) {
+	if value == "" {
+		return time.Time{}, nil
+	}
+	for _, layout := range []string{"2006", "2006-01", "2006-01-02"} {
+		if date, err := time.Parse(layout, value); err == nil && date.Year() > 0 {
+			return date, nil
+		}
+	}
+	return time.Time{}, fmt.Errorf("invalid date %q: use YYYY, YYYY-MM or YYYY-MM-DD", value)
+}
+
+func gameDateLabel(value string) string {
+	if value == "" {
+		return ""
+	}
+	date, _ := gameDate(value)
+	if len(value) == 4 {
+		return value
+	}
+	if len(value) == 7 {
+		return strings.ToLower(date.Format("Jan 2006"))
+	}
+	return strings.ToLower(date.Format("2 Jan 2006"))
+}
+
+func loadGames(path string) (GamesPageData, error) {
+	data := GamesPageData{PageType: "games", Title: "games", BasePath: basePath}
+	raw, err := os.ReadFile(path)
+	if err != nil {
+		return data, err
+	}
+	var collection GameCollection
+	// Reject misspelled fields rather than silently losing a manually recorded fact.
+	decoder := json.NewDecoder(bytes.NewReader(raw))
+	decoder.DisallowUnknownFields()
+	if err := decoder.Decode(&collection); err != nil {
+		return data, err
+	}
+	if !json.Valid(raw) {
+		return data, fmt.Errorf("invalid games JSON")
+	}
+	stats, statsErr := gamestats.Read(filepath.Join(filepath.Dir(path), "game-stats.json"))
+	if statsErr != nil {
+		fmt.Fprintf(os.Stderr, "warning: game stats unavailable: %v\n", statsErr)
+		stats = gamestats.Cache{}
+	}
+	seen := map[string]bool{}
+	validID := regexp.MustCompile(`^[a-z0-9]+(?:-[a-z0-9]+)*$`)
+	for i := range collection.Games {
+		g := &collection.Games[i]
+		if g.ID == "" {
+			g.ID = generateSlug(g.Title)
+		}
+		if !validID.MatchString(g.ID) || seen[g.ID] || strings.TrimSpace(g.Title) == "" {
+			return data, fmt.Errorf("game %d needs a unique lowercase slug id and title", i+1)
+		}
+		seen[g.ID] = true
+		if g.Status == "" {
+			g.Status = "played"
+		}
+		switch g.Status {
+		case "playing", "completed", "paused", "dropped", "played":
+		default:
+			return data, fmt.Errorf("%s: invalid history status %q", g.ID, g.Status)
+		}
+		for _, value := range []string{g.Started, g.Finished, g.Played} {
+			if _, err := gameDate(value); err != nil {
+				return data, fmt.Errorf("%s: %w", g.ID, err)
+			}
+		}
+		// Compare only shared precision: a year alone does not imply January 1.
+		if g.Started != "" && g.Finished != "" {
+			n := min(len(g.Started), len(g.Finished))
+			if g.Finished[:n] < g.Started[:n] {
+				return data, fmt.Errorf("%s: finished precedes started", g.ID)
+			}
+		}
+		g.Hours = stats[g.ID].Hours
+		g.HoursLabel = ""
+		if g.Hours != nil {
+			if *g.Hours < 0 {
+				return data, fmt.Errorf("%s: hours cannot be negative", g.ID)
+			}
+			g.HoursLabel = strconv.FormatFloat(math.Round(*g.Hours*100)/100, 'f', -1, 64) + "h"
+		}
+		if g.Rating != nil && (*g.Rating < 0 || *g.Rating > 5) {
+			return data, fmt.Errorf("%s: rating must be between 0 and 5", g.ID)
+		}
+		for _, artwork := range []string{g.Cover, g.Portrait, g.Artifact} {
+			if artwork != "" && (!strings.HasPrefix(artwork, "images/") || strings.Contains(artwork, "..") || strings.ContainsAny(artwork, `\?#`)) {
+				return data, fmt.Errorf("%s: artwork must be a local images/ path", g.ID)
+			}
+		}
+		if g.Cover != "" {
+			g.CoverURL = basePath + g.Cover
+		}
+		if g.Portrait != "" {
+			g.PortraitURL = basePath + g.Portrait
+		}
+		if g.Artifact != "" {
+			g.ArtifactURL = basePath + g.Artifact
+		} else if g.Portrait != "" {
+			// Existing portrait art doubles as the optional saved artifact.
+			g.ArtifactURL = g.PortraitURL
+		}
+
+		g.Date = g.Finished
+		if g.Date == "" {
+			g.Date = g.Played
+		}
+		if g.Date == "" {
+			g.Date = g.Started
+		}
+		g.DateLabel = gameDateLabel(g.Date)
+		g.StartedLabel = gameDateLabel(g.Started)
+	}
+	games := collection.Games
+	for _, g := range games {
+		if g.Hours != nil {
+			data.Playtime = append(data.Playtime, g)
+		}
+	}
+	sort.SliceStable(data.Playtime, func(i, j int) bool {
+		if *data.Playtime[i].Hours == *data.Playtime[j].Hours {
+			return data.Playtime[i].Title < data.Playtime[j].Title
+		}
+		return *data.Playtime[i].Hours > *data.Playtime[j].Hours
+	})
+	sort.SliceStable(games, func(i, j int) bool { return games[i].Date > games[j].Date })
+	for _, g := range games {
+		if g.Status == "playing" {
+			data.Playing = append(data.Playing, g)
+			continue
+		}
+		if g.Date == "" {
+			data.Undated = append(data.Undated, g)
+			continue
+		}
+		year := g.Date[:4]
+		if len(data.Years) == 0 || data.Years[len(data.Years)-1].Year != year {
+			yearNumber, _ := strconv.Atoi(year)
+			data.Years = append(data.Years, GameYear{Year: year, Faded: yearNumber > 0 && yearNumber <= 2010})
+		}
+		last := &data.Years[len(data.Years)-1]
+		last.Games = append(last.Games, g)
+	}
+	for i := range data.Years {
+		year := &data.Years[i]
+		year.Summary = fmt.Sprintf("%d games", len(year.Games))
+		if len(year.Games) == 1 {
+			year.Summary = "1 game"
+		}
+		var total float64
+		known := 0
+		for _, g := range year.Games {
+			if g.Hours != nil {
+				total += *g.Hours
+				known++
+			}
+		}
+		if known > 0 {
+			year.Summary += fmt.Sprintf(" · %s hours recorded", strconv.FormatFloat(math.Round(total*100)/100, 'f', -1, 64))
+		}
+	}
+
+	backlogPath := filepath.Join(filepath.Dir(path), "games-backlog.json")
+	backlogRaw, err := os.ReadFile(backlogPath)
+	if err != nil && !errors.Is(err, os.ErrNotExist) {
+		return data, err
+	}
+	if err == nil {
+		var backlog []Game
+		decoder := json.NewDecoder(bytes.NewReader(backlogRaw))
+		decoder.DisallowUnknownFields()
+		if err := decoder.Decode(&backlog); err != nil {
+			return data, fmt.Errorf("backlog: %w", err)
+		}
+		for i, g := range backlog {
+			if g.ID == "" {
+				g.ID = generateSlug(g.Title)
+			}
+			if !validID.MatchString(g.ID) || seen[g.ID] || strings.TrimSpace(g.Title) == "" {
+				return data, fmt.Errorf("backlog game %d needs a unique lowercase slug id and title", i+1)
+			}
+			seen[g.ID] = true
+			g.Status = "backlog"
+			for _, artwork := range []string{g.Cover, g.Portrait, g.Artifact} {
+				if artwork != "" && (!strings.HasPrefix(artwork, "images/") || strings.Contains(artwork, "..") || strings.ContainsAny(artwork, `\?#`)) {
+					return data, fmt.Errorf("%s: artwork must be a local images/ path", g.ID)
+				}
+			}
+			if g.Cover != "" {
+				g.CoverURL = basePath + g.Cover
+			}
+			if g.Portrait != "" {
+				g.PortraitURL = basePath + g.Portrait
+			}
+			if g.Artifact != "" {
+				g.ArtifactURL = basePath + g.Artifact
+			} else if g.Portrait != "" {
+				g.ArtifactURL = g.PortraitURL
+			}
+			g.Hours = stats[g.ID].Hours
+			if g.Hours != nil {
+				g.HoursLabel = strconv.FormatFloat(math.Round(*g.Hours*100)/100, 'f', -1, 64) + "h"
+			}
+			data.Backlog = append(data.Backlog, g)
+		}
+	}
+
+	return data, nil
+}
 
 // Configuration
 var (
@@ -474,6 +791,27 @@ func main() {
 		fmt.Printf("▓▓ WARNING: photos could not be loaded: %v\n", err)
 	}
 
+	games, err := loadGames(filepath.Join(contentDir, "games.json"))
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "games: %v\n", err)
+		os.Exit(1)
+	}
+	if err := writeTemplate(templates, "games.html", filepath.Join(outputDir, "games", "index.html"), games); err != nil {
+		fmt.Fprintf(os.Stderr, "games: %v\n", err)
+		os.Exit(1)
+	}
+	books, err := loadBooks(filepath.Join(contentDir, "books.json"))
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "books: %v\n", err)
+		os.Exit(1)
+	}
+	for _, path := range []string{filepath.Join(outputDir, "books", "index.html"), filepath.Join(outputDir, "library", "books", "index.html")} {
+		if err := writeTemplate(templates, "books.html", path, books); err != nil {
+			fmt.Fprintf(os.Stderr, "books: %v\n", err)
+			os.Exit(1)
+		}
+	}
+
 	// Generate pages
 	fmt.Println("▓▓ GENERATING PAGES...")
 	if err := generateHomePage(templates, postTemplateData, groupedEssays, timeline, dayCount, firstYear); err != nil {
@@ -494,10 +832,16 @@ func main() {
 		fmt.Printf("▓▓ ERROR: about page failed: %v\n", err)
 	}
 
-	if err := generateLibraryIndexPage(templates, libraryEntries); err != nil {
+	if err := generateLibraryIndexPage(templates, libraryEntries, games, books); err != nil {
 		fmt.Printf("▓▓ ERROR: library index failed: %v\n", err)
 	}
 	for _, section := range librarySections {
+		if section.Key == "books" {
+			continue
+		}
+		if section.Key != "books" && len(libraryEntries[section.Key]) == 0 {
+			continue
+		}
 		if err := generateLibraryPage(templates, section, libraryEntries[section.Key]); err != nil {
 			fmt.Printf("▓▓ ERROR: library %s page failed: %v\n", section.Key, err)
 		}
@@ -637,13 +981,53 @@ func generateAboutPage(templates *template.Template) error {
 	return writeTemplate(templates, "about.html", filepath.Join(aboutDir, "index.html"), data)
 }
 
-func generateLibraryIndexPage(templates *template.Template, entries map[string][]LibraryEntry) error {
+func generateLibraryIndexPage(templates *template.Template, entries map[string][]LibraryEntry, games GamesPageData, books BooksPageData) error {
 	data := LibraryIndexPageData{
 		PageType: "library",
 		Title:    "library",
 		BasePath: basePath,
 		Sections: buildLibraryIndexSections(entries),
 	}
+	// The game log is the source of truth for the library landing summary.
+	for i := range data.Sections {
+		section := &data.Sections[i]
+		if section.Key == "books" {
+			count := len(books.Read) + len(books.Reading)
+			section.HasEntries = count > 0
+			section.CountLabel = fmt.Sprintf("%d books", count)
+			if count == 1 {
+				section.CountLabel = "1 book"
+			}
+			section.YearsLabel = ""
+			continue
+		}
+		if section.Key != "games" {
+			continue
+		}
+		count := len(games.Undated) + len(games.Playing)
+		for _, year := range games.Years {
+			count += len(year.Games)
+		}
+		section.HasEntries = count > 0
+		section.CountLabel = fmt.Sprintf("%d games", count)
+		if count == 1 {
+			section.CountLabel = "1 game"
+		}
+		section.YearsLabel = ""
+		if len(games.Years) > 0 {
+			section.YearsLabel = games.Years[0].Year
+			if len(games.Years) > 1 {
+				section.YearsLabel = games.Years[len(games.Years)-1].Year + " — " + games.Years[0].Year
+			}
+		}
+	}
+	var active []LibraryIndexSection
+	for _, section := range data.Sections {
+		if section.Key == "games" || section.Key == "books" {
+			active = append(active, section)
+		}
+	}
+	data.Sections = active
 	return writeTemplate(templates, "library.html", filepath.Join(outputDir, "library", "index.html"), data)
 }
 
@@ -661,6 +1045,12 @@ func generateLibraryPage(templates *template.Template, section LibrarySection, e
 		Years:      groupLibraryEntries(entries),
 		ScopeCount: scopeCount,
 		YearsLabel: summary.YearsLabel,
+	}
+	if section.Key == "books" {
+		data.PageType = "books"
+		if err := writeTemplate(templates, "library-section.html", filepath.Join(outputDir, "books", "index.html"), data); err != nil {
+			return err
+		}
 	}
 	return writeTemplate(
 		templates,

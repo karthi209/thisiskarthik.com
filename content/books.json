@@ -1,0 +1,8 @@
+{
+  "books": [
+    {"id":"the-last-wish","title":"The Last Wish","status":"read"},
+    {"id":"the-left-hand-of-darkness","title":"The Left Hand of Darkness","status":"reading"},
+    {"id":"sword-of-destiny","title":"Sword of Destiny","status":"reading"},
+    {"id":"the-blade-itself","title":"The Blade Itself","status":"reading"}
+  ]
+}

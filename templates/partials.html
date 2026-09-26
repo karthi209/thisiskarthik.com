@@ -1,14 +1,3 @@
-{{define "theme-loader"}}
-  <script>
-    try {
-      const cookieTheme = document.cookie.split('; ').find(value => value.startsWith('karthik-theme='))?.split('=')[1];
-      const savedTheme = cookieTheme || localStorage.getItem('karthik-theme');
-      const preferredTheme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-      document.documentElement.dataset.theme = savedTheme || preferredTheme;
-    } catch {}
-  </script>
-{{end}}
-
 {{define "site-header"}}
   <header class="site-header">
     <div class="journal-identity">
@@ -21,13 +10,10 @@
     <nav class="site-nav" aria-label="Journal">
       <a href="{{.BasePath}}"{{if eq .PageType "home"}} aria-current="page"{{end}}>timeline</a>
       <a href="{{.BasePath}}essays"{{if eq .PageType "essays"}} aria-current="page"{{end}}>essays</a>
-      <a href="{{.BasePath}}library"{{if eq .PageType "library"}} aria-current="page"{{end}}>library</a>
+      <a href="{{.BasePath}}games"{{if eq .PageType "games"}} aria-current="page"{{end}}>games</a>
+      <a href="{{.BasePath}}books"{{if eq .PageType "books"}} aria-current="page"{{end}}>books</a>
       <a href="{{.BasePath}}photos"{{if eq .PageType "photos"}} aria-current="page"{{end}}>photos</a>
       <a href="{{.BasePath}}about"{{if eq .PageType "about"}} aria-current="page"{{end}}>about</a>
-      <button class="theme-toggle" type="button" aria-pressed="false">
-        <span class="theme-mark" aria-hidden="true">☙</span>
-        <span class="theme-label">dark</span>
-      </button>
     </nav>
   </header>
 {{end}}
@@ -41,5 +27,4 @@
       <a href="{{.BasePath}}rss.xml">rss</a>
     </nav>
   </footer>
-  <script src="{{.BasePath}}js/theme.js"></script>
 {{end}}

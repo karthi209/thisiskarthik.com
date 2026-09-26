@@ -1,4 +1,10 @@
-# Library
+# Books and older notes
+
+Books are a first-class destination at `/books`, with reading status stored in
+`content/books.json`. Games live at `/games`; see `content/GAMES.md`. The old film and game
+notes remain accessible at `/library/films` and `/library/games`. Empty TV/music
+collections are no longer generated or listed. Existing source notes are preserved.
+
 
 The library is a chronological record of things watched, played, read, and
 listened to. Entries live in one of these folders:

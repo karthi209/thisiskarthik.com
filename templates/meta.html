@@ -11,11 +11,7 @@
   <meta name="description"
     content="Technical details about how this site is built - a smolweb compliant static site generator">
   <title>meta — for later, when i forget</title>
-  {{template "theme-loader" .}}
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&amp;family=Kalam:wght@400;700&amp;display=swap" rel="stylesheet">
-  <link href="{{.BasePath}}css/permanent.css?v=70" rel="stylesheet" type="text/css">
+  <link href="{{.BasePath}}css/permanent.css?v=95" rel="stylesheet" type="text/css">
   <link rel="icon" href="{{.BasePath}}favicon.png" type="image/png">
   <link rel="alternate" type="application/rss+xml" href="{{.BasePath}}rss.xml" title="for later, when i forget">
 </head>
@@ -26,7 +22,10 @@
     {{template "site-header" .}}
 
     <main class="page-main prose-page" id="main">
-      <h1>meta</h1>
+      <header class="section-header">
+        <p class="eyebrow">behind the pages</p>
+        <h1>meta</h1>
+      </header>
 
       <p>This site is just HTML and CSS compiled into static pages using a blog generator I wrote in Go because I got tired
         of platforms that change their terms of service every Tuesday. I post a lot on Twitter, and I realized late that you
@@ -38,8 +37,8 @@
 
       <p><strong>Typography</strong></p>
 
-      <p>Kalam keeps the headings loose and personal, while Atkinson Hyperlegible makes the entries comfortable to read.
-        It feels handwritten without asking every paragraph to behave like handwriting.</p>
+      <p>The site uses a local system sans serif for fast, comfortable reading. A small italic serif byline keeps a personal
+        note in the masthead without making every paragraph feel handwritten.</p>
 
       <p><strong>Colors</strong></p>
 

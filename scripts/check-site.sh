@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -eu
 
-if [ ! -f public/index.html ] || [ ! -f public/rss.xml ] || [ ! -f public/js/theme.js ] || [ ! -f public/css/permanent.css ] || [ ! -f public/spine-squiggle.svg ]; then
+if [ ! -f public/index.html ] || [ ! -f public/rss.xml ] || [ ! -f public/css/permanent.css ] || [ ! -f public/spine-squiggle.svg ]; then
   echo "Generated site is missing required files." >&2
   exit 1
 fi
@@ -9,7 +9,6 @@ fi
 page_count=0
 while IFS= read -r page; do
   page_count=$((page_count + 1))
-  grep -q 'js/theme.js' "$page"
   grep -q 'name="viewport"' "$page"
 done < <(find public -name index.html -type f -print)
 
@@ -26,10 +25,10 @@ fi
 for page in \
   public/library/index.html \
   public/library/films/index.html \
-  public/library/tv/index.html \
   public/library/games/index.html \
+  public/games/index.html \
+  public/books/index.html \
   public/library/books/index.html \
-  public/library/music/index.html \
   public/photos/index.html
 do
   if [ ! -f "$page" ]; then
@@ -38,11 +37,6 @@ do
   fi
 done
 
-grep -q "karthik-theme" public/js/theme.js
-grep -q "theme-toggle" public/index.html
-grep -q "theme-mark" public/index.html
-grep -q "☙" public/index.html
-grep -q "❧" public/js/theme.js
 grep -q "animation: none" public/css/permanent.css
 grep -q "class=\"timeline\"" public/index.html
 grep -q "daily journal" public/index.html
@@ -51,25 +45,35 @@ grep -q 'class="timeline-origin">the beginning' public/index.html
 grep -q "for later, when i forget" public/index.html
 grep -q "masthead-byline\">by karthik" public/index.html
 grep -q "class=\"timeline essay-timeline\"" public/essays/index.html
-grep -q 'href="/library"' public/index.html
+grep -q 'href="/games"' public/index.html
+grep -q 'href="/books"' public/index.html
 grep -q 'href="/photos"' public/index.html
-grep -q 'aria-current="page">library' public/library/index.html
+grep -q 'aria-current="page">games' public/games/index.html
+grep -q 'aria-current="page">books' public/books/index.html
 grep -q 'aria-current="page">photos' public/photos/index.html
 grep -q 'href="/library/films"' public/library/index.html
-grep -q 'href="/library/tv"' public/library/index.html
-grep -q 'href="/library/games"' public/library/index.html
-grep -q 'href="/library/books"' public/library/index.html
-grep -q 'href="/library/music"' public/library/index.html
+grep -q 'href="/games"' public/library/index.html
+grep -q 'href="/books"' public/library/index.html
 grep -q 'class="section-deck"' public/library/index.html
-grep -q "stories that stayed after the lights came back on" public/library/index.html
 grep -q "worlds explored, finished or left unfinished" public/library/index.html
 grep -q "class=\"library-index\"" public/library/index.html
-grep -q "nothing recorded here yet" public/library/index.html
-grep -q '<h2 class="library-index-title" id="library-index-films">' public/library/index.html
-grep -Eq "[0-9]+ films remembered" public/library/index.html
-grep -q "2016 — 2026" public/library/index.html
+grep -q "4 books" public/library/index.html
+grep -q 'id="reading-heading"' public/books/index.html
+grep -q "The Left Hand of Darkness" public/books/index.html
+grep -q "The Last Wish" public/books/index.html
 grep -q "Blood Diamond" public/library/films/index.html
 grep -q "Red Dead Redemption 2" public/library/games/index.html
+grep -q 'id="playing-heading"' public/games/index.html
+grep -q 'data-game-view="playtime"' public/games/index.html
+grep -q 'id="playtime-heading"' public/games/index.html
+grep -q 'js/games.js' public/games/index.html
+test -s public/js/games.js
+grep -q 'class="game-year"' public/games/index.html
+grep -q 'id="games-year-2026"' public/games/index.html
+grep -Eq '[0-9]+ games' public/library/index.html
+test -s public/images/games/elden-ring.jpg
+test -s public/images/games/ghost-of-tsushima.jpg
+test -s public/images/games/soma.jpg
 grep -q "films remembered" public/library/films/index.html
 grep -q "class=\"library-scope\"" public/library/films/index.html
 grep -Eq "<span>[0-9]+ entries</span>" public/library/films/index.html
@@ -87,9 +91,6 @@ grep -q "timeline-month-marker\">Feb" public/index.html
 grep -q "timeline-weekday\">thu" public/index.html
 grep -q "blockquote::before" public/css/permanent.css
 grep -q "text-transform: lowercase" public/css/permanent.css
-grep -q "html\\[data-theme=\"dark\"\\]" public/css/permanent.css
-grep -q -- "--page-bg: #161512" public/css/permanent.css
-grep -q -- "--paper: #161512" public/css/permanent.css
 grep -q -- "--spine-filter:" public/css/permanent.css
 grep -q "p:has(> img:only-child)" public/css/permanent.css
 grep -q "memory-image" public/css/permanent.css
@@ -167,4 +168,13 @@ if grep -Eqi 'camera model|aperture|shutter speed|exif|<dt>|masonry' public/phot
   exit 1
 fi
 
-echo "Validated $page_count site pages, navigation, theme assets, and RSS."
+echo "Validated $page_count site pages, navigation, assets, and RSS."
+
+if grep -Eqi 'older snapshot|lifetime|hours unknown|>library</a>' public/games/index.html; then
+  echo "Removed game UI leaked into the archive." >&2
+  exit 1
+fi
+if [ -f public/library/tv/index.html ] || [ -f public/library/music/index.html ]; then
+  echo "Unused placeholder collections were generated." >&2
+  exit 1
+fi

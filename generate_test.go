@@ -393,3 +393,194 @@ func TestNewContentTemplatesRenderPopulatedEntries(t *testing.T) {
 		t.Fatalf("photo detail template did not render its image and caption: %s", photoOutput.String())
 	}
 }
+
+func TestGamesArchive(t *testing.T) {
+	dir := t.TempDir()
+	path := filepath.Join(dir, "games.json")
+	source := `{"games":[
+ {"id":"old","title":"Childhood game"},
+ {"id":"year","title":"Year only","status":"paused","played":"2026"},
+ {"id":"now","title":"Now <game>","status":"playing","started":"2026-09","label":"strange and lovely","resume_note":"Return to the red room.","artifact":"images/memory.webp","artifact_alt":"A red room","cover":"images/cover.webp"},
+ {"id":"done","title":"Done","status":"completed","finished":"2026-08-08","rating":0,"favorite":true,"portrait":"images/portrait.jpg"}]}`
+	if err := os.WriteFile(path, []byte(source), 0600); err != nil {
+		t.Fatal(err)
+	}
+	stats := `{"now":{"provider":"steam","hours":0},"done":{"provider":"snapshot","hours":12.4},"not-curated":{"hours":999}}`
+	if err := os.WriteFile(filepath.Join(dir, "game-stats.json"), []byte(stats), 0600); err != nil {
+		t.Fatal(err)
+	}
+	originalBase := basePath
+	basePath = "/test/"
+	t.Cleanup(func() { basePath = originalBase })
+	data, err := loadGames(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(data.Playing) != 1 || len(data.Undated) != 1 || len(data.Years) != 1 || len(data.Years[0].Games) != 2 {
+		t.Fatalf("incorrect lifecycle grouping: %#v", data)
+	}
+	if data.Years[0].Games[0].ID != "done" || data.Years[0].Games[1].DateLabel != "2026" {
+		t.Fatal("chronology or date precision lost")
+	}
+	if data.Undated[0].Hours != nil || data.Undated[0].HoursLabel != "" || data.Playing[0].HoursLabel != "0h" {
+		t.Fatal("unknown vs zero lost")
+	}
+	if data.Years[0].Summary != "2 games · 12.4 hours recorded" {
+		t.Fatal(data.Years[0].Summary)
+	}
+	if data.Years[0].Faded {
+		t.Fatal("recent years should not be visually faded")
+	}
+	if len(data.Playtime) != 2 || data.Playtime[0].ID != "done" || data.Playtime[1].ID != "now" {
+		t.Fatalf("playtime view is not sorted by known hours: %#v", data.Playtime)
+	}
+	templates, err := template.ParseGlob("templates/*.html")
+	if err != nil {
+		t.Fatal(err)
+	}
+	var out bytes.Buffer
+	if err := templates.ExecuteTemplate(&out, "games.html", data); err != nil {
+		t.Fatal(err)
+	}
+	html := out.String()
+	for _, want := range []string{"Currently playing", "Earlier", "Most played", "by playtime", "find something I forgot", "data-memory-game", "game-status-stamp", "game-leader", "game-personal-label", "strange and lovely", "where I left off", "Return to the red room.", `src="/test/images/memory.webp"`, `alt="A red room"`, "Now &lt;game&gt;", "Playtime", "12.4h", "0 / 5", `aria-label="favourite"`} {
+		if !strings.Contains(html, want) {
+			t.Errorf("missing %q", want)
+		}
+	}
+	for _, bad := range []string{"backlog", "unknown", "N/A", "snapshot", "lifetime", "Steam", "999"} {
+		if strings.Contains(html, bad) {
+			t.Errorf("unwanted public text %q", bad)
+		}
+	}
+	if strings.Count(html, `id="game-now"`) != 1 {
+		t.Fatal("current game duplicated")
+	}
+	// Changing only personal status moves a game from now into history.
+	source = strings.Replace(source, `"status":"playing"`, `"status":"completed"`, 1)
+	if err := os.WriteFile(path, []byte(source), 0600); err != nil {
+		t.Fatal(err)
+	}
+	data, err = loadGames(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(data.Playing) != 0 || len(data.Years[0].Games) != 3 {
+		t.Fatal("completion did not move game into history")
+	}
+}
+
+func TestGamesOptionalStats(t *testing.T) {
+	dir := t.TempDir()
+	path := filepath.Join(dir, "games.json")
+	if err := os.WriteFile(path, []byte(`{"games":[{"id":"memory","title":"A memory"}]}`), 0600); err != nil {
+		t.Fatal(err)
+	}
+	for _, raw := range []string{"", `{"broken":`, `{"memory":{"hours":-4}}`} {
+		if raw != "" {
+			if err := os.WriteFile(filepath.Join(dir, "game-stats.json"), []byte(raw), 0600); err != nil {
+				t.Fatal(err)
+			}
+		}
+		data, err := loadGames(path)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if len(data.Undated) != 1 || data.Undated[0].Hours != nil || data.Undated[0].Status != "played" {
+			t.Fatal("missing stats damaged personal record")
+		}
+	}
+}
+
+func TestGamesRejectInvalidRecords(t *testing.T) {
+	for _, source := range []string{
+		`[{"title":"A","status":"backlog"}]`,
+		`[{"title":"A","rating":6}]`,
+		`[{"title":"A","hours":4}]`,
+		`[{"title":"A","started":"2026-09","finished":"2026-08"}]`,
+		`[{"title":"A","finshed":"2026"}]`,
+		`[{"title":"A","started":"2026-02-30"}]`,
+		`[{"id":"same","title":"A"},{"id":"same","title":"B"}]`,
+		`[{"title":"A","portrait":"https://example.com/a.jpg"}]`,
+	} {
+		path := filepath.Join(t.TempDir(), "games.json")
+		if err := os.WriteFile(path, []byte(`{"games":`+source+`}`), 0600); err != nil {
+			t.Fatal(err)
+		}
+		if _, err := loadGames(path); err == nil {
+			t.Errorf("accepted invalid record %s", source)
+		}
+	}
+}
+
+func TestGamesStarterFacts(t *testing.T) {
+	data, err := loadGames("content/games.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(data.Playing) < 2 {
+		t.Fatal("expected the manually recorded current games")
+	}
+	records := map[string]Game{}
+	for _, g := range data.Playing {
+		records[g.ID] = g
+	}
+	for _, g := range data.Undated {
+		records[g.ID] = g
+	}
+	for _, year := range data.Years {
+		for _, g := range year.Games {
+			if g.Status == "playing" {
+				t.Fatal("active game in history")
+			}
+			records[g.ID] = g
+		}
+	}
+	if len(records) < 31 {
+		t.Fatalf("personal history was lost; got %d records", len(records))
+	}
+	witcher := records["the-witcher-3"]
+	if witcher.Finished != "2026" || witcher.Status != "completed" {
+		t.Fatal("Witcher personal record changed")
+	}
+	if records["red-dead-redemption-2"].Finished != "2024" {
+		t.Fatal("Red Dead Redemption 2 year changed")
+	}
+	if records["icy-tower"].Finished != "2006" || records["firewatch"].Finished != "2020" {
+		t.Fatal("expanded game history changed")
+	}
+	if len(data.Backlog) == 0 {
+		t.Fatal("provider-derived backlog is empty")
+	}
+	for _, g := range data.Backlog {
+		records[g.ID] = g
+	}
+	for _, g := range records {
+		if g.Portrait == "" && g.Artifact == "" && g.Cover == "" {
+			t.Fatalf("%s has no local artwork", g.Title)
+		}
+		if g.ArtifactURL == "" && g.Portrait != "" {
+			t.Fatalf("%s portrait was not prepared for rendering", g.Title)
+		}
+		for _, art := range []string{g.Cover, g.Portrait, g.Artifact} {
+			if art != "" {
+				if _, err := os.Stat(filepath.Join(contentDir, art)); err != nil {
+					t.Fatal(err)
+				}
+			}
+		}
+	}
+}
+
+func TestBooksStarterFacts(t *testing.T) {
+	data, err := loadBooks("content/books.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(data.Read) != 1 || data.Read[0].Title != "The Last Wish" {
+		t.Fatalf("unexpected read books: %#v", data.Read)
+	}
+	if len(data.Reading) != 3 || data.Reading[0].Title != "The Left Hand of Darkness" {
+		t.Fatalf("unexpected current books: %#v", data.Reading)
+	}
+}

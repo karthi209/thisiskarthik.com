@@ -8,11 +8,12 @@ this site is built for short daily notes first: ordinary things, remembered quic
 
 - `content/journal/` holds small timeline notes.
 - `content/posts/` holds longer essays.
-- `content/library/` holds chronological film, television, game, book, and music notes.
+- `content/library/books/` holds book notes at `/books`. Existing film and game notes remain at their old archive URLs.
+- `content/games.json` holds the personal game archive at `/games`; optional `content/game-stats.json` holds provider observations (workflow in `content/GAMES.md`).
 - `content/photos/` holds photograph records and captions.
 - `content/images/` holds images used across the site.
 - `templates/` holds the go html templates.
-- `static/` holds the few permanent assets: css, favicon, theme script, and the squiggly spine.
+- `static/` holds the few permanent assets: CSS, the favicon, and the squiggly spine.
 - `public/` is generated output and is safe to rebuild.
 
 ## writing
@@ -45,8 +46,8 @@ draft: false
 
 longer pieces go in `content/posts/`. they appear only in the essays section, not on the homepage timeline.
 
-library entries and photographs have their own small formats documented in
-`content/library/README.md` and `content/photos/README.md`.
+book notes, the game archive, and photographs have their own small formats documented in
+`content/library/README.md`, `content/GAMES.md`, and `content/photos/README.md`.
 
 ## design
 
@@ -70,6 +71,8 @@ the layout is designed around one reading column:
 make build      # generate public/
 make check      # tests, build, and generated-site validation
 make test       # go tests for timeline parsing and ordering
+make games-sync # reconcile Steam + Lutris; completed records stay manual
+make games-import # alias for games-sync
 make note       # create today's short journal note
 make preview    # local dev server on port 5174
 make serve      # same as preview

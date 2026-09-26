@@ -1,6 +1,23 @@
 # Generated output
 public/
 
+# Generated deployment copies (only valid on the gh-pages branch)
+/about/
+/books/
+/css/
+/essays/
+/games/
+/images/
+/js/
+/library/
+/meta/
+/photos/
+/index.html
+/rss.xml
+/favicon.png
+/spine-squiggle.svg
+/CNAME
+
 # Go build artifacts
 *.exe
 *.exe~
@@ -31,4 +48,3 @@ Thumbs.db
 .env
 .env.local
 .env.*.local
-
