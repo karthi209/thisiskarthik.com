@@ -1,0 +1,341 @@
+/*
+ * A restrained Japanese editorial system for the existing ink-wash landscape.
+ * Ma (space), sumi (decisive lines), washi (paper), and a small seal-red accent.
+ */
+
+:root {
+  --flow-body: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  --flow-display: "Fraunces", Georgia, serif;
+  --flow-ui: "Avenir Next", Avenir, "Segoe UI", system-ui, sans-serif;
+  --flow-ink: #303b3f;
+  --flow-muted: #68767a;
+  --flow-rule: #9aa6a6;
+  --flow-rule-light: #c9ceca;
+  --flow-paper: #f1eee3;
+  --flow-paper-deep: #e7e2d5;
+  --flow-seal: #9e4439;
+}
+
+.games-page,
+body:not(.games-page),
+.games-paper,
+.timeline-content,
+.post-article,
+.prose-page,
+.game-thoughts {
+  color: var(--flow-ink);
+  font-family: var(--flow-body);
+}
+
+.masthead-name,
+.section-header h1,
+.games-intro h1,
+.prose-page > h1,
+.post-article > h1,
+.photo-page > h1 {
+  color: var(--flow-ink) !important;
+  font-family: var(--flow-display) !important;
+  font-weight: 625 !important;
+  letter-spacing: -.035em !important;
+  text-shadow: none;
+}
+
+.masthead-name {
+  font-size: clamp(32px, 5vw, 43px);
+}
+
+.masthead-byline {
+  color: var(--flow-seal) !important;
+  font-family: var(--flow-body);
+  font-style: italic;
+}
+
+.site-header,
+.games-site-shell .site-header,
+body:not(.games-page) .site-header {
+  background: transparent;
+  border: 0;
+}
+
+.site-nav {
+  border: 0;
+}
+
+.site-title,
+.site-nav a,
+.timeline-entry-title a,
+.photo-month a,
+.prose-page a,
+.post-article a,
+.site-footer a,
+.back-link,
+.game-entry > summary,
+.game-view-switch button,
+.game-rediscovery button {
+  transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease;
+}
+
+.site-nav a,
+.site-nav a:nth-child(n) {
+  color: var(--flow-muted) !important;
+  background: transparent !important;
+  border: 0;
+  border-radius: 0;
+  clip-path: none;
+  font-family: var(--flow-ui);
+  font-style: normal;
+  font-weight: 560;
+  letter-spacing: .06em;
+}
+
+.site-nav a:hover,
+.site-nav a:nth-child(n):hover,
+.site-nav a:focus-visible {
+  color: var(--flow-ink) !important;
+  background: transparent !important;
+  box-shadow: none;
+  clip-path: none;
+}
+
+.site-nav a[aria-current="page"] {
+  color: var(--flow-seal) !important;
+}
+
+.site-nav a[aria-current="page"]::after {
+  right: 24%;
+  bottom: -7px;
+  left: 24%;
+  height: 1px;
+  background: var(--flow-seal);
+  border-radius: 0;
+  opacity: 1;
+}
+
+/* A single washi sheet: defined, quiet, and inexpensive to render. */
+body:not(.games-page) .page-main::after,
+.games-paper::after {
+  width: min(960px, calc(100vw - 20px));
+  background: var(--flow-paper);
+  border: 1px solid var(--flow-rule);
+  border-radius: 2px;
+  box-shadow: 0 8px 24px rgb(38 51 56 / 16%);
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+
+/* Crisp wind strokes, drawn with borders rather than filters or images. */
+body:not(.games-page) .page-main::before,
+.games-paper::before {
+  top: 13px;
+  left: 50%;
+  width: 116px;
+  height: 13px;
+  translate: -50% 0;
+  background: transparent;
+  border: 0;
+  border-top: 1px solid var(--flow-ink);
+  border-radius: 50% 50% 0 0;
+  box-shadow: 26px 5px 0 -5px var(--flow-seal);
+  opacity: .62;
+  -webkit-mask-image: none;
+  mask-image: none;
+  animation: none;
+}
+
+.section-header,
+body:not(.games-page) .section-header,
+.games-intro {
+  border: 0;
+}
+
+.section-header .eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--flow-muted);
+  font-family: var(--flow-ui);
+  font-weight: 620;
+  letter-spacing: .14em;
+}
+
+/* Hanko-like punctuation: one restrained red seal. */
+.section-header .eyebrow::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  background: var(--flow-seal);
+  border: 1px solid rgb(92 43 37 / 28%);
+}
+
+.section-header .section-deck,
+.games-intro .section-deck {
+  color: var(--flow-muted) !important;
+  font-family: var(--flow-body);
+  font-style: italic;
+}
+
+.section-header::after,
+body:not(.games-page) .section-header::after,
+.games-intro::after {
+  display: block !important;
+  content: "" !important;
+  width: 112px;
+  height: 12px;
+  margin: 18px auto -16px;
+  background: transparent;
+  border: 0;
+  border-top: 1px solid var(--flow-rule);
+  border-radius: 50% 50% 0 0;
+  opacity: .8;
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+
+.timeline-year > h2,
+.games-section > h2,
+.photo-month > h3 {
+  color: var(--flow-ink);
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--flow-rule);
+}
+
+.timeline-item,
+.photo-month li,
+.game-name-list > li,
+.game-playtime-list > li {
+  background: transparent;
+  border: 0 !important;
+  border-bottom: 1px solid var(--flow-rule-light) !important;
+  border-radius: 0;
+}
+
+.timeline-item:hover,
+.timeline-item:nth-child(even):hover,
+.photo-month li:hover,
+.photo-month li:nth-child(even):hover,
+.game-entry > summary:hover {
+  background: #e5e9e5;
+}
+
+.timeline-entry-title a,
+.photo-month a,
+.prose-page a,
+.post-article a,
+.site-footer a,
+.back-link,
+.timeline-item:nth-child(n) .timeline-entry-title a,
+.photo-month li:nth-child(n) a {
+  color: color-mix(in srgb, var(--flow-ink) 82%, var(--flow-seal));
+  background: transparent;
+  text-decoration-color: rgb(158 68 57 / 38%);
+  text-decoration-thickness: 1px;
+  text-underline-offset: .2em;
+}
+
+.timeline-entry-title a:hover,
+.photo-month a:hover,
+.prose-page a:hover,
+.post-article a:hover,
+.site-footer a:hover,
+.back-link:hover {
+  color: var(--flow-seal);
+  background: transparent;
+  text-decoration-color: var(--flow-seal);
+}
+
+.game-view-switch button,
+.game-rediscovery button {
+  color: var(--flow-muted);
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--flow-rule);
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.game-view-switch button:hover,
+.game-view-switch button.is-active,
+.game-rediscovery button:hover {
+  color: var(--flow-seal);
+  background: transparent;
+  border-color: var(--flow-seal);
+}
+
+.game-entry-details,
+.game-entry--playing .game-entry-details,
+.game-entry--completed .game-entry-details,
+.game-entry--backlog .game-entry-details,
+.game-entry--played .game-entry-details,
+.game-entry--paused .game-entry-details,
+.game-entry--dropped .game-entry-details {
+  background: var(--flow-paper-deep);
+  border: 0;
+  border-top: 1px solid var(--flow-rule-light);
+  border-bottom: 1px solid var(--flow-rule-light);
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.site-footer {
+  background: transparent;
+  border: 0 !important;
+  border-top: 1px solid var(--flow-rule-light) !important;
+}
+
+@media (max-width: 620px) {
+  .site-header,
+  .games-site-shell .site-header,
+  body:not(.games-page) .site-header {
+    background: var(--flow-paper);
+    border-bottom: 1px solid var(--flow-rule-light);
+  }
+
+  .site-nav a[aria-current="page"]::after {
+    right: 26%;
+    bottom: 0;
+    left: 26%;
+  }
+
+  body:not(.games-page) .page-main::after,
+  .games-paper::after {
+    width: 100%;
+    border-right: 0;
+    border-left: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  body:not(.games-page) .page-main::before,
+  .games-paper::before {
+    top: 11px;
+    width: 92px;
+  }
+
+  .section-header,
+  body:not(.games-page) .section-header,
+  .games-intro {
+    text-align: center;
+  }
+
+  .section-header .section-deck,
+  .games-intro .section-deck {
+    margin-inline: auto;
+  }
+}
+
+@media (hover: none) and (pointer: coarse), (prefers-reduced-motion: reduce) {
+  .site-title,
+  .site-nav a,
+  .timeline-entry-title a,
+  .photo-month a,
+  .prose-page a,
+  .post-article a,
+  .site-footer a,
+  .back-link,
+  .game-entry > summary,
+  .game-view-switch button,
+  .game-rediscovery button {
+    transition: none;
+  }
+}

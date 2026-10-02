@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="Content-Security-Policy"
+    content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self' 'unsafe-inline';">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light dark">
+    <meta name="description"
+    content="Technical details about how this site is built - a smolweb compliant static site generator">
+    <title>meta — for later, when i forget</title>
+      <link href="/css/permanent.css?v=111" rel="stylesheet" type="text/css">
+      <link href="/css/flow.css?v=2" rel="stylesheet" type="text/css">
+      <link rel="icon" href="/favicon.png" type="image/png">
+      <link rel="alternate" type="application/rss+xml" href="/rss.xml" title="for later, when i forget">
+    </head>
+    <body>
+      <a class="skip-link" href="#main">Skip to content</a>
+      <div class="page-shell">
+        <header class="site-header">
+          <div class="journal-identity">
+            <a class="site-title" href="/" aria-label="for later, when i forget — by karthik">
+            <span class="masthead-name">for later, when i forget</span>
+            <span class="masthead-byline">by karthik</span>
+          </a>
+        </div>
+        <nav class="site-nav" aria-label="Journal">
+          <a href="/">timeline</a>
+          <a href="/essays">essays</a>
+          <a href="/games">games</a>
+          <a href="/books">books</a>
+          <a href="/photos">photos</a>
+          <a href="/about">about</a>
+        </nav>
+      </header>
+      <main class="page-main prose-page" id="main">
+        <header class="section-header">
+          <p class="eyebrow">behind the pages</p>
+            <h1>meta</h1>
+            </header>
+            <p>This site is just HTML and CSS compiled into static pages using a blog generator I wrote in Go because I got tired
+              of platforms that change their terms of service every Tuesday. I post a lot on Twitter, and I realized late that you
+              don't actually own anything you post there, so everything I write online, this website will have a copy of it all,
+              and it's just HTML and CSS compiled into static pages using a custom Go static site generator... just my words on my
+              domain under my control. A full build of this site takes 8 milliseconds which is longer than zero but
+              shorter than most modern websites take to load, and almost everything lives in the static build which means few
+              moving parts and fewer things to break.</p>
+              <p>
+                <strong>Typography</strong>
+                </p>
+                <p>The site uses a local system sans serif for fast, comfortable reading. A small italic serif byline keeps a personal
+                  note in the masthead without making every paragraph feel handwritten.</p>
+                  <p>
+                    <strong>Colors</strong>
+                    </p>
+                    <p>The journal uses quiet paper, warm ink, and a restrained brick accent, with dull teal and mustard
+                      appearing only in small rules and metadata.</p>
+                      <p>
+                        <strong>Source Code</strong>
+                        </p>
+                        <p>It's all on <a href="https://github.com/karthi209/thisiskarthik.com.git" target="_blank"
+                          rel="noreferrer">GitHub</a> if you're into that sort of thing.</p>
+                          <footer class="site-footer">
+                            <p>© 2026 karthik</p>
+                              <nav aria-label="Footer">
+                                <a href="/about">about</a>
+                                <a href="/meta">meta</a>
+                                <a href="/rss.xml">rss</a>
+                              </nav>
+                            </footer>
+                          </main>
+                        </div>
+                      </body>
+                    </html>
