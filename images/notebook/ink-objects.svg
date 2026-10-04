@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg">
+  <!-- Original decorative ink sketches, not depictions of historical possessions. -->
+  <symbol id="controller" viewBox="0 0 200 170">
+    <path fill="#ddd2ad" d="M28 78 45 63 73 64 90 74 112 72 139 62 161 69 179 124 171 141 158 139 137 116 67 119 45 145 29 141 20 126Z"/>
+    <g fill="none" stroke="#405d62" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M30 77q12-18 36-11l24 9 21-2 28-10q19-3 25 12l16 50q2 23-19 15l-23-23-68 3-23 24q-24 11-27-17Z"/>
+      <path d="M94 72q-15-19 4-29t13-22M46 83v11H35v10h11v12h11v-12h12V94H57V83Z"/>
+      <circle cx="133" cy="91" r="4"/><circle cx="152" cy="105" r="4"/><circle cx="87" cy="108" r="2"/><circle cx="105" cy="107" r="2"/>
+      <path d="m24 53-5-8m16 8 3-13m-24 24-11-3m165-8 10-6m-8 17 16 1" stroke="#a05743"/>
+    </g>
+    <path d="m148 20 3 11 11 2-10 5-1 11-6-9-11 1 8-8Z" fill="#ae6950"/>
+  </symbol>
+  <symbol id="book" viewBox="0 0 200 170">
+    <path fill="#d8dec9" d="m33 51 24-11 46 7 42-16 25 12-3 97-24-7-43 18-42-7-30 9Z"/>
+    <g fill="none" stroke="#586747" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m31 49 27-8q23-2 43 10 29-21 64-16l3 102q-35-4-66 17-35-15-70-5Z"/>
+      <path d="m101 51 1 103M30 57l-7 100 75 6 78-25-5-96M46 65q23-4 41 5m-41 11 39 5m-39 10 34 4m41-39 28-9m-29 25 30-9m-29 25 28-8"/>
+    </g>
+    <path fill="#aa6653" d="m132 39 11-5 4 54-7-7-7 12Z"/>
+    <path d="m48 26-9-7m22 5-2-12m15 13 6-7" fill="none" stroke="#a05743" stroke-width="2" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="camera" viewBox="0 0 200 170">
+    <path fill="#ddd5c6" d="m26 63 37-4 8-14 34-3 17 15 46-3 10 83-147 10Z"/>
+    <g fill="none" stroke="#456272" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m27 65 38-5 8-16 31-2 17 15 44-3 13 84-145 12Z"/>
+      <path d="m47 62-4-12 17-2 2 14m76 6 18-1 2 11-19 1Z"/>
+      <circle cx="101" cy="103" r="29"/><circle cx="100" cy="103" r="21"/>
+      <path d="M89 91q8-6 15-3M32 81l40-4M22 48 13 41m15-8-3-10m149 14 9-8m-4 23 14 1"/>
+    </g>
+    <path fill="#a76d52" d="m51 129 3 7 8 2-7 4-1 8-5-6-8 1 5-7Z"/>
+  </symbol>
+  <symbol id="sprig" viewBox="0 0 200 170">
+    <g stroke="#52654e" stroke-width="2" stroke-linejoin="round">
+      <path d="M83 153q21-68 23-126" fill="none"/>
+      <path d="M104 57q-36-4-43-32 40 3 43 32Zm-4 29q33-4 45-32-33-2-45 32Zm-5 27q-36-1-47-26 31-2 47 26Zm-8 26q27 1 41-23-31-4-41 23Z" fill="#ccd5be"/>
+    </g>
+    <path d="m139 15 1 9 9 3-8 3-2 9-4-8-9-2 8-5Z" fill="#ae6d54"/>
+    <path d="M115 145q11-4 20 0" stroke="#a05743" stroke-width="2" fill="none" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="pen" viewBox="0 0 200 170">
+    <path fill="#d6c79e" d="m44 134 59-99 13 8-61 98-18 12Z"/>
+    <g fill="none" stroke="#6e5a41" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m43 134 61-100 15 9-63 99-19 12Z"/>
+      <path d="m48 126 13 9m-5 7-4-15-9 7m64-104 8-12 15 9-8 13M31 160q36-9 76-4t65-2"/>
+    </g>
+    <path d="m146 62 2 12 12 3-10 5-3 12-5-11-12-2 10-6Z" fill="#a26350"/>
+  </symbol>
+</svg>
