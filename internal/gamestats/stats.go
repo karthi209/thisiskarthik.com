@@ -23,9 +23,10 @@ type Record struct {
 }
 
 type Stat struct {
-	Provider   string   `json:"provider"`
-	Hours      *float64 `json:"hours,omitempty"`
-	LastPlayed string   `json:"last_played,omitempty"`
+	Provider        string   `json:"provider"`
+	Hours           *float64 `json:"hours,omitempty"`
+	AdditionalHours *float64 `json:"additional_hours,omitempty"`
+	LastPlayed      string   `json:"last_played,omitempty"`
 }
 
 type Cache map[string]Stat
@@ -87,6 +88,9 @@ func Read(path string) (Cache, error) {
 		if s.Hours != nil && (*s.Hours < 0 || math.IsNaN(*s.Hours) || math.IsInf(*s.Hours, 0)) {
 			return nil, fmt.Errorf("%s: invalid hours", id)
 		}
+		if s.AdditionalHours != nil && (*s.AdditionalHours < 0 || math.IsNaN(*s.AdditionalHours) || math.IsInf(*s.AdditionalHours, 0)) {
+			return nil, fmt.Errorf("%s: invalid additional hours", id)
+		}
 		if s.LastPlayed != "" {
 			if _, err = time.Parse(time.RFC3339, s.LastPlayed); err != nil {
 				return nil, fmt.Errorf("%s: invalid last_played", id)
@@ -94,6 +98,21 @@ func Read(path string) (Cache, error) {
 		}
 	}
 	return cache, nil
+}
+
+// TotalHours combines the provider observation with playtime recorded elsewhere.
+func (s Stat) TotalHours() *float64 {
+	if s.Hours == nil && s.AdditionalHours == nil {
+		return nil
+	}
+	total := 0.0
+	if s.Hours != nil {
+		total += *s.Hours
+	}
+	if s.AdditionalHours != nil {
+		total += *s.AdditionalHours
+	}
+	return &total
 }
 
 // WriteAtomic only replaces the disposable cache after a complete write and flush.

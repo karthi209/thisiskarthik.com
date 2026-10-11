@@ -3,43 +3,53 @@
 <html lang="en">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self' 'unsafe-inline';">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; script-src 'self' 'unsafe-inline';">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="color-scheme" content="light dark">
-  <meta name="description" content="games in Karthik's chronological library.">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="games played, borrowed, forgotten, and remembered.">
   <title>games — for later, when i forget</title>
-  <link href="{{.BasePath}}css/permanent.css?v=95" rel="stylesheet" type="text/css">
+  {{template "site-styles" .}}
   <link rel="icon" href="{{.BasePath}}favicon.png" type="image/png">
 </head>
-  <body class="games-page">
+  <body class="games-page collection-dark">
     <a class="skip-link" href="#main">Skip to content</a>
     <div class="games-site-shell">
       {{template "site-header" .}}
       <div class="games-layout">
         <main class="games-paper archive-page" id="main">
       <header class="section-header games-intro">
-        <h1>game log</h1>
-        <p class="section-deck">A non-exhaustive record of games I've played, finished, or still remember.</p>
+        {{template "notebook-doodle" .}}
+        <h1>game <em>collection</em></h1>
+        <p class="section-deck">games i've played, finished, borrowed, forgotten, and somehow still remember.</p>
       </header>
+      <nav class="notebook-index" aria-label="On this page">
+        <span>on this page</span>
+        <a href="#playing-heading">playing</a>
+        <a href="#collection-heading" data-game-section="history">history</a>
+        {{if .Backlog}}<a href="#shelf-backlog" data-game-section="backlog">for later</a>{{end}}
+      </nav>
       <nav class="game-view-switch" aria-label="Arrange game log">
-        <button type="button" class="is-active" data-game-view="years" aria-pressed="true">by year</button>
+        <button type="button" class="is-active" data-game-view="shelf" aria-pressed="true">shelf</button>
+        <button type="button" data-game-view="years" aria-pressed="false">journal</button>
         <button type="button" data-game-view="playtime" aria-pressed="false">by playtime</button>
       </nav>
       <div class="game-rediscovery">
         <button type="button" data-random-game>find something I forgot</button>
         <span data-random-game-message aria-live="polite"></span>
       </div>
-      <div data-game-panel="years">
       <section class="games-section now-playing-scrap" aria-labelledby="playing-heading">
         <h2 id="playing-heading">Currently playing</h2>
+        <p class="notebook-aside" aria-hidden="true">where my evenings go ↗</p>
         {{if .Playing}}{{template "game-rows" .Playing}}{{else}}<p class="game-meta">Nothing recorded here just now.</p>{{end}}
       </section>
+      <div data-game-panel="years" hidden>
       <section class="games-section games-history" aria-labelledby="history-heading">
         <h2 id="history-heading">History</h2>
         {{range .Years}}
-        <section class="game-year{{if .Faded}} game-year--faded{{end}}" aria-labelledby="games-year-{{.Year}}">
-          <h3 class="game-year-title" id="games-year-{{.Year}}"><span>{{.Year}}</span><small>{{.Summary}}</small></h3>
-          {{template "game-rows" .Games}}
+        <section class="game-year{{if lt .SortYear 2018}} game-year--remembered{{end}}{{if lt .SortYear 2008}} game-year--childhood{{end}}" aria-labelledby="games-year-{{.ID}}">
+          <h3 class="game-year-title" id="games-year-{{.ID}}"><span>{{.Year}}</span><small>{{.Summary}}</small></h3>
+          {{range .Milestones}}{{template "game-milestone" .}}{{end}}
+          {{if .Games}}{{template "game-rows" .Games}}{{end}}
         </section>
         {{end}}
         {{if .Undated}}<section class="game-undated" aria-labelledby="games-undated">
@@ -55,15 +65,28 @@
         {{template "game-rows" .Backlog}}
       </section>{{end}}
       </div>
+      <div data-game-panel="shelf">
+        <section class="games-section collection-history" aria-labelledby="collection-heading">
+          <h2 id="collection-heading">played, borrowed, and remembered</h2>
+          <p class="game-meta">Click a cover or label to open the notes. The journal keeps the whole story.</p>
+          {{range .Years}}{{if .Games}}<section class="shelf-era" aria-labelledby="shelf-year-{{.ID}}">
+            <h3 id="shelf-year-{{.ID}}">{{.Year}}</h3>
+            {{template "game-shelf" .Games}}
+          </section>{{end}}{{end}}
+          {{if .Undated}}<section class="shelf-era" aria-labelledby="shelf-earlier"><h3 id="shelf-earlier">Earlier</h3>{{template "game-shelf" .Undated}}</section>{{end}}
+        </section>
+        {{if .Backlog}}<section class="games-section" aria-labelledby="shelf-backlog"><h2 id="shelf-backlog">for another day</h2>{{template "game-shelf" .Backlog}}</section>{{end}}
+      </div>
       <div data-game-panel="playtime" hidden>
         <section class="games-section games-playtime" aria-labelledby="playtime-heading">
           <h2 id="playtime-heading">Most played</h2>
-          <p class="game-meta">Recorded playtime, longest first.</p>
+          <p class="game-meta">Recorded playtime, longest first. Untracked memories have no place in these totals.</p>
           {{if .Playtime}}{{template "playtime-rows" .Playtime}}{{else}}<p class="game-meta">No playtime recorded yet.</p>{{end}}
         </section>
       </div>
       {{template "site-footer" .}}
       <script src="{{.BasePath}}js/games.js"></script>
+      <script src="{{.BasePath}}js/collections.js"></script>
         </main>
       </div>
     </div>
@@ -84,11 +107,12 @@
 
 {{define "game-rows"}}
 <ul class="game-name-list">
-  {{range .}}<li id="game-{{.ID}}"{{if eq .Status "completed"}} data-memory-game data-game-title="{{.Title}}" data-game-date="{{.DateLabel}}"{{end}}>
+  {{range .}}<li id="game-{{.ID}}" class="{{if .ApproxYear}}game-row--remembered{{end}}{{if .Memory}} game-row--memory{{end}}"{{if ne .Status "playing"}} data-memory-game data-game-title="{{.Title}}" data-game-date="{{.DateLabel}}"{{end}}>
     <details class="game-entry game-entry--{{.Status}}">
-      <summary><span class="game-title">{{.Title}}{{if .Favorite}} <span class="game-favorite" aria-label="favourite">♥</span>{{end}}</span><span class="game-leader" aria-hidden="true"></span>{{if .Hours}}<span class="game-hours">{{.HoursLabel}}</span>{{end}}{{if or .Notes .Label .ResumeNote .ArtifactURL}}<span class="game-memory-mark" aria-label="has a memory">✦</span>{{end}}</summary>
+      <summary><span class="game-title">{{.Title}}{{if .Favorite}} <span class="game-favorite" aria-label="favourite">♥</span>{{end}}</span><span class="game-leader" aria-hidden="true"></span>{{if .Hours}}<span class="game-hours">{{.HoursLabel}}</span>{{else if .HoursNote}}<span class="game-hours game-hours-note">{{.HoursNote}}</span>{{end}}{{if or .Memory .Notes .Label .ResumeNote .ArtifactURL}}<span class="game-memory-mark" aria-label="has a memory">✦</span>{{end}}</summary>
       {{template "game-entry-details" .}}
     </details>
+    {{if .Memory}}<aside class="game-margin-memory"><p>{{.Memory}}</p>{{if and .Source (not .Tracking)}}<span class="notebook-provenance">↳ {{.Source}}</span>{{end}}</aside>{{end}}
   </li>{{end}}
 </ul>
 {{end}}
@@ -101,14 +125,43 @@
       {{if .Label}}<p class="game-personal-label"><span>filed under</span>{{.Label}}</p>{{end}}
       <dl>
         {{if .Platform}}<div><dt>Platform</dt><dd>{{.Platform}}</dd></div>{{end}}
-        {{if .Date}}<div><dt>Date</dt><dd><time datetime="{{.Date}}">{{.DateLabel}}</time></dd></div>{{end}}
+        {{if and .Date (not .ApproxYear)}}<div><dt>Date</dt><dd><time datetime="{{.Date}}">{{.DateLabel}}</time></dd></div>{{end}}
         {{if .Hours}}<div><dt>Playtime</dt><dd>{{.HoursLabel}}</dd></div>{{end}}
-        {{if .Rating}}<div><dt>Rating</dt><dd>{{.Rating}} / 5</dd></div>{{end}}
+        {{if .ApproxYear}}<div><dt>Remembered</dt><dd>{{.ApproxYear}}</dd></div>{{end}}
+        {{if .MachineLabel}}<div><dt>Computer</dt><dd><a href="#machine-{{.Machine}}" data-game-jump>{{.MachineLabel}}</a></dd></div>{{end}}
+        {{if and .Source (not .Tracking)}}<div><dt>From</dt><dd>{{.Source}}</dd></div>{{end}}
+        {{if .HoursNote}}<div><dt>Playtime</dt><dd>{{.HoursNote}}</dd></div>{{end}}
       </dl>
       {{if .ResumeNote}}<aside class="game-resume-note"><strong>where I left off</strong><p>{{.ResumeNote}}</p></aside>{{end}}
+      {{if .Memory}}<p class="game-thoughts game-personal-memory">{{.Memory}}</p>{{end}}
       {{if .Notes}}<p class="game-thoughts">{{.Notes}}</p>{{end}}
     </div>
     {{if .ArtifactURL}}<figure class="game-artifact"><img src="{{.ArtifactURL}}" alt="{{.ArtifactAlt}}" loading="lazy" decoding="async"></figure>{{end}}
   </div>
 </div>
+{{end}}
+
+{{define "game-milestone"}}
+<aside class="game-milestone" id="machine-{{.ID}}" aria-labelledby="machine-title-{{.ID}}">
+  <small>{{.Date}}</small>
+  <h4 id="machine-title-{{.ID}}">{{.Title}}</h4>
+  <p class="game-milestone-hardware">{{.Hardware}}</p>
+  {{if .Memory}}<p class="game-personal-memory">{{.Memory}}</p>{{end}}
+  {{if .PhotoURL}}<figure class="game-era-photo"><img src="{{.PhotoURL}}" alt="{{.PhotoAlt}}" loading="lazy" decoding="async">{{if .PhotoCaption}}<figcaption>{{.PhotoCaption}}</figcaption>{{end}}</figure>{{end}}
+</aside>
+{{end}}
+
+{{define "game-shelf"}}
+<ul class="collection-shelf game-shelf">
+  {{range .}}<li id="shelf-{{.ID}}">
+    <details class="shelf-entry">
+      <summary>
+        {{if .PortraitURL}}<span class="shelf-cover"><img src="{{.PortraitURL}}" alt="Cover of {{.Title}}" loading="lazy" decoding="async"></span>{{else if .CoverURL}}<span class="shelf-cover"><img src="{{.CoverURL}}" alt="Cover of {{.Title}}" loading="lazy" decoding="async"></span>{{else}}<span class="shelf-cover shelf-label"><span>{{.Title}}</span>{{if eq .Status "unidentified"}}<small>title lost to history</small>{{end}}</span>{{end}}
+        <span class="shelf-title">{{.Title}}</span>
+        <span class="shelf-toggle" aria-hidden="true"><span class="shelf-toggle-open">+ details</span><span class="shelf-toggle-close">− close</span></span>
+      </summary>
+      {{template "game-entry-details" .}}
+    </details>
+  </li>{{end}}
+</ul>
 {{end}}

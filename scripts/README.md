@@ -2,6 +2,15 @@
 
 Utility scripts for content management and optimization.
 
+## fetch-book-covers.py
+
+Fetches cover art for every record in `content/books.json` from Open Library,
+optimizes it to WebP, and records the source URLs. Run it after adding a book:
+
+```bash
+make books-artwork
+```
+
 ## install-dependencies.sh
 
 Installs all required dependencies for the static site generator.

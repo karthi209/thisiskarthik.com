@@ -12,6 +12,8 @@ import (
 	"for-later-when-i-forget/internal/gamestats"
 )
 
+const defaultStaleDays = 14
+
 func main() { os.Exit(run(os.Args[1:])) }
 func run(args []string) int {
 	flags := flag.NewFlagSet("games-sync", flag.ContinueOnError)
@@ -23,7 +25,7 @@ func run(args []string) int {
 	dry := flags.Bool("dry-run", false, "report changes without writing")
 	list := flags.Bool("list-lutris", false, "list local Lutris identifiers without syncing")
 	importSteam := flags.Bool("import-steam-library", false, "merge every visible Steam game into the archives")
-	staleDays := flags.Int("stale-days", 30, "provider games older than this go to backlog")
+	staleDays := flags.Int("stale-days", defaultStaleDays, "provider games older than this go to backlog")
 	if err := flags.Parse(args); err != nil {
 		return 2
 	}

@@ -8,12 +8,12 @@ this site is built for short daily notes first: ordinary things, remembered quic
 
 - `content/journal/` holds small timeline notes.
 - `content/posts/` holds longer essays.
-- `content/library/books/` holds book notes at `/books`. Existing film and game notes remain at their old archive URLs.
+- `content/books.json` holds the reading log at `/books`.
 - `content/games.json` holds the personal game archive at `/games`; optional `content/game-stats.json` holds provider observations (workflow in `content/GAMES.md`).
 - `content/photos/` holds photograph records and captions.
 - `content/images/` holds images used across the site.
 - `templates/` holds the go html templates.
-- `static/` holds the few permanent assets: CSS, the favicon, and the squiggly spine.
+- `static/` holds the few permanent assets: one stylesheet, local fonts, the favicon, and small notebook illustrations.
 - `public/` is generated output and is safe to rebuild.
 
 ## writing
@@ -46,24 +46,21 @@ draft: false
 
 longer pieces go in `content/posts/`. they appear only in the essays section, not on the homepage timeline.
 
-book notes, the game archive, and photographs have their own small formats documented in
-`content/library/README.md`, `content/GAMES.md`, and `content/photos/README.md`.
+the game archive and photographs have their own small formats documented in
+`content/GAMES.md` and `content/photos/README.md`. The reading log is the small,
+self-explanatory collection in `content/books.json`.
 
 ## design
 
-the design is intentionally plain white paper and warm ink. there are no cards, no editorial boxes, no decorative backgrounds, and no art-credit trail pretending the site is more illustrated than it is.
+the site uses a charcoal background, warm cream text, thin border boxes, and slightly offset frames. IBM Plex Sans is the reading face; Plex Mono carries navigation, dates, and metadata. Fraunces headings and small Caveat annotations add character without competing with the writing. Fonts are local, with their licenses in `static/fonts/`.
 
-the timeline spine, month/date labels, quote marks, and small metadata use the same hand-drawn language. the rendered site is lowercase on purpose, including essay titles, because the voice should feel like a journal rather than a publication.
+`static/css/site.css` is the single stylesheet, shared through `site-styles` in `templates/partials.html`. Timeline notes, essays, books, games, photos, and prose pages use the same design. Games opens on the cover shelf; the journal and playtime views remain available. Content keeps its original capitalization.
 
 ## responsive behavior
 
-the layout is designed around one reading column:
+the layout uses one compact reading column. On mobile the date rail narrows, navigation wraps, shelves and photos use two columns, and prose keeps room to breathe. Keyboard focus and reduced-motion preferences are supported.
 
-- desktop: wide enough for comfortable essay reading, with the spine offset beside the notes.
-- tablet: the same timeline rhythm, with tighter spacing and no layout shift between timeline and essays.
-- mobile: a narrower date rail, shorter weekday labels, and compact note spacing so the page scans without horizontal scrolling.
-
-`make check` validates the generated pages, key assets, responsive-friendly timeline markup, rss, removed legacy links, and cleanup rules for unused css/js.
+`make check` validates generated pages, local fonts, navigation, assets, rss, and removal of obsolete CSS and legacy routes.
 
 ## commands
 

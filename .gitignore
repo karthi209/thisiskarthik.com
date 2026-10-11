@@ -48,3 +48,6 @@ Thumbs.db
 .env
 .env.local
 .env.*.local
+
+# Withheld local originals; never published as site assets.
+/content/private/

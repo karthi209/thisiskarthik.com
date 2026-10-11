@@ -5,13 +5,13 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <meta http-equiv="Content-Security-Policy"
-    content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self' 'unsafe-inline';">
+    content="default-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; script-src 'self' 'unsafe-inline';">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="color-scheme" content="light dark">
+  <meta name="color-scheme" content="dark">
   <meta name="description"
     content="Technical details about how this site is built - a smolweb compliant static site generator">
   <title>meta — for later, when i forget</title>
-  <link href="{{.BasePath}}css/permanent.css?v=95" rel="stylesheet" type="text/css">
+  {{template "site-styles" .}}
   <link rel="icon" href="{{.BasePath}}favicon.png" type="image/png">
   <link rel="alternate" type="application/rss+xml" href="{{.BasePath}}rss.xml" title="for later, when i forget">
 </head>
@@ -37,18 +37,14 @@
 
       <p><strong>Typography</strong></p>
 
-      <p>The site uses a local system sans serif for fast, comfortable reading. A small italic serif byline keeps a personal
-        note in the masthead without making every paragraph feel handwritten.</p>
+      <p>IBM Plex Sans carries the reading, and Plex Mono marks the dates, navigation, and small details.
+        Fraunces gives the headings a little character; a few handwritten Caveat accents keep things personal.
+        All fonts are hosted here.</p>
 
       <p><strong>Colors</strong></p>
 
-      <p>The journal uses quiet paper, warm ink, and a restrained brick accent, with dull teal and mustard
-        appearing only in small rules and metadata.</p>
-
-      <p><strong>Source Code</strong></p>
-
-      <p>It's all on <a href="https://github.com/karthi209/thisiskarthik.com.git" target="_blank"
-          rel="noreferrer">GitHub</a> if you're into that sort of thing.</p>
+      <p>Charcoal pages, warm cream text, and muted peach and blue accents. Thin borders and slightly offset
+        frames keep the timeline, collections, and darkroom feeling like pages of the same notebook.</p>
 
       {{template "site-footer" .}}
     </main>

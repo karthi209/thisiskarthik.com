@@ -3,22 +3,23 @@
 <html lang="en">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self' 'unsafe-inline';">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; script-src 'self' 'unsafe-inline';">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="color-scheme" content="light dark">
+  <meta name="color-scheme" content="dark">
   <meta name="description" content="For Later, When I Forget">
-  <title>for later, when i forget - by karthik</title>
-  <link href="{{.BasePath}}css/permanent.css?v=95" rel="stylesheet" type="text/css">
+  <title>for later, when i forget</title>
+  {{template "site-styles" .}}
   <link rel="icon" href="{{.BasePath}}favicon.png" type="image/png">
   <link rel="alternate" type="application/rss+xml" href="{{.BasePath}}rss.xml" title="for later, when i forget">
 </head>
-<body>
+<body class="diary-page">
   <a class="skip-link" href="#main">Skip to the timeline</a>
   <div class="page-shell">
     {{template "site-header" .}}
 
     <main class="page-main timeline-page" id="main">
       <header class="section-header timeline-intro">
+        {{template "notebook-doodle" .}}
         <p class="eyebrow">the daily journal</p>
         <h1>timeline</h1>
         <p class="section-deck">life, more or less in the order it happened.</p>

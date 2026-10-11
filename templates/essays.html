@@ -5,23 +5,24 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <meta http-equiv="Content-Security-Policy"
-    content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self' 'unsafe-inline';">
+    content="default-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; script-src 'self' 'unsafe-inline';">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="color-scheme" content="light dark">
-  <meta name="description" content="essay archive by karthik">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="thoughts that took a little longer to form.">
   <title>essays - for later, when i forget</title>
-  <link href="{{.BasePath}}css/permanent.css?v=95" rel="stylesheet" type="text/css">
+  {{template "site-styles" .}}
   <link rel="icon" href="{{.BasePath}}favicon.png" type="image/png">
   <link rel="alternate" type="application/rss+xml" href="{{.BasePath}}rss.xml" title="for later, when i forget">
 </head>
 
-<body>
+<body class="essays-page">
   <a class="skip-link" href="#main">Skip to content</a>
   <div class="page-shell">
     {{template "site-header" .}}
 
     <main class="page-main archive-page" id="main">
       <header class="section-header archive-intro--timeline">
+        {{template "notebook-doodle" .}}
         <p class="eyebrow">the longer ones</p>
         <h1>essays</h1>
         <p class="section-deck">stuff that are too long to fit in timeline</p>

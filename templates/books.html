@@ -3,33 +3,45 @@
 <html lang="en">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self' 'unsafe-inline';">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; script-src 'self' 'unsafe-inline';">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="color-scheme" content="light dark">
-  <meta name="description" content="Books Karthik has read or is currently reading.">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="books read, being read, and saved for another day.">
   <title>books — for later, when i forget</title>
-  <link href="{{.BasePath}}css/permanent.css?v=95" rel="stylesheet" type="text/css">
+  {{template "site-styles" .}}
   <link rel="icon" href="{{.BasePath}}favicon.png" type="image/png">
 </head>
-<body class="games-page books-page">
+<body class="games-page books-page collection-dark">
   <a class="skip-link" href="#main">Skip to content</a>
   <div class="games-site-shell">
     {{template "site-header" .}}
     <div class="games-layout">
       <main class="games-paper archive-page" id="main">
         <header class="section-header games-intro">
-          <h1>book log</h1>
-          <p class="section-deck">Books I've finished and books currently keeping me company.</p>
+        {{template "notebook-doodle" .}}
+          <h1>book <em>library</em></h1>
+          <p class="section-deck">Books I've finished, books currently keeping me company, and what comes next.</p>
         </header>
-        <section class="games-section" aria-labelledby="reading-heading">
+        <nav class="notebook-index" aria-label="On this page">
+          <span>on this page</span>
+          <a href="#reading-heading">reading</a>
+          <a href="#read-heading">read</a>
+          <a href="#planned-heading">for later</a>
+        </nav>
+        <section class="games-section reading-slip" aria-labelledby="reading-heading">
           <h2 id="reading-heading">Currently reading</h2>
           {{if .Reading}}{{template "book-rows" .Reading}}{{else}}<p class="game-meta">Nothing recorded here just now.</p>{{end}}
         </section>
-        <section class="games-section" aria-labelledby="read-heading">
+        <section class="games-section books-read" aria-labelledby="read-heading">
           <h2 id="read-heading">Read</h2>
           {{if .Read}}{{template "book-rows" .Read}}{{else}}<p class="game-meta">Nothing recorded here yet.</p>{{end}}
         </section>
+        <section class="games-section books-planned" aria-labelledby="planned-heading">
+          <h2 id="planned-heading">Planning to read</h2>
+          {{if .Planned}}{{template "book-rows" .Planned}}{{else}}<p class="game-meta">Nothing planned just now.</p>{{end}}
+        </section>
         {{template "site-footer" .}}
+      <script src="{{.BasePath}}js/collections.js"></script>
       </main>
     </div>
   </div>
@@ -38,13 +50,17 @@
 {{end}}
 
 {{define "book-rows"}}
-<ul class="game-name-list">
+<ul class="collection-shelf book-shelf">
   {{range .}}<li id="book-{{.ID}}">
-    <details class="game-entry">
-      <summary><span class="game-title">{{.Title}}</span></summary>
-      <div class="game-entry-details">
-        <dl><div><dt>Status</dt><dd>{{.Status}}</dd></div></dl>
-        {{if .Notes}}<p class="game-thoughts">{{.Notes}}</p>{{end}}
+    <details class="shelf-entry book-entry">
+      <summary>
+        {{if .CoverURL}}<span class="book-cover"><img src="{{.CoverURL}}" alt="Cover of {{.Title}}" loading="lazy" decoding="async"></span>{{else}}<span class="shelf-cover shelf-label">{{.Title}}</span>{{end}}
+        <span class="shelf-title">{{.Title}}</span><span class="book-author">{{.Author}}</span>
+        <span class="shelf-toggle" aria-hidden="true"><span class="shelf-toggle-open">+ details</span><span class="shelf-toggle-close">− close</span></span>
+      </summary>
+      <div class="shelf-notes">
+        <dl><div><dt>Author</dt><dd>{{.Author}}</dd></div><div><dt>Status</dt><dd>{{.Status}}</dd></div></dl>
+        {{if .Notes}}<p>{{.Notes}}</p>{{else}}<p class="shelf-quiet-note">No notes written here yet.</p>{{end}}
       </div>
     </details>
   </li>{{end}}

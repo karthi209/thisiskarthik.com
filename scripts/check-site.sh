@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -eu
 
-if [ ! -f public/index.html ] || [ ! -f public/rss.xml ] || [ ! -f public/css/permanent.css ] || [ ! -f public/spine-squiggle.svg ]; then
+if [ ! -f public/index.html ] || [ ! -f public/rss.xml ] || [ ! -f public/css/site.css ]; then
   echo "Generated site is missing required files." >&2
   exit 1
 fi
@@ -23,12 +23,8 @@ if grep -RqiE 'user-scalable=no|maximum-scale=1' public templates --include='*.h
 fi
 
 for page in \
-  public/library/index.html \
-  public/library/films/index.html \
-  public/library/games/index.html \
   public/games/index.html \
   public/books/index.html \
-  public/library/books/index.html \
   public/photos/index.html
 do
   if [ ! -f "$page" ]; then
@@ -37,7 +33,7 @@ do
   fi
 done
 
-grep -q "animation: none" public/css/permanent.css
+grep -q "@media (prefers-reduced-motion: reduce)" public/css/site.css
 grep -q "class=\"timeline\"" public/index.html
 grep -q "daily journal" public/index.html
 grep -q "life, more or less in the order it happened" public/index.html
@@ -51,18 +47,15 @@ grep -q 'href="/photos"' public/index.html
 grep -q 'aria-current="page">games' public/games/index.html
 grep -q 'aria-current="page">books' public/books/index.html
 grep -q 'aria-current="page">photos' public/photos/index.html
-grep -q 'href="/library/films"' public/library/index.html
-grep -q 'href="/games"' public/library/index.html
-grep -q 'href="/books"' public/library/index.html
-grep -q 'class="section-deck"' public/library/index.html
-grep -q "worlds explored, finished or left unfinished" public/library/index.html
-grep -q "class=\"library-index\"" public/library/index.html
-grep -q "4 books" public/library/index.html
 grep -q 'id="reading-heading"' public/books/index.html
+grep -q 'id="planned-heading"' public/books/index.html
 grep -q "The Left Hand of Darkness" public/books/index.html
 grep -q "The Last Wish" public/books/index.html
-grep -q "Blood Diamond" public/library/films/index.html
-grep -q "Red Dead Redemption 2" public/library/games/index.html
+grep -q "The Discovery of India" public/books/index.html
+grep -q 'class="book-cover"' public/books/index.html
+grep -q 'src="/images/books/the-left-hand-of-darkness.webp"' public/books/index.html
+test -s public/images/books/the-left-hand-of-darkness.webp
+test -s public/images/books/the-discovery-of-india.webp
 grep -q 'id="playing-heading"' public/games/index.html
 grep -q 'data-game-view="playtime"' public/games/index.html
 grep -q 'id="playtime-heading"' public/games/index.html
@@ -70,38 +63,23 @@ grep -q 'js/games.js' public/games/index.html
 test -s public/js/games.js
 grep -q 'class="game-year"' public/games/index.html
 grep -q 'id="games-year-2026"' public/games/index.html
-grep -Eq '[0-9]+ games' public/library/index.html
 test -s public/images/games/elden-ring.jpg
 test -s public/images/games/ghost-of-tsushima.jpg
 test -s public/images/games/soma.jpg
-grep -q "films remembered" public/library/films/index.html
-grep -q "class=\"library-scope\"" public/library/films/index.html
-grep -Eq "<span>[0-9]+ entries</span>" public/library/films/index.html
-if grep -q "data-archive-number" public/library/films/index.html; then
-  echo "Library accession numbers leaked into the films archive." >&2
-  exit 1
-fi
 grep -q "no photographs here yet" public/photos/index.html
-grep -q "photo-figure img" public/css/permanent.css
-grep -q "height: auto" public/css/permanent.css
+grep -q "photo-figure img" public/css/site.css
+grep -q "height: auto" public/css/site.css
 grep -q 'data-archive-number="003"' public/index.html
 grep -q 'data-archive-number="001"' public/index.html
 grep -q "timeline-month-marker\">Jul" public/index.html
 grep -q "timeline-month-marker\">Feb" public/index.html
 grep -q "timeline-weekday\">thu" public/index.html
-grep -q "blockquote::before" public/css/permanent.css
-grep -q "text-transform: lowercase" public/css/permanent.css
-grep -q -- "--spine-filter:" public/css/permanent.css
-grep -q "p:has(> img:only-child)" public/css/permanent.css
-grep -q "memory-image" public/css/permanent.css
+grep -q "memory-image" public/css/site.css
 grep -q "image_caption" content/journal/README.md
-grep -q "width: min(68%, 380px)" public/css/permanent.css
-grep -q "margin: 3rem auto 2.25rem" public/css/permanent.css
-grep -q "aspect-ratio: 4 / 3" public/css/permanent.css
-grep -q 'content: "no. " attr(data-archive-number)' public/css/permanent.css
-grep -q "@media (max-width: 620px)" public/css/permanent.css
-grep -q "grid-template-columns: 54px minmax(0, 1fr)" public/css/permanent.css
-grep -q "width: calc(100% - 6px)" public/css/permanent.css
+grep -q "aspect-ratio: 4 / 3" public/css/site.css
+grep -q 'content: "no. " attr(data-archive-number)' public/css/site.css
+grep -q "@media (max-width: 620px)" public/css/site.css
+grep -q "grid-template-columns: 54px minmax(0, 1fr)" public/css/site.css
 
 if grep -RqiE 'timeline-colophon|❦' public templates --include='*.html'; then
   echo "Decorative colophon leftovers leaked into generated pages." >&2
@@ -148,7 +126,7 @@ if grep -Eqi 'entry-warning|entity-notices|random-insight|handdrawn.css|editoria
   exit 1
 fi
 
-if find public/css -maxdepth 1 -type f ! -name permanent.css | grep -q .; then
+if find public/css -maxdepth 1 -type f ! -name site.css | grep -q .; then
   echo "Unused CSS files leaked into the generated site." >&2
   exit 1
 fi
@@ -168,13 +146,26 @@ if grep -Eqi 'camera model|aperture|shutter speed|exif|<dt>|masonry' public/phot
   exit 1
 fi
 
-echo "Validated $page_count site pages, navigation, assets, and RSS."
+
 
 if grep -Eqi 'older snapshot|lifetime|hours unknown|>library</a>' public/games/index.html; then
   echo "Removed game UI leaked into the archive." >&2
   exit 1
 fi
-if [ -f public/library/tv/index.html ] || [ -f public/library/music/index.html ]; then
-  echo "Unused placeholder collections were generated." >&2
+if [ -d public/library ] || rg -qi 'href="[^"]*/library(?:/|\")|>library</a>|library-(?:index|scope|timeline|entry|note)' public templates generate.go; then
+  echo "Legacy library pages or UI leaked into the site." >&2
   exit 1
 fi
+
+for font in ibm-plex-sans-regular.woff2 ibm-plex-sans-semibold.woff2 ibm-plex-mono-regular.woff2 ibm-plex-mono-italic.woff2; do
+  test -s "public/fonts/$font"
+done
+while IFS= read -r page; do
+  grep -q 'css/site.css?v=1' "$page"
+  grep -q 'name="color-scheme" content="dark"' "$page"
+done < <(find public -name index.html -type f -print)
+if rg -q 'permanent.css|flow.css|fonts.googleapis.com|site-wallpaper|spine-squiggle' public templates --glob '*.html' --glob '*.css'; then
+  echo "Retired design assets leaked into the site." >&2
+  exit 1
+fi
+echo "Validated $page_count site pages, local fonts, navigation, assets, and RSS."

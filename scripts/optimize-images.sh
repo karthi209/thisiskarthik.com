@@ -110,7 +110,7 @@ process_image() {
     # Detect image type
     local img_type=$(detect_image_type "$input_file")
     
-    local cwebp_opts="-q $QUALITY -quiet"
+    local cwebp_opts="-q $QUALITY -quiet -metadata none"
     local resize_opts=""
     
     # Set resize options based on image type
