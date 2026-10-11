@@ -10,13 +10,13 @@ The other day, I found myself stuck at the RTO, waiting for my turn to renew RC 
 
 The Rules!
 
-Before I could start tracing the messages I first need to set some ground rules for myself. You see the internet is a big place. There are too many possibilities and too many paths just like a real road trip between two cities, so you need to first plan your trip before you set off. For the sake of this story, let’s pretend I’m in Bangalore, although I’m actually in Chennai. Now, I type that "Hi" on my phone and hit send. The very first thing WhatsApp does is scramble my message using something called the Signal Protocol, which basically means that before the "Hi" even leaves my phone, it’s already been turned into absolute gibberish to everyone except the person I’m sending it to.
+Before I could start tracing the messages I first need to set some ground rules for myself. You see the internet is a big place. There are too many possibilities and too many paths just like a real road trip between two cities, so you need to first plan your trip before you set off. For the sake of this story, let’s pretend I’m in Bangalore, for this imagined journey. Now, I type that "Hi" on my phone and hit send. The very first thing WhatsApp does is scramble my message using something called the Signal Protocol, which basically means that before the "Hi" even leaves my phone, it’s already been turned into absolute gibberish to everyone except the person I’m sending it to.
 
 Hi > sdfwd
 
 Even if I somehow managed to intercept the signal myself, I wouldn't be able to read it, and then this encrypted nonsense gets chopped up into tiny little TCP/IP packets because the internet doesn't trust anything that's too big or comes in a single, complete piece.
 
-These little packets zip out of my phone using Airtel's infrastructure (since I use airtel), bouncing to the nearest cell tower before winding through Airtel's local network around the city and eventually landing at something called a Metro Point of Presence, likely somewhere around Whitefield or Bellandur. From there, the packets head toward Chennai over long fiber-optic cables that roughly follow the NH48 highway. I like to think of this as the most peaceful Bangalore-to-Chennai journey ever made, free from the usual potholes and lorry drivers.
+These little packets zip out of my phone using Airtel's infrastructure (for this example), bouncing to the nearest cell tower before winding through Airtel's local network around the city and eventually landing at something called a Metro Point of Presence, likely somewhere around Whitefield or Bellandur. From there, the packets head toward Chennai over long fiber-optic cables that roughly follow the NH48 highway. I like to think of this as the most peaceful Bangalore-to-Chennai journey ever made, free from the usual potholes and lorry drivers.
 
 Phase 2: The Underwater Marathon (The Indian Ocean)
 

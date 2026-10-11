@@ -91,6 +91,7 @@ func Sync(ctx context.Context, records []Record, existing Cache, opts Options, o
 				continue
 			}
 			old := next[g.ID]
+			s.AdditionalHours = old.AdditionalHours
 			if s.LastPlayed == "" && old.Provider == s.Provider {
 				s.LastPlayed = old.LastPlayed
 			}

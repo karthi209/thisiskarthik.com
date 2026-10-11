@@ -27,3 +27,25 @@ preserved when copied to `/images/`.
 
 The archive shows linked titles grouped by year and month. The individual page
 contains only the title, date, photograph, and optional caption.
+
+Keep the photographs personal without identifying people or private surroundings.
+Prefer objects, computers, books, projects, and ordinary scenes. Review the actual
+image for recognizable people, account screens, papers, addresses, licence plates,
+and private location clues. Such an image needs explicit approval for that specific
+image before public use. Availability is not permission to publish it.
+
+Text-only memories are welcome; never use unrelated imagery as fake history.
+Normalize orientation before adding an image. The site build strips EXIF/GPS,
+XMP/IPTC, comments, and PNG text metadata from supported published raster copies
+(JPEG, PNG, WebP), preserving compressed pixels and color profiles. Original files
+are unchanged. Other formats still need a metadata review; stripping metadata
+does not remove identifying information visible in the picture.
+
+Do not commit new sensitive originals. `content/private/` is excluded from site
+asset copying and ignored by Git, but neither action removes earlier Git history.
+See the repository's `AGENTS.md` for the editorial privacy principle.
+
+The photo index uses a dark contact sheet grouped by year and month. Each thumbnail
+links to its full photograph page; cropped previews do not change the source image.
+An empty archive remains empty until approved photo entries are added. Test fixtures
+for the contact sheet are not published as real memories.

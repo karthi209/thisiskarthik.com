@@ -3,23 +3,24 @@
 <html lang="en">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self' 'unsafe-inline';">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; script-src 'self' 'unsafe-inline';">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="color-scheme" content="light dark">
-  <meta name="description" content="A chronological archive of photographs and memories by Karthik.">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="photographs of ordinary things worth remembering.">
   <title>photos - for later, when i forget</title>
-  <link href="{{.BasePath}}css/permanent.css?v=95" rel="stylesheet" type="text/css">
+  {{template "site-styles" .}}
   <link rel="icon" href="{{.BasePath}}favicon.png" type="image/png">
 </head>
-<body>
+<body class="photos-page collection-dark">
   <a class="skip-link" href="#main">Skip to photos</a>
   <div class="page-shell">
     {{template "site-header" .}}
     <main class="page-main archive-page" id="main">
       <header class="section-header archive-intro--timeline">
+        {{template "notebook-doodle" .}}
         <p class="eyebrow">the memories</p>
-        <h1>photos</h1>
-        <p class="section-deck">all the pictures i've taken over the years.</p>
+        <h1>photos <em> / darkroom</em></h1>
+        <p class="section-deck">photographs kept for later. click a print to see it in full.</p>
       </header>
       {{if .Years}}
       <div class="timeline photo-archive" aria-label="Photo archive">
@@ -29,11 +30,13 @@
           {{range .Months}}
           <section class="photo-month">
             <h3>{{.Name}}</h3>
-            <ol>
+            <ol class="photo-contact-sheet">
               {{range .Photos}}
               <li>
-                <a href="{{$.BasePath}}photos/{{.Slug}}">{{.Title}}</a>
-                <time datetime="{{.DateISO}}">{{.Day}}</time>
+                <a class="photo-print" href="{{$.BasePath}}photos/{{.Slug}}">
+                  <img src="{{.Image}}" alt="{{.ImageAlt}}" loading="lazy" decoding="async">
+                  <span class="photo-print-label">{{.Title}} <time datetime="{{.DateISO}}">{{.Day}}</time></span>
+                </a>
               </li>
               {{end}}
             </ol>

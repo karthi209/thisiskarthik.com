@@ -41,6 +41,5 @@ During the innings break, I stepped out to buy a jersey. There were tons of CSK,
 
 God works in mysterious ways.
 
-![The Crowd](/images/2026/02/chepauk_05.webp)
 
 As I settled back into my seat, I realised this was exactly how I wanted my first live cricket experience to be. It was an absolute banger. By the time I completed my thought, the match was over and USA won. Two innings went by quickly, much quicker than I expected watching on TV. I guess that's the magic of watching it live. Once you watch cricket live, it gives you a different perspective of the game. You notice things you wouldn't normally notice, and you appreciate the game in a whole new way, especially the relationship between the players and the crowd. In TV, you only see what the camera shows you, but in live, you see everything.

@@ -4,6 +4,24 @@
 
 set -e
 
+# The orphan-branch deploy temporarily replaces the entire worktree. Keep local
+# secrets outside the repository and restore them regardless of how we exit.
+ENV_BACKUP=""
+restore_local_env() {
+    if [ -n "$ENV_BACKUP" ] && [ -f "$ENV_BACKUP" ]; then
+        cp "$ENV_BACKUP" .env
+        chmod 600 .env
+        rm -f "$ENV_BACKUP"
+    fi
+}
+
+if [ -f .env ]; then
+    ENV_BACKUP=$(mktemp)
+    cp .env "$ENV_BACKUP"
+    chmod 600 "$ENV_BACKUP"
+    trap restore_local_env EXIT INT TERM
+fi
+
 # Colors for output
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -107,6 +125,10 @@ echo -e "${BLUE}[5/6] Setting up gh-pages branch...${NC}"
 DEPLOY_BRANCH="gh-pages-deploy-$$"
 git checkout --orphan "$DEPLOY_BRANCH"
 git rm -rf . 2>/dev/null || true
+
+# An orphan checkout can carry tracked index entries from earlier history.
+# Remove any environment file before deployment content is staged.
+rm -f .env
 echo -e "${GREEN}✓${NC} Created clean deployment branch"
 
 # Copy files from temp directory to root

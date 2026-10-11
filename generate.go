@@ -18,6 +18,7 @@ import (
 	"time"
 
 	"for-later-when-i-forget/internal/gamestats"
+	"for-later-when-i-forget/internal/imageprivacy"
 
 	"github.com/yuin/goldmark"
 	"github.com/yuin/goldmark/extension"
@@ -27,6 +28,12 @@ import (
 
 // Game records are manually maintained; nil hours and ratings mean unknown.
 type Game struct {
+	Memory       string              `json:"memory,omitempty"`
+	ApproxYear   string              `json:"approxYear,omitempty"`
+	SortYear     int                 `json:"sortYear,omitempty"`
+	Machine      string              `json:"machine,omitempty"`
+	MachineLabel string              `json:"-"`
+	HoursNote    string              `json:"hoursNote,omitempty"`
 	ID           string              `json:"id,omitempty"`
 	Title        string              `json:"title"`
 	Status       string              `json:"status,omitempty"`
@@ -57,14 +64,30 @@ type Game struct {
 }
 
 type GameCollection struct {
-	Games []Game `json:"games"`
+	Games      []Game          `json:"games"`
+	Milestones []GameMilestone `json:"milestones,omitempty"`
+}
+
+type GameMilestone struct {
+	ID           string `json:"id"`
+	Date         string `json:"date"`
+	SortYear     int    `json:"sortYear"`
+	Title        string `json:"title"`
+	Hardware     string `json:"hardware"`
+	Memory       string `json:"memory,omitempty"`
+	Photo        string `json:"photo,omitempty"`
+	PhotoAlt     string `json:"photoAlt,omitempty"`
+	PhotoCaption string `json:"photoCaption,omitempty"`
+	PhotoURL     string `json:"-"`
 }
 
 type GameYear struct {
-	Year    string
-	Games   []Game
-	Summary string
-	Faded   bool
+	ID         string
+	SortYear   int
+	Milestones []GameMilestone
+	Year       string
+	Games      []Game
+	Summary    string
 }
 
 type GamesPageData struct {
@@ -75,10 +98,13 @@ type GamesPageData struct {
 }
 
 type Book struct {
-	ID     string `json:"id,omitempty"`
-	Title  string `json:"title"`
-	Status string `json:"status"`
-	Notes  string `json:"notes,omitempty"`
+	ID       string `json:"id,omitempty"`
+	Title    string `json:"title"`
+	Author   string `json:"author"`
+	Status   string `json:"status"`
+	Notes    string `json:"notes,omitempty"`
+	Cover    string `json:"cover,omitempty"`
+	CoverURL string `json:"-"`
 }
 
 type BookCollection struct {
@@ -87,7 +113,7 @@ type BookCollection struct {
 
 type BooksPageData struct {
 	PageType, Title, BasePath string
-	Reading, Read             []Book
+	Reading, Read, Planned    []Book
 }
 
 func loadBooks(path string) (BooksPageData, error) {
@@ -112,11 +138,16 @@ func loadBooks(path string) (BooksPageData, error) {
 			return data, fmt.Errorf("book %d needs a unique lowercase slug id and title", i+1)
 		}
 		seen[book.ID] = true
+		if book.Cover != "" {
+			book.CoverURL = basePath + book.Cover
+		}
 		switch book.Status {
 		case "reading":
 			data.Reading = append(data.Reading, book)
 		case "read":
 			data.Read = append(data.Read, book)
+		case "planned":
+			data.Planned = append(data.Planned, book)
 		default:
 			return data, fmt.Errorf("%s: invalid book status %q", book.ID, book.Status)
 		}
@@ -171,6 +202,20 @@ func loadGames(path string) (GamesPageData, error) {
 		fmt.Fprintf(os.Stderr, "warning: game stats unavailable: %v\n", statsErr)
 		stats = gamestats.Cache{}
 	}
+	machines := map[string]string{}
+	for i := range collection.Milestones {
+		m := &collection.Milestones[i]
+		if m.ID == "" || machines[m.ID] != "" || m.SortYear <= 0 || m.Date == "" || m.Title == "" {
+			return data, fmt.Errorf("invalid hardware milestone %q", m.ID)
+		}
+		machines[m.ID] = m.Title
+		if m.Photo != "" {
+			if !strings.HasPrefix(m.Photo, "images/") || strings.Contains(m.Photo, "..") || strings.ContainsAny(m.Photo, `\?#`) {
+				return data, fmt.Errorf("milestone photo must be a local images/ path")
+			}
+			m.PhotoURL = basePath + m.Photo
+		}
+	}
 	seen := map[string]bool{}
 	validID := regexp.MustCompile(`^[a-z0-9]+(?:-[a-z0-9]+)*$`)
 	for i := range collection.Games {
@@ -186,7 +231,7 @@ func loadGames(path string) (GamesPageData, error) {
 			g.Status = "played"
 		}
 		switch g.Status {
-		case "playing", "completed", "paused", "dropped", "played":
+		case "playing", "completed", "paused", "dropped", "played", "unidentified":
 		default:
 			return data, fmt.Errorf("%s: invalid history status %q", g.ID, g.Status)
 		}
@@ -202,7 +247,20 @@ func loadGames(path string) (GamesPageData, error) {
 				return data, fmt.Errorf("%s: finished precedes started", g.ID)
 			}
 		}
-		g.Hours = stats[g.ID].Hours
+		if g.Machine != "" {
+			g.MachineLabel = machines[g.Machine]
+			if g.MachineLabel == "" {
+				return data, fmt.Errorf("%s: unknown machine %q", g.ID, g.Machine)
+			}
+		}
+		if g.SortYear < 0 {
+			return data, fmt.Errorf("%s: negative sort year", g.ID)
+		}
+		g.Hours = stats[g.ID].TotalHours()
+		// A remembered duration must never become a measured total.
+		if g.HoursNote != "" {
+			g.Hours = nil
+		}
 		g.HoursLabel = ""
 		if g.Hours != nil {
 			if *g.Hours < 0 {
@@ -226,7 +284,7 @@ func loadGames(path string) (GamesPageData, error) {
 		}
 		if g.Artifact != "" {
 			g.ArtifactURL = basePath + g.Artifact
-		} else if g.Portrait != "" {
+		} else if g.Portrait != "" && g.Status != "playing" {
 			// Existing portrait art doubles as the optional saved artifact.
 			g.ArtifactURL = g.PortraitURL
 		}
@@ -239,24 +297,39 @@ func loadGames(path string) (GamesPageData, error) {
 			g.Date = g.Started
 		}
 		g.DateLabel = gameDateLabel(g.Date)
+		if g.ApproxYear != "" {
+			g.DateLabel = g.ApproxYear
+		}
 		g.StartedLabel = gameDateLabel(g.Started)
 	}
 	games := collection.Games
 	for _, g := range games {
-		if g.Hours != nil {
+		if g.Hours != nil && *g.Hours > 0 {
 			data.Playtime = append(data.Playtime, g)
 		}
 	}
-	sort.SliceStable(data.Playtime, func(i, j int) bool {
-		if *data.Playtime[i].Hours == *data.Playtime[j].Hours {
-			return data.Playtime[i].Title < data.Playtime[j].Title
-		}
-		return *data.Playtime[i].Hours > *data.Playtime[j].Hours
-	})
 	sort.SliceStable(games, func(i, j int) bool { return games[i].Date > games[j].Date })
+	addGroup := func(label string, key int) *GameYear {
+		for i := range data.Years {
+			if data.Years[i].Year == label {
+				return &data.Years[i]
+			}
+		}
+		data.Years = append(data.Years, GameYear{Year: label, ID: generateSlug(label), SortYear: key})
+		return &data.Years[len(data.Years)-1]
+	}
 	for _, g := range games {
 		if g.Status == "playing" {
 			data.Playing = append(data.Playing, g)
+			continue
+		}
+		if g.ApproxYear != "" {
+			if g.SortYear == 0 {
+				data.Undated = append(data.Undated, g)
+				continue
+			}
+			group := addGroup(g.ApproxYear, g.SortYear)
+			group.Games = append(group.Games, g)
 			continue
 		}
 		if g.Date == "" {
@@ -264,15 +337,24 @@ func loadGames(path string) (GamesPageData, error) {
 			continue
 		}
 		year := g.Date[:4]
-		if len(data.Years) == 0 || data.Years[len(data.Years)-1].Year != year {
-			yearNumber, _ := strconv.Atoi(year)
-			data.Years = append(data.Years, GameYear{Year: year, Faded: yearNumber > 0 && yearNumber <= 2010})
-		}
-		last := &data.Years[len(data.Years)-1]
-		last.Games = append(last.Games, g)
+		key, _ := strconv.Atoi(year)
+		group := addGroup(year, key)
+		group.Games = append(group.Games, g)
 	}
+	for _, m := range collection.Milestones {
+		label := m.Date
+		if len(m.Date) == 10 && m.Date[4] == '-' {
+			label = m.Date[:4]
+		}
+		group := addGroup(label, m.SortYear)
+		group.Milestones = append(group.Milestones, m)
+	}
+	sort.SliceStable(data.Years, func(i, j int) bool { return data.Years[i].SortYear > data.Years[j].SortYear })
 	for i := range data.Years {
 		year := &data.Years[i]
+		if len(year.Games) == 0 {
+			continue
+		}
 		year.Summary = fmt.Sprintf("%d games", len(year.Games))
 		if len(year.Games) == 1 {
 			year.Summary = "1 game"
@@ -327,13 +409,22 @@ func loadGames(path string) (GamesPageData, error) {
 			} else if g.Portrait != "" {
 				g.ArtifactURL = g.PortraitURL
 			}
-			g.Hours = stats[g.ID].Hours
+			g.Hours = stats[g.ID].TotalHours()
 			if g.Hours != nil {
 				g.HoursLabel = strconv.FormatFloat(math.Round(*g.Hours*100)/100, 'f', -1, 64) + "h"
+			}
+			if g.Hours != nil && *g.Hours > 0 {
+				data.Playtime = append(data.Playtime, g)
 			}
 			data.Backlog = append(data.Backlog, g)
 		}
 	}
+	sort.SliceStable(data.Playtime, func(i, j int) bool {
+		if *data.Playtime[i].Hours == *data.Playtime[j].Hours {
+			return data.Playtime[i].Title < data.Playtime[j].Title
+		}
+		return *data.Playtime[i].Hours > *data.Playtime[j].Hours
+	})
 
 	return data, nil
 }
@@ -343,7 +434,6 @@ var (
 	contentDir      = "content"
 	postsDir        = filepath.Join(contentDir, "posts")
 	journalDir      = filepath.Join(contentDir, "journal")
-	libraryDir      = filepath.Join(contentDir, "library")
 	photosDir       = filepath.Join(contentDir, "photos")
 	imagesDir       = filepath.Join(contentDir, "images")
 	outputDir       = "public"
@@ -352,64 +442,6 @@ var (
 	publicImagesDir = filepath.Join(outputDir, "images")
 	basePath        = getBasePath()
 )
-
-type LibrarySection struct {
-	Key          string
-	Title        string
-	Verb         string
-	Description  string
-	CountOne     string
-	CountMany    string
-	ArchiveLabel string
-}
-
-var librarySections = []LibrarySection{
-	{
-		Key:          "films",
-		Title:        "films",
-		Verb:         "watched",
-		Description:  "stories that stayed after the lights came back on.",
-		CountOne:     "film remembered",
-		CountMany:    "films remembered",
-		ArchiveLabel: "films remembered",
-	},
-	{
-		Key:          "tv",
-		Title:        "tv series",
-		Verb:         "watched",
-		Description:  "longer stories, lived with for a while.",
-		CountOne:     "series",
-		CountMany:    "series",
-		ArchiveLabel: "series remembered",
-	},
-	{
-		Key:          "games",
-		Title:        "games",
-		Verb:         "played",
-		Description:  "worlds explored, finished or left unfinished.",
-		CountOne:     "game",
-		CountMany:    "games",
-		ArchiveLabel: "worlds explored",
-	},
-	{
-		Key:          "books",
-		Title:        "books",
-		Verb:         "read",
-		Description:  "pages that remained after the book was closed.",
-		CountOne:     "book",
-		CountMany:    "books",
-		ArchiveLabel: "books remembered",
-	},
-	{
-		Key:          "music",
-		Title:        "music",
-		Verb:         "listened",
-		Description:  "sounds returned to across different parts of life.",
-		CountOne:     "music entry",
-		CountMany:    "music entries",
-		ArchiveLabel: "sounds remembered",
-	},
-}
 
 // getBasePath returns the base path for assets and links
 // Reads from BASE_PATH environment variable, defaults to "/"
@@ -494,31 +526,6 @@ type TimelineItem struct {
 type TimelineYear struct {
 	Year  int
 	Items []TimelineItem
-}
-
-type LibraryEntry struct {
-	Section      string
-	Title        string
-	ReleaseYear  int
-	Rating       float64
-	RatingStars  string
-	RatingLabel  string
-	Date         time.Time
-	DateISO      string
-	DateLabel    string
-	Day          string
-	Month        string
-	WeekdayShort string
-	Year         int
-	HasFullDate  bool
-	Content      template.HTML
-	ArchiveNo    string
-	IsDraft      bool
-}
-
-type LibraryYear struct {
-	Year    int
-	Entries []LibraryEntry
 }
 
 type PhotoEntry struct {
@@ -613,30 +620,6 @@ type MetaPageData struct {
 	BasePath  string
 	BuildYear int
 	BuildTime string
-}
-
-type LibraryIndexPageData struct {
-	PageType string
-	Title    string
-	BasePath string
-	Sections []LibraryIndexSection
-}
-
-type LibraryIndexSection struct {
-	LibrarySection
-	HasEntries bool
-	CountLabel string
-	YearsLabel string
-}
-
-type LibraryPageData struct {
-	PageType   string
-	Title      string
-	BasePath   string
-	Section    LibrarySection
-	Years      []LibraryYear
-	ScopeCount string
-	YearsLabel string
 }
 
 type PhotosPageData struct {
@@ -781,11 +764,6 @@ func main() {
 	}
 	timeline, _, dayCount, firstYear := buildTimeline(journalEntries)
 
-	libraryEntries, err := loadLibraryEntries(libraryDir)
-	if err != nil && !os.IsNotExist(err) {
-		fmt.Printf("▓▓ WARNING: library entries could not be loaded: %v\n", err)
-	}
-
 	photos, err := loadPhotos(photosDir)
 	if err != nil && !os.IsNotExist(err) {
 		fmt.Printf("▓▓ WARNING: photos could not be loaded: %v\n", err)
@@ -805,11 +783,9 @@ func main() {
 		fmt.Fprintf(os.Stderr, "books: %v\n", err)
 		os.Exit(1)
 	}
-	for _, path := range []string{filepath.Join(outputDir, "books", "index.html"), filepath.Join(outputDir, "library", "books", "index.html")} {
-		if err := writeTemplate(templates, "books.html", path, books); err != nil {
-			fmt.Fprintf(os.Stderr, "books: %v\n", err)
-			os.Exit(1)
-		}
+	if err := writeTemplate(templates, "books.html", filepath.Join(outputDir, "books", "index.html"), books); err != nil {
+		fmt.Fprintf(os.Stderr, "books: %v\n", err)
+		os.Exit(1)
 	}
 
 	// Generate pages
@@ -830,21 +806,6 @@ func main() {
 
 	if err := generateAboutPage(templates); err != nil {
 		fmt.Printf("▓▓ ERROR: about page failed: %v\n", err)
-	}
-
-	if err := generateLibraryIndexPage(templates, libraryEntries, games, books); err != nil {
-		fmt.Printf("▓▓ ERROR: library index failed: %v\n", err)
-	}
-	for _, section := range librarySections {
-		if section.Key == "books" {
-			continue
-		}
-		if section.Key != "books" && len(libraryEntries[section.Key]) == 0 {
-			continue
-		}
-		if err := generateLibraryPage(templates, section, libraryEntries[section.Key]); err != nil {
-			fmt.Printf("▓▓ ERROR: library %s page failed: %v\n", section.Key, err)
-		}
 	}
 
 	if err := generatePhotosPage(templates, photos); err != nil {
@@ -874,11 +835,15 @@ func main() {
 	// Copy static files
 	fmt.Println("▓▓ COPYING ASSETS...")
 	if err := copyStaticFiles(); err != nil {
-		fmt.Printf("▓▓ WARNING: asset copy failed: %v\n", err)
+		fmt.Printf("▓▓ ERROR: asset copy failed: %v\n", err)
+		os.Exit(1)
 	}
 
-	// Copy images (non-critical, continue on error)
-	_ = copyImages()
+	// Publish sanitized copies; do not silently fall back to metadata-bearing files.
+	if err := copyImages(); err != nil {
+		fmt.Printf("▓▓ ERROR: image copy failed: %v\n", err)
+		os.Exit(1)
+	}
 
 	// Completion message
 	fmt.Println()
@@ -979,85 +944,6 @@ func generateAboutPage(templates *template.Template) error {
 	}
 
 	return writeTemplate(templates, "about.html", filepath.Join(aboutDir, "index.html"), data)
-}
-
-func generateLibraryIndexPage(templates *template.Template, entries map[string][]LibraryEntry, games GamesPageData, books BooksPageData) error {
-	data := LibraryIndexPageData{
-		PageType: "library",
-		Title:    "library",
-		BasePath: basePath,
-		Sections: buildLibraryIndexSections(entries),
-	}
-	// The game log is the source of truth for the library landing summary.
-	for i := range data.Sections {
-		section := &data.Sections[i]
-		if section.Key == "books" {
-			count := len(books.Read) + len(books.Reading)
-			section.HasEntries = count > 0
-			section.CountLabel = fmt.Sprintf("%d books", count)
-			if count == 1 {
-				section.CountLabel = "1 book"
-			}
-			section.YearsLabel = ""
-			continue
-		}
-		if section.Key != "games" {
-			continue
-		}
-		count := len(games.Undated) + len(games.Playing)
-		for _, year := range games.Years {
-			count += len(year.Games)
-		}
-		section.HasEntries = count > 0
-		section.CountLabel = fmt.Sprintf("%d games", count)
-		if count == 1 {
-			section.CountLabel = "1 game"
-		}
-		section.YearsLabel = ""
-		if len(games.Years) > 0 {
-			section.YearsLabel = games.Years[0].Year
-			if len(games.Years) > 1 {
-				section.YearsLabel = games.Years[len(games.Years)-1].Year + " — " + games.Years[0].Year
-			}
-		}
-	}
-	var active []LibraryIndexSection
-	for _, section := range data.Sections {
-		if section.Key == "games" || section.Key == "books" {
-			active = append(active, section)
-		}
-	}
-	data.Sections = active
-	return writeTemplate(templates, "library.html", filepath.Join(outputDir, "library", "index.html"), data)
-}
-
-func generateLibraryPage(templates *template.Template, section LibrarySection, entries []LibraryEntry) error {
-	summary := summarizeLibrarySection(section, entries)
-	scopeCount := fmt.Sprintf("%d entries", len(entries))
-	if len(entries) == 1 {
-		scopeCount = "1 entry"
-	}
-	data := LibraryPageData{
-		PageType:   "library",
-		Title:      section.Title,
-		BasePath:   basePath,
-		Section:    section,
-		Years:      groupLibraryEntries(entries),
-		ScopeCount: scopeCount,
-		YearsLabel: summary.YearsLabel,
-	}
-	if section.Key == "books" {
-		data.PageType = "books"
-		if err := writeTemplate(templates, "library-section.html", filepath.Join(outputDir, "books", "index.html"), data); err != nil {
-			return err
-		}
-	}
-	return writeTemplate(
-		templates,
-		"library-section.html",
-		filepath.Join(outputDir, "library", section.Key, "index.html"),
-		data,
-	)
 }
 
 func generatePhotosPage(templates *template.Template, photos []PhotoEntry) error {
@@ -1472,174 +1358,6 @@ func buildTimeline(entries []JournalEntry) ([]TimelineYear, int, int, int) {
 	return years, len(items), len(days), firstYear
 }
 
-func loadLibraryEntries(dir string) (map[string][]LibraryEntry, error) {
-	result := make(map[string][]LibraryEntry, len(librarySections))
-	if _, err := os.Stat(dir); err != nil {
-		return result, err
-	}
-
-	for _, section := range librarySections {
-		sectionDir := filepath.Join(dir, section.Key)
-		files, err := findMarkdownFiles(sectionDir)
-		if os.IsNotExist(err) {
-			continue
-		}
-		if err != nil {
-			return result, err
-		}
-
-		for _, path := range files {
-			if strings.EqualFold(filepath.Base(path), "README.md") {
-				continue
-			}
-			entry, err := processLibraryFile(path, section.Key)
-			if err != nil || entry.IsDraft {
-				continue
-			}
-			result[section.Key] = append(result[section.Key], entry)
-		}
-
-		sort.SliceStable(result[section.Key], func(i, j int) bool {
-			return result[section.Key][i].Date.After(result[section.Key][j].Date)
-		})
-		for i := range result[section.Key] {
-			result[section.Key][i].ArchiveNo = formatArchiveNumber(len(result[section.Key]) - i)
-		}
-	}
-	return result, nil
-}
-
-func processLibraryFile(path, section string) (LibraryEntry, error) {
-	raw, err := os.ReadFile(path)
-	if err != nil {
-		return LibraryEntry{}, err
-	}
-	meta, body := splitFrontmatter(string(raw))
-	if strings.TrimSpace(meta["title"]) == "" {
-		return LibraryEntry{}, fmt.Errorf("library entry needs a title: %s", path)
-	}
-	if strings.TrimSpace(body) == "" {
-		return LibraryEntry{}, fmt.Errorf("library entry needs a note: %s", path)
-	}
-
-	entryDate, dateISO, dateLabel, hasFullDate, err := parseLibraryDate(meta["date"])
-	if err != nil {
-		return LibraryEntry{}, fmt.Errorf("library entry needs a valid date: %s", path)
-	}
-	rating, err := strconv.ParseFloat(meta["rating"], 64)
-	if err != nil || rating < 0.5 || rating > 5 || math.Mod(rating*2, 1) != 0 {
-		return LibraryEntry{}, fmt.Errorf("library entry rating must be between 0.5 and 5 in half-star steps: %s", path)
-	}
-
-	releaseYear := 0
-	if meta["release_year"] != "" {
-		releaseYear, err = strconv.Atoi(meta["release_year"])
-		if err != nil || releaseYear < 1 {
-			return LibraryEntry{}, fmt.Errorf("library entry has an invalid release year: %s", path)
-		}
-	}
-
-	fullStars := int(rating)
-	ratingStars := strings.Repeat("★", fullStars)
-	remainingStars := 5 - fullStars
-	if rating-float64(fullStars) == 0.5 {
-		ratingStars += "½"
-		remainingStars--
-	}
-	ratingStars += strings.Repeat("☆", remainingStars)
-
-	htmlContent, err := renderMarkdown([]byte(strings.TrimSpace(body)))
-	if err != nil {
-		return LibraryEntry{}, err
-	}
-	entry := LibraryEntry{
-		Section:     section,
-		Title:       meta["title"],
-		ReleaseYear: releaseYear,
-		Rating:      rating,
-		RatingStars: ratingStars,
-		RatingLabel: fmt.Sprintf("%g out of 5", rating),
-		Date:        entryDate,
-		DateISO:     dateISO,
-		DateLabel:   dateLabel,
-		Year:        entryDate.Year(),
-		HasFullDate: hasFullDate,
-		Content:     template.HTML(htmlContent),
-		IsDraft:     strings.EqualFold(meta["draft"], "true"),
-	}
-	if hasFullDate {
-		entry.Day = entryDate.Format("02")
-		entry.Month = entryDate.Format("Jan")
-		entry.WeekdayShort = strings.ToLower(entryDate.Format("Mon"))
-	}
-	return entry, nil
-}
-
-func parseLibraryDate(value string) (time.Time, string, string, bool, error) {
-	value = strings.TrimSpace(value)
-	if len(value) == 4 {
-		year, err := strconv.Atoi(value)
-		if err == nil && year > 0 {
-			return time.Date(year, 1, 1, 0, 0, 0, 0, time.UTC), value, value, false, nil
-		}
-	}
-	entryDate, err := parseJournalDate(value, "")
-	if err != nil {
-		return time.Time{}, "", "", false, err
-	}
-	return entryDate, entryDate.Format("2006-01-02"), entryDate.Format("2 Jan 2006"), true, nil
-}
-
-func groupLibraryEntries(entries []LibraryEntry) []LibraryYear {
-	var years []LibraryYear
-	for _, entry := range entries {
-		if len(years) == 0 || years[len(years)-1].Year != entry.Year {
-			years = append(years, LibraryYear{Year: entry.Year})
-		}
-		years[len(years)-1].Entries = append(years[len(years)-1].Entries, entry)
-	}
-	return years
-}
-
-func buildLibraryIndexSections(entries map[string][]LibraryEntry) []LibraryIndexSection {
-	sections := make([]LibraryIndexSection, 0, len(librarySections))
-	for _, section := range librarySections {
-		sections = append(sections, summarizeLibrarySection(section, entries[section.Key]))
-	}
-	return sections
-}
-
-func summarizeLibrarySection(section LibrarySection, entries []LibraryEntry) LibraryIndexSection {
-	summary := LibraryIndexSection{LibrarySection: section}
-	if len(entries) == 0 {
-		return summary
-	}
-
-	summary.HasEntries = true
-	countText := section.CountMany
-	if len(entries) == 1 {
-		countText = section.CountOne
-	}
-	summary.CountLabel = fmt.Sprintf("%d %s", len(entries), countText)
-
-	earliestYear := entries[0].Year
-	latestYear := entries[0].Year
-	for _, entry := range entries[1:] {
-		if entry.Year < earliestYear {
-			earliestYear = entry.Year
-		}
-		if entry.Year > latestYear {
-			latestYear = entry.Year
-		}
-	}
-	if earliestYear == latestYear {
-		summary.YearsLabel = fmt.Sprintf("%d", latestYear)
-	} else {
-		summary.YearsLabel = fmt.Sprintf("%d — %d", earliestYear, latestYear)
-	}
-	return summary
-}
-
 func loadPhotos(dir string) ([]PhotoEntry, error) {
 	files, err := findMarkdownFiles(dir)
 	if err != nil {
@@ -2050,6 +1768,10 @@ func copyStaticFiles() error {
 			return err
 		}
 
+		srcData, err = imageprivacy.Strip(srcData, filepath.Ext(path))
+		if err != nil {
+			return fmt.Errorf("%s: %w", path, err)
+		}
 		return os.WriteFile(dstPath, srcData, 0644)
 	})
 
@@ -2105,6 +1827,10 @@ func copyImages() error {
 			return err
 		}
 
+		srcData, err = imageprivacy.Strip(srcData, ext)
+		if err != nil {
+			return fmt.Errorf("%s: %w", path, err)
+		}
 		if err := os.WriteFile(destPath, srcData, 0644); err != nil {
 			return err
 		}
@@ -2166,7 +1892,7 @@ func generateRSSFeed(posts []PostTemplateData) error {
 <channel>
 <title>for later, when i forget</title>
 <link>%s</link>
-<description>essays and observations by karthik</description>
+<description>essays and observations kept for later</description>
 <language>en-us</language>
 <lastBuildDate>%s</lastBuildDate>
 <atom:link href="%srss.xml" rel="self" type="application/rss+xml"/>

@@ -28,3 +28,13 @@
     </nav>
   </footer>
 {{end}}
+
+{{define "notebook-doodle"}}
+<svg class="notebook-doodle" viewBox="0 0 200 170" aria-hidden="true" focusable="false">
+  <use href="{{.BasePath}}images/notebook/ink-objects.svg#{{if eq .PageType "games"}}controller{{else if eq .PageType "books"}}book{{else if or (eq .PageType "photos") (eq .PageType "photo")}}camera{{else if eq .PageType "home"}}sprig{{else}}pen{{end}}"></use>
+</svg>
+{{end}}
+
+{{define "site-styles"}}
+<link href="{{.BasePath}}css/site.css?v=1" rel="stylesheet" type="text/css">
+{{end}}

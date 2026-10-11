@@ -1,18 +1,24 @@
 {
   "games": [
     {
-      "finished": "2006",
       "id": "icy-tower",
       "portrait": "images/games/icy-tower-portrait.webp",
       "status": "completed",
-      "title": "Icy Tower"
+      "title": "Icy Tower",
+      "approxYear": "early 2000s",
+      "sortYear": 2001,
+      "machine": "grandparents-pc",
+      "hoursNote": "playtime lost to history"
     },
     {
-      "finished": "2007",
       "id": "glace",
       "portrait": "images/games/glace-portrait.webp",
       "status": "completed",
-      "title": "Glace"
+      "title": "Glace",
+      "approxYear": "~2005",
+      "sortYear": 2005,
+      "machine": "dad-hp-laptop",
+      "hoursNote": "playtime lost to history"
     },
     {
       "finished": "2008",
@@ -29,11 +35,14 @@
       "title": "Dirt Track Racing 2"
     },
     {
-      "finished": "2010",
       "id": "harry-potter-sorcerers-stone",
       "portrait": "images/games/harry-potter-sorcerers-stone-portrait.webp",
       "status": "completed",
-      "title": "Harry Potter and the Sorcerer's Stone"
+      "title": "Harry Potter and the Sorcerer's Stone",
+      "approxYear": "~2005",
+      "sortYear": 2005,
+      "machine": "dad-hp-laptop",
+      "hoursNote": "playtime lost to history"
     },
     {
       "finished": "2012",
@@ -43,25 +52,36 @@
       "title": "Grand Theft Auto: Vice City"
     },
     {
-      "finished": "2014",
       "id": "grand-theft-auto-san-andreas",
       "portrait": "images/games/grand-theft-auto-san-andreas-portrait.webp",
       "status": "completed",
-      "title": "Grand Theft Auto: San Andreas"
+      "title": "Grand Theft Auto: San Andreas",
+      "approxYear": "early 2010s",
+      "sortYear": 2010,
+      "machine": "office-pc",
+      "hoursNote": "hundreds of hours, probably",
+      "source": "friend's CD",
+      "memory": "A friend gave me his CD after he had finished with it. I played it constantly for years."
     },
     {
-      "finished": "2015",
       "id": "igi-2",
       "portrait": "images/games/igi-2-portrait.webp",
       "status": "completed",
-      "title": "IGI 2"
+      "title": "IGI 2",
+      "approxYear": "early 2010s",
+      "sortYear": 2010,
+      "machine": "office-pc",
+      "hoursNote": "playtime lost to history"
     },
     {
-      "finished": "2015",
       "id": "max-payne",
       "portrait": "images/games/max-payne-portrait.webp",
       "status": "completed",
-      "title": "Max Payne"
+      "title": "Max Payne",
+      "approxYear": "early 2010s",
+      "sortYear": 2010,
+      "machine": "office-pc",
+      "hoursNote": "playtime lost to history"
     },
     {
       "finished": "2018",
@@ -229,28 +249,16 @@
       }
     },
     {
-      "id": "control-ultimate-edition",
+      "finished": "2026",
+      "id": "detroit-become-human",
       "imported": true,
       "platform": "PC",
-      "portrait": "images/games/control-ultimate-edition-portrait.webp",
+      "portrait": "images/games/detroit-cover.jpg",
       "source": "Steam",
-      "status": "playing",
-      "title": "Control Ultimate Edition",
+      "status": "completed",
+      "title": "Detroit: Become Human",
       "tracking": {
-        "app_id": 870780,
-        "provider": "steam"
-      }
-    },
-    {
-      "id": "cyberpunk-2077",
-      "imported": true,
-      "platform": "PC",
-      "portrait": "images/games/cyberpunk-cover.jpg",
-      "source": "Steam",
-      "status": "playing",
-      "title": "Cyberpunk 2077",
-      "tracking": {
-        "app_id": 1091500,
+        "app_id": 1222140,
         "provider": "steam"
       }
     },
@@ -294,54 +302,14 @@
       }
     },
     {
-      "id": "iron-nest-heavy-turret-simulator",
+      "id": "mass-effect-legendary-edition",
       "imported": true,
       "platform": "PC",
-      "portrait": "images/games/iron-nest-heavy-turret-simulator-portrait.webp",
       "source": "Steam",
       "status": "playing",
-      "title": "IRON NEST: Heavy Turret Simulator",
+      "title": "Mass Effect™ Legendary Edition",
       "tracking": {
-        "app_id": 2950790,
-        "provider": "steam"
-      }
-    },
-    {
-      "id": "no-mans-sky",
-      "imported": true,
-      "platform": "PC",
-      "portrait": "images/games/no-mans-sky-portrait.webp",
-      "source": "Steam",
-      "status": "playing",
-      "title": "No Man's Sky",
-      "tracking": {
-        "app_id": 275850,
-        "provider": "steam"
-      }
-    },
-    {
-      "id": "path-of-exile",
-      "imported": true,
-      "platform": "PC",
-      "portrait": "images/games/path-of-exile-portrait.webp",
-      "source": "Steam",
-      "status": "playing",
-      "title": "Path of Exile",
-      "tracking": {
-        "app_id": 238960,
-        "provider": "steam"
-      }
-    },
-    {
-      "id": "rise-of-the-tomb-raider",
-      "imported": true,
-      "platform": "PC",
-      "portrait": "images/games/rise-of-the-tomb-raider-portrait.webp",
-      "source": "Steam",
-      "status": "playing",
-      "title": "Rise of the Tomb Raider",
-      "tracking": {
-        "app_id": 391220,
+        "app_id": 1328670,
         "provider": "steam"
       }
     },
@@ -359,16 +327,39 @@
       }
     },
     {
-      "id": "soma",
+      "id": "snowrunner",
       "imported": true,
       "platform": "PC",
-      "portrait": "images/games/soma.jpg",
       "source": "Steam",
       "status": "playing",
-      "title": "SOMA",
+      "title": "SnowRunner",
       "tracking": {
-        "app_id": 282140,
+        "app_id": 1465360,
         "provider": "steam"
+      }
+    },
+    {
+      "id": "stardew-valley",
+      "imported": true,
+      "platform": "PC",
+      "source": "Steam",
+      "status": "playing",
+      "title": "Stardew Valley",
+      "tracking": {
+        "app_id": 413150,
+        "provider": "steam"
+      }
+    },
+    {
+      "id": "the-blood-of-dawnwalker",
+      "imported": true,
+      "platform": "PC",
+      "source": "Lutris",
+      "status": "playing",
+      "title": "The Blood of Dawnwalker",
+      "tracking": {
+        "game_id": 4,
+        "provider": "lutris"
       }
     },
     {
@@ -385,19 +376,6 @@
       }
     },
     {
-      "id": "the-witcher-2-assassins-of-kings-enhanced-edition",
-      "imported": true,
-      "platform": "PC",
-      "portrait": "images/games/the-witcher-2-assassins-of-kings-enhanced-edition-portrait.webp",
-      "source": "Steam",
-      "status": "playing",
-      "title": "The Witcher 2: Assassins of Kings Enhanced Edition",
-      "tracking": {
-        "app_id": 20920,
-        "provider": "steam"
-      }
-    },
-    {
       "id": "titanfall-2-1237970",
       "imported": true,
       "platform": "PC",
@@ -409,6 +387,107 @@
         "app_id": 1237970,
         "provider": "steam"
       }
+    },
+    {
+      "id": "brainsbreaker",
+      "title": "BrainsBreaker",
+      "approxYear": "early 2000s",
+      "sortYear": 2001,
+      "machine": "grandparents-pc",
+      "status": "played"
+    },
+    {
+      "id": "dead-space-3",
+      "title": "Dead Space 3",
+      "approxYear": "~2012/2013",
+      "sortYear": 2013,
+      "machine": "family-pavilion",
+      "status": "played"
+    },
+    {
+      "id": "road-rash",
+      "title": "Road Rash",
+      "source": "friend's computer",
+      "memory": "Played on a friend's computer.",
+      "status": "played"
+    },
+    {
+      "id": "burnout-paradise",
+      "title": "Burnout Paradise",
+      "approxYear": "childhood / teens",
+      "status": "played"
+    },
+    {
+      "id": "unidentified-helicopter",
+      "title": "an old helicopter game",
+      "status": "unidentified",
+      "memory": "I remember playing it; the title is lost to history."
+    },
+    {
+      "id": "unidentified-split-screen-fps",
+      "title": "a little split-screen shooter",
+      "status": "unidentified",
+      "approxYear": "~2005/2006",
+      "sortYear": 2006,
+      "memory": "A very simple local two-player first-person shooter. Horizontal split screen, WASD versus arrow keys, red and blue crosshairs, no visible weapon models, and simple buildings and vehicles."
+    }
+  ],
+  "milestones": [
+    {
+      "id": "grandparents-pc",
+      "date": "~2000",
+      "sortYear": 2000,
+      "title": "grandparents' computer",
+      "hardware": "Custom-built desktop · large CRT · specifications and Windows version unknown",
+      "memory": "The earliest computer I remember. Random little games and programs seemed to simply exist on it. My grandmother played BrainsBreaker too."
+    },
+    {
+      "id": "dad-hp-laptop",
+      "date": "~2005",
+      "sortYear": 2005,
+      "title": "dad's HP laptop",
+      "hardware": "HP Pavilion dv4000 series · likely Pentium M era; exact configuration unknown",
+      "memory": "Bought by my father in Qatar."
+    },
+    {
+      "id": "office-pc",
+      "date": "late 2000s / early 2010s",
+      "sortYear": 2010,
+      "title": "the office PC",
+      "hardware": "Old HP office desktop and monitor · Windows 7 · specifications unknown",
+      "memory": "My father brought it home when his office was replacing equipment. A local computer technician later fixed it up somewhat. This was my main childhood daily-driver computer."
+    },
+    {
+      "id": "family-pavilion",
+      "date": "~2012/2013",
+      "sortYear": 2013,
+      "title": "HP Pavilion family desktop",
+      "hardware": "HP Pavilion prebuilt · dual-core Intel Core i3 · 2 GB RAM · Windows 8 era; model and GPU unknown",
+      "memory": "Newer, but never as personally important as the old office PC. I also remember a Devil May Cry game; which one is still uncertain."
+    },
+    {
+      "id": "ideapad-520",
+      "date": "2018-01-18",
+      "sortYear": 2018,
+      "title": "first personal laptop",
+      "hardware": "Lenovo IdeaPad 520 · 7th-generation Intel Core i7 U-series · GeForce 940MX",
+      "memory": "My first personal computer, and the beginning of my modern PC-gaming history."
+    },
+    {
+      "id": "zephyrus-g14",
+      "date": "2023-09-03",
+      "sortYear": 2023,
+      "title": "ASUS Zephyrus G14",
+      "hardware": "Ryzen 9 5900HS · RTX 3050 Ti 60W",
+      "memory": "This became my main computer and gaming laptop. Still owned, fully functional, cosmetically pristine, and capable of modern 1080p gaming."
+    },
+    {
+      "id": "custom-desktop",
+      "date": "2026-09-06",
+      "sortYear": 2026,
+      "title": "first custom desktop",
+      "hardware": "Ryzen 7 9700X · ASRock Radeon RX 9070 XT Taichi OC · 32 GB DDR5",
+      "memory": "The first desktop I built myself. First successful boot: 6 September 2026."
     }
   ]
 }

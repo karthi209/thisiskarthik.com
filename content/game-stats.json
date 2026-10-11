@@ -23,20 +23,76 @@
     "hours": 0.22,
     "last_played": "2026-05-03T09:29:12Z"
   },
+  "batman-arkham-asylum-goty-edition": {
+    "provider": "steam",
+    "hours": 0
+  },
+  "batman-arkham-city-goty": {
+    "provider": "steam",
+    "hours": 0
+  },
+  "batman-arkham-knight": {
+    "provider": "steam",
+    "hours": 0
+  },
+  "battlefield-2": {
+    "provider": "snapshot",
+    "hours": 12
+  },
+  "battlefield-3": {
+    "provider": "snapshot",
+    "hours": 12
+  },
+  "call-of-duty-4-modern-warfare": {
+    "provider": "snapshot",
+    "hours": 10
+  },
+  "call-of-duty-black-ops": {
+    "provider": "snapshot",
+    "hours": 14
+  },
+  "call-of-duty-black-ops-2": {
+    "provider": "snapshot",
+    "hours": 11
+  },
+  "call-of-duty-modern-warfare-2": {
+    "provider": "snapshot",
+    "hours": 12
+  },
+  "call-of-duty-modern-warfare-3": {
+    "provider": "snapshot",
+    "hours": 11
+  },
   "control-ultimate-edition": {
     "provider": "steam",
     "hours": 0.5,
     "last_played": "2026-08-29T17:39:14Z"
+  },
+  "crysis": {
+    "provider": "snapshot",
+    "hours": 12
+  },
+  "crysis-2": {
+    "provider": "snapshot",
+    "hours": 13
+  },
+  "crysis-3": {
+    "provider": "snapshot",
+    "hours": 9
   },
   "cyberpunk-2077": {
     "provider": "steam",
     "hours": 62.7,
     "last_played": "2026-09-18T17:57:23Z"
   },
+  "dead-space": {
+    "provider": "steam",
+    "hours": 0
+  },
   "detroit-become-human": {
     "provider": "steam",
-    "hours": 8.4,
-    "last_played": "2025-11-30T16:06:48Z"
+    "hours": 11.65,
+    "last_played": "2026-10-03T14:01:38Z"
   },
   "disco-elysium": {
     "provider": "steam",
@@ -53,19 +109,43 @@
     "hours": 5.06,
     "last_played": "2026-09-26T07:09:34Z"
   },
+  "far-cry-4": {
+    "provider": "snapshot",
+    "hours": 34
+  },
+  "firewatch": {
+    "provider": "steam",
+    "hours": 0
+  },
   "ghost-of-tsushima": {
     "provider": "lutris",
-    "hours": 11.23,
-    "last_played": "2026-09-26T17:25:37Z"
+    "hours": 24.15,
+    "last_played": "2026-10-03T16:29:23Z"
   },
   "grand-theft-auto-iv-the-complete-edition": {
     "provider": "steam",
     "hours": 0
   },
+  "grand-theft-auto-san-andreas": {
+    "provider": "snapshot",
+    "hours": 150
+  },
+  "grand-theft-auto-v": {
+    "provider": "snapshot",
+    "hours": 50
+  },
+  "grand-theft-auto-vice-city": {
+    "provider": "snapshot",
+    "hours": 60
+  },
   "hades": {
     "provider": "steam",
     "hours": 0.8,
     "last_played": "2026-09-26T09:10:51Z"
+  },
+  "harry-potter-sorcerers-stone": {
+    "provider": "snapshot",
+    "hours": 30
   },
   "hellblade": {
     "provider": "steam",
@@ -85,6 +165,10 @@
     "provider": "steam",
     "hours": 0
   },
+  "igi-2": {
+    "provider": "snapshot",
+    "hours": 30
+  },
   "iron-nest-heavy-turret-simulator": {
     "provider": "steam",
     "hours": 0.65,
@@ -93,6 +177,27 @@
   "kingdom-come-deliverance": {
     "provider": "steam",
     "hours": 0
+  },
+  "mass-effect": {
+    "provider": "snapshot",
+    "hours": 28
+  },
+  "mass-effect-2": {
+    "provider": "snapshot",
+    "hours": 36
+  },
+  "mass-effect-3": {
+    "provider": "snapshot",
+    "hours": 36
+  },
+  "mass-effect-legendary-edition": {
+    "provider": "steam",
+    "hours": 0.75,
+    "last_played": "2026-10-02T18:34:53Z"
+  },
+  "max-payne": {
+    "provider": "snapshot",
+    "hours": 11
   },
   "metro-2033-redux": {
     "provider": "steam",
@@ -116,6 +221,10 @@
     "hours": 1.68,
     "last_played": "2026-09-17T16:28:38Z"
   },
+  "outer-wilds": {
+    "provider": "steam",
+    "hours": 0
+  },
   "path-of-exile": {
     "provider": "steam",
     "hours": 0.18,
@@ -125,6 +234,14 @@
     "provider": "steam",
     "hours": 70.9,
     "last_played": "2026-09-23T11:41:33Z"
+  },
+  "resident-evil-2": {
+    "provider": "steam",
+    "hours": 0
+  },
+  "resident-evil-4": {
+    "provider": "steam",
+    "hours": 0
   },
   "resident-evil-7-biohazard": {
     "provider": "steam",
@@ -145,15 +262,34 @@
     "hours": 15.73,
     "last_played": "2026-09-23T17:09:44Z"
   },
+  "snowrunner": {
+    "provider": "steam",
+    "hours": 0.9,
+    "last_played": "2026-10-03T18:07:23Z"
+  },
   "soma": {
     "provider": "steam",
     "hours": 3.9,
     "last_played": "2026-09-19T14:11:24Z"
   },
+  "stardew-valley": {
+    "provider": "steam",
+    "hours": 0.67,
+    "last_played": "2026-10-03T17:22:21Z"
+  },
   "subnautica": {
     "provider": "steam",
     "hours": 1,
     "last_played": "2026-07-04T06:22:48Z"
+  },
+  "the-blood-of-dawnwalker": {
+    "provider": "lutris",
+    "hours": 0.15,
+    "last_played": "2026-10-03T16:21:55Z"
+  },
+  "the-outlast-trials": {
+    "provider": "steam",
+    "hours": 0
   },
   "the-witcher-2-assassins-of-kings-enhanced-edition": {
     "provider": "steam",
@@ -162,8 +298,9 @@
   },
   "the-witcher-3": {
     "provider": "steam",
-    "hours": 127.3,
-    "last_played": "2026-09-23T15:21:13Z"
+    "hours": 130.3,
+    "additional_hours": 50,
+    "last_played": "2026-10-02T18:48:39Z"
   },
   "the-witcher-enhanced-edition": {
     "provider": "steam",
@@ -188,6 +325,10 @@
     "provider": "steam",
     "hours": 20.48,
     "last_played": "2026-09-06T07:50:18Z"
+  },
+  "vampyr": {
+    "provider": "steam",
+    "hours": 0
   },
   "warframe": {
     "provider": "steam",

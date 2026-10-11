@@ -153,3 +153,27 @@ func TestSteamWinsDuplicateLutrisTitle(t *testing.T) {
 		t.Fatalf("Steam did not win duplicate title: %#v", cache)
 	}
 }
+
+func TestImportPreservesPersonalEras(t *testing.T) {
+	dir := t.TempDir()
+	gamesPath := filepath.Join(dir, "games.json")
+	backlogPath := filepath.Join(dir, "games-backlog.json")
+	source := `{"games":[{"id":"borrowed","title":"Borrowed","status":"played","approxYear":"early 2000s","memory":"A friend's computer."},{"id":"unknown","title":"Forgotten","status":"unidentified"}],"milestones":[{"id":"family","date":"~2000","sortYear":2000,"title":"Family PC","hardware":"CRT","photo":"images/family.webp"}]}`
+	if err := os.WriteFile(gamesPath, []byte(source), 0600); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(backlogPath, []byte(`[]`), 0600); err != nil {
+		t.Fatal(err)
+	}
+	providers := []providerGame{{Provider: "steam", ExternalID: 1, Name: "Borrowed", Hours: 10}}
+	if _, _, _, err := reconcileLibraries(gamesPath, backlogPath, gamestats.Cache{}, providers, 14, time.Now(), false); err != nil {
+		t.Fatal(err)
+	}
+	var archive gameArchive
+	if err := readJSON(gamesPath, &archive); err != nil {
+		t.Fatal(err)
+	}
+	if len(archive.Games) != 2 || stringValue(archive.Games[0]["status"]) != "played" || stringValue(archive.Games[0]["memory"]) != "A friend's computer." || len(archive.Milestones) != 1 || stringValue(archive.Milestones[0]["photo"]) != "images/family.webp" {
+		t.Fatalf("personal archive lost or duplicated: %#v", archive)
+	}
+}

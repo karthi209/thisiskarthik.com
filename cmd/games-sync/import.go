@@ -14,7 +14,8 @@ import (
 )
 
 type gameArchive struct {
-	Games []map[string]any `json:"games"`
+	Games      []map[string]any `json:"games"`
+	Milestones []map[string]any `json:"milestones,omitempty"`
 }
 type providerGame struct {
 	Provider   string
@@ -75,6 +76,11 @@ func reconcileLibraries(gamesPath, backlogPath string, old gamestats.Cache, prov
 	next := gamestats.Cache{}
 	for _, r := range archive.Games {
 		if stringValue(r["status"]) != "completed" {
+			// Personal memories without provider mappings survive library refreshes.
+			if _, tracked := r["tracking"]; !tracked && r["imported"] != true {
+				completed = append(completed, r)
+                completedByTitle[normalizeTitle(stringValue(r["title"]))] = r
+			}
 			continue
 		}
 		completed = append(completed, r)
@@ -95,7 +101,8 @@ func reconcileLibraries(gamesPath, backlogPath string, old gamestats.Cache, prov
 			r = completedByTitle[normalizeTitle(g.Name)]
 		}
 		if r != nil {
-			next[stringValue(r["id"])] = providerStat(g)
+			id := stringValue(r["id"])
+			next[id] = providerStatWithExisting(g, old[id])
 			continue
 		}
 		r = priorByProvider[key]
@@ -123,7 +130,7 @@ func reconcileLibraries(gamesPath, backlogPath string, old gamestats.Cache, prov
 		r["source"] = strings.Title(g.Provider)
 		r["imported"] = true
 		r["tracking"] = providerTracking(g)
-		next[id] = providerStat(g)
+		next[id] = providerStatWithExisting(g, old[id])
 		if belongsInProviderBacklog(g, cutoff) {
 			delete(r, "status")
 			backlog = append(backlog, r)
@@ -156,6 +163,11 @@ func providerStat(g providerGame) gamestats.Stat {
 	if g.LastPlayed > 0 {
 		s.LastPlayed = time.Unix(g.LastPlayed, 0).UTC().Format(time.RFC3339)
 	}
+	return s
+}
+func providerStatWithExisting(g providerGame, old gamestats.Stat) gamestats.Stat {
+	s := providerStat(g)
+	s.AdditionalHours = old.AdditionalHours
 	return s
 }
 func belongsInProviderBacklog(g providerGame, cutoff time.Time) bool {

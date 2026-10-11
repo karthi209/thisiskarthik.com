@@ -65,169 +65,6 @@ func TestBuildTimelineContainsOnlyJournalNotes(t *testing.T) {
 	}
 }
 
-func TestProcessLibraryFile(t *testing.T) {
-	dir := t.TempDir()
-	path := filepath.Join(dir, "the-odyssey.md")
-	source := `---
-title: The Odyssey
-release_year: 2026
-date: 2026-07-24
-rating: 4
----
-
-Worth seeing on the biggest screen possible.`
-	if err := os.WriteFile(path, []byte(source), 0600); err != nil {
-		t.Fatal(err)
-	}
-
-	entry, err := processLibraryFile(path, "films")
-	if err != nil {
-		t.Fatal(err)
-	}
-	if entry.Title != "The Odyssey" || entry.ReleaseYear != 2026 || entry.Section != "films" {
-		t.Fatalf("library identity was not preserved: %#v", entry)
-	}
-	if entry.Rating != 4 || entry.RatingStars != "★★★★☆" || entry.RatingLabel != "4 out of 5" {
-		t.Fatalf("unexpected rating: %#v", entry)
-	}
-	if entry.DateISO != "2026-07-24" || entry.Month != "Jul" || entry.Day != "24" {
-		t.Fatalf("unexpected library date labels: %#v", entry)
-	}
-	if !strings.Contains(string(entry.Content), "biggest screen") {
-		t.Fatalf("library note was not rendered: %s", entry.Content)
-	}
-}
-
-func TestProcessLibraryFileRejectsInvalidRating(t *testing.T) {
-	path := filepath.Join(t.TempDir(), "invalid.md")
-	source := `---
-title: Too Many Stars
-date: 2026-07-24
-rating: 6
----
-
-A note.`
-	if err := os.WriteFile(path, []byte(source), 0600); err != nil {
-		t.Fatal(err)
-	}
-	if _, err := processLibraryFile(path, "films"); err == nil {
-		t.Fatal("expected an invalid rating to be rejected")
-	}
-}
-
-func TestProcessLibraryFileAcceptsYearOnlyDateAndHalfRating(t *testing.T) {
-	path := filepath.Join(t.TempDir(), "red-dead-redemption-2.md")
-	source := `---
-title: Red Dead Redemption 2
-release_year: 2018
-date: 2025
-rating: 4.5
----
-
-One of the greatest of all time.`
-	if err := os.WriteFile(path, []byte(source), 0600); err != nil {
-		t.Fatal(err)
-	}
-
-	entry, err := processLibraryFile(path, "games")
-	if err != nil {
-		t.Fatal(err)
-	}
-	if entry.DateISO != "2025" || entry.DateLabel != "2025" || entry.HasFullDate {
-		t.Fatalf("year-only date was not preserved honestly: %#v", entry)
-	}
-	if entry.Rating != 4.5 || entry.RatingStars != "★★★★½" || entry.RatingLabel != "4.5 out of 5" {
-		t.Fatalf("half-star rating was not preserved: %#v", entry)
-	}
-}
-
-func TestLoadLibraryEntriesSortsNewestFirstAndSkipsDrafts(t *testing.T) {
-	root := t.TempDir()
-	filmsDir := filepath.Join(root, "films")
-	if err := os.MkdirAll(filmsDir, 0700); err != nil {
-		t.Fatal(err)
-	}
-	entries := map[string]string{
-		"older.md": `---
-title: Older
-date: 2026-07-01
-rating: 3
----
-
-Older note.`,
-		"newer.md": `---
-title: Newer
-date: 2026-07-24
-rating: 5
----
-
-Newer note.`,
-		"draft.md": `---
-title: Draft
-date: 2026-07-25
-rating: 5
-draft: true
----
-
-Draft note.`,
-	}
-	for name, source := range entries {
-		if err := os.WriteFile(filepath.Join(filmsDir, name), []byte(source), 0600); err != nil {
-			t.Fatal(err)
-		}
-	}
-
-	loaded, err := loadLibraryEntries(root)
-	if err != nil {
-		t.Fatal(err)
-	}
-	films := loaded["films"]
-	if len(films) != 2 || films[0].Title != "Newer" || films[1].Title != "Older" {
-		t.Fatalf("library entries were not filtered and sorted: %#v", films)
-	}
-	if films[0].ArchiveNo != "002" || films[1].ArchiveNo != "001" {
-		t.Fatalf("unexpected library archive numbers: %#v", films)
-	}
-}
-
-func TestBuildLibraryIndexSections(t *testing.T) {
-	entries := map[string][]LibraryEntry{
-		"films": {
-			{
-				Title:       "The Odyssey",
-				ReleaseYear: 2026,
-				DateISO:     "2026-07-24",
-				Day:         "24",
-				Month:       "Jul",
-				Year:        2026,
-			},
-			{Title: "Blood Diamond", Year: 2024},
-		},
-		"books": {
-			{Title: "The Iliad", Year: 2025},
-		},
-	}
-
-	sections := buildLibraryIndexSections(entries)
-	if len(sections) != 5 {
-		t.Fatalf("expected five library summaries, got %d", len(sections))
-	}
-	films := sections[0]
-	if !films.HasEntries || films.CountLabel != "2 films remembered" || films.YearsLabel != "2024 — 2026" {
-		t.Fatalf("unexpected films summary: %#v", films)
-	}
-	if films.Description == "" || films.ArchiveLabel != "films remembered" {
-		t.Fatalf("films summary lost its description or archive label: %#v", films)
-	}
-	if sections[1].HasEntries {
-		t.Fatalf("empty tv section was marked populated: %#v", sections[1])
-	}
-	books := sections[3]
-	if books.CountLabel != "1 book" || books.YearsLabel != "2025" {
-		t.Fatalf("unexpected singular books summary: %#v", books)
-	}
-}
-
 func TestProcessAndGroupPhotos(t *testing.T) {
 	dir := t.TempDir()
 	firstPath := filepath.Join(dir, "desk.md")
@@ -311,68 +148,6 @@ func TestNewContentTemplatesRenderPopulatedEntries(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	date := time.Date(2026, 7, 24, 0, 0, 0, 0, time.UTC)
-	libraryData := LibraryPageData{
-		PageType: "library",
-		BasePath: "/",
-		Section:  librarySections[0],
-		Years: []LibraryYear{{
-			Year: 2026,
-			Entries: []LibraryEntry{{
-				Title:        "The Odyssey",
-				ReleaseYear:  2026,
-				RatingStars:  "★★★★☆",
-				RatingLabel:  "4 out of 5",
-				Date:         date,
-				DateISO:      "2026-07-24",
-				DateLabel:    "24 Jul 2026",
-				Day:          "24",
-				Month:        "Jul",
-				WeekdayShort: "fri",
-				Year:         2026,
-				HasFullDate:  true,
-				Content:      template.HTML("<p>Worth seeing.</p>"),
-				ArchiveNo:    "001",
-			}},
-		}},
-	}
-	var libraryOutput bytes.Buffer
-	if err := templates.ExecuteTemplate(&libraryOutput, "library-section.html", libraryData); err != nil {
-		t.Fatal(err)
-	}
-	if !strings.Contains(libraryOutput.String(), "The Odyssey") || !strings.Contains(libraryOutput.String(), "★★★★☆") {
-		t.Fatalf("populated library template did not render its entry: %s", libraryOutput.String())
-	}
-
-	libraryIndexData := LibraryIndexPageData{
-		PageType: "library",
-		BasePath: "/",
-		Sections: buildLibraryIndexSections(map[string][]LibraryEntry{
-			"films": {
-				{
-					Title:       "The Odyssey",
-					ReleaseYear: 2026,
-					DateISO:     "2026-07-24",
-					DateLabel:   "24 Jul 2026",
-					Day:         "24",
-					Month:       "Jul",
-					Year:        2026,
-				},
-			},
-		}),
-	}
-	var libraryIndexOutput bytes.Buffer
-	if err := templates.ExecuteTemplate(&libraryIndexOutput, "library.html", libraryIndexData); err != nil {
-		t.Fatal(err)
-	}
-	indexHTML := libraryIndexOutput.String()
-	if !strings.Contains(indexHTML, "1 film remembered") ||
-		!strings.Contains(indexHTML, `<a href="/library/films">films</a>`) ||
-		strings.Contains(indexHTML, "browse films") ||
-		strings.Contains(indexHTML, "The Odyssey") {
-		t.Fatalf("library landing did not render its collection summary: %s", indexHTML)
-	}
-
 	photoData := PhotoPageData{
 		PageType: "photos",
 		BasePath: "/",
@@ -428,11 +203,8 @@ func TestGamesArchive(t *testing.T) {
 	if data.Years[0].Summary != "2 games · 12.4 hours recorded" {
 		t.Fatal(data.Years[0].Summary)
 	}
-	if data.Years[0].Faded {
-		t.Fatal("recent years should not be visually faded")
-	}
-	if len(data.Playtime) != 2 || data.Playtime[0].ID != "done" || data.Playtime[1].ID != "now" {
-		t.Fatalf("playtime view is not sorted by known hours: %#v", data.Playtime)
+	if len(data.Playtime) != 1 || data.Playtime[0].ID != "done" {
+		t.Fatalf("playtime view includes zero-hour games: %#v", data.Playtime)
 	}
 	templates, err := template.ParseGlob("templates/*.html")
 	if err != nil {
@@ -443,7 +215,7 @@ func TestGamesArchive(t *testing.T) {
 		t.Fatal(err)
 	}
 	html := out.String()
-	for _, want := range []string{"Currently playing", "Earlier", "Most played", "by playtime", "find something I forgot", "data-memory-game", "game-status-stamp", "game-leader", "game-personal-label", "strange and lovely", "where I left off", "Return to the red room.", `src="/test/images/memory.webp"`, `alt="A red room"`, "Now &lt;game&gt;", "Playtime", "12.4h", "0 / 5", `aria-label="favourite"`} {
+	for _, want := range []string{"Currently playing", "Earlier", "Most played", "by playtime", "find something I forgot", "data-memory-game", "game-status-stamp", "game-leader", "game-personal-label", "strange and lovely", "where I left off", "Return to the red room.", `src="/test/images/memory.webp"`, `alt="A red room"`, "Now &lt;game&gt;", "Playtime", "12.4h", `aria-label="favourite"`} {
 		if !strings.Contains(html, want) {
 			t.Errorf("missing %q", want)
 		}
@@ -467,6 +239,27 @@ func TestGamesArchive(t *testing.T) {
 	}
 	if len(data.Playing) != 0 || len(data.Years[0].Games) != 3 {
 		t.Fatal("completion did not move game into history")
+	}
+}
+
+func TestGamesPlaytimeIncludesBacklog(t *testing.T) {
+	dir := t.TempDir()
+	if err := os.WriteFile(filepath.Join(dir, "games.json"), []byte(`{"games":[{"id":"archive","title":"Archive game"}]}`), 0600); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(dir, "games-backlog.json"), []byte(`[{"id":"queued","title":"Queued game"},{"id":"unplayed","title":"Unplayed game"}]`), 0600); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(dir, "game-stats.json"), []byte(`{"archive":{"hours":2},"queued":{"hours":4.5},"unplayed":{"hours":0}}`), 0600); err != nil {
+		t.Fatal(err)
+	}
+
+	data, err := loadGames(filepath.Join(dir, "games.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(data.Playtime) != 2 || data.Playtime[0].ID != "queued" || data.Playtime[1].ID != "archive" {
+		t.Fatalf("backlog playtime missing or incorrectly sorted: %#v", data.Playtime)
 	}
 }
 
@@ -546,7 +339,7 @@ func TestGamesStarterFacts(t *testing.T) {
 	if records["red-dead-redemption-2"].Finished != "2024" {
 		t.Fatal("Red Dead Redemption 2 year changed")
 	}
-	if records["icy-tower"].Finished != "2006" || records["firewatch"].Finished != "2020" {
+	if records["icy-tower"].ApproxYear != "early 2000s" || records["firewatch"].Finished != "2020" {
 		t.Fatal("expanded game history changed")
 	}
 	if len(data.Backlog) == 0 {
@@ -556,10 +349,10 @@ func TestGamesStarterFacts(t *testing.T) {
 		records[g.ID] = g
 	}
 	for _, g := range records {
-		if g.Portrait == "" && g.Artifact == "" && g.Cover == "" {
-			t.Fatalf("%s has no local artwork", g.Title)
+		if g.Status == "playing" && g.ArtifactURL != "" {
+			t.Fatalf("%s currently playing has cover art", g.Title)
 		}
-		if g.ArtifactURL == "" && g.Portrait != "" {
+		if g.ArtifactURL == "" && g.Portrait != "" && g.Status != "playing" {
 			t.Fatalf("%s portrait was not prepared for rendering", g.Title)
 		}
 		for _, art := range []string{g.Cover, g.Portrait, g.Artifact} {
@@ -577,10 +370,104 @@ func TestBooksStarterFacts(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(data.Read) != 1 || data.Read[0].Title != "The Last Wish" {
+	if len(data.Read) != 3 || data.Read[0].Title != "The Last Wish" {
 		t.Fatalf("unexpected read books: %#v", data.Read)
 	}
-	if len(data.Reading) != 3 || data.Reading[0].Title != "The Left Hand of Darkness" {
+	if len(data.Reading) != 4 || data.Reading[0].Title != "The Left Hand of Darkness" {
 		t.Fatalf("unexpected current books: %#v", data.Reading)
+	}
+	if data.Reading[0].Author != "Ursula K. Le Guin" || data.Reading[0].CoverURL != "/images/books/the-left-hand-of-darkness.webp" {
+		t.Fatalf("book presentation metadata was not prepared: %#v", data.Reading[0])
+	}
+	if len(data.Planned) != 16 || data.Planned[0].Title != "Hyperion" {
+		t.Fatalf("unexpected planned books: %#v", data.Planned)
+	}
+}
+
+func TestGamesRememberedEras(t *testing.T) {
+	dir := t.TempDir()
+	path := filepath.Join(dir, "games.json")
+	source := `{"games":[{"id":"borrowed","title":"Borrowed game","approxYear":"early 2000s","sortYear":2001,"machine":"family","source":"friend's CD","hoursNote":"hundreds of hours, probably","memory":"Driving around."},{"id":"unknown","title":"Forgotten shooter","status":"unidentified","approxYear":"childhood"}],"milestones":[{"id":"family","title":"Family PC","date":"~2000","sortYear":2000,"hardware":"CRT; specs unknown","photo":"images/family.webp","photoAlt":"Childhood computer"}]}`
+	if err := os.WriteFile(path, []byte(source), 0600); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(dir, "game-stats.json"), []byte(`{"borrowed":{"provider":"snapshot","hours":150}}`), 0600); err != nil {
+		t.Fatal(err)
+	}
+	data, err := loadGames(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(data.Years) != 2 || data.Years[0].Year != "early 2000s" || data.Years[1].Year != "~2000" || len(data.Undated) != 1 {
+		t.Fatalf("uncertain chronology lost: %#v", data)
+	}
+	g := data.Years[0].Games[0]
+	if g.Date != "" || g.Hours != nil || len(data.Playtime) != 0 || g.MachineLabel != "Family PC" {
+		t.Fatalf("memory acquired false precision: %#v", g)
+	}
+	templates, err := template.ParseGlob("templates/*.html")
+	if err != nil {
+		t.Fatal(err)
+	}
+	var out bytes.Buffer
+	if err := templates.ExecuteTemplate(&out, "games.html", data); err != nil {
+		t.Fatal(err)
+	}
+	for _, want := range []string{"hundreds of hours, probably", "Driving around.", "game-era-photo", "unidentified", "data-memory-game", "early 2000s"} {
+		if !strings.Contains(out.String(), want) {
+			t.Errorf("missing %s", want)
+		}
+	}
+	if strings.Contains(out.String(), "150h") {
+		t.Fatal("fabricated childhood telemetry rendered")
+	}
+}
+
+func TestCollectionPresentations(t *testing.T) {
+	templates, err := template.ParseGlob("templates/*.html")
+	if err != nil {
+		t.Fatal(err)
+	}
+	var out bytes.Buffer
+	books, err := loadBooks("content/books.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := templates.ExecuteTemplate(&out, "books.html", books); err != nil {
+		t.Fatal(err)
+	}
+	for _, want := range []string{"collection-dark", "collection-shelf", "shelf-entry", `alt="Cover of The Left Hand of Darkness"`} {
+		if !strings.Contains(out.String(), want) {
+			t.Errorf("books missing %q", want)
+		}
+	}
+	out.Reset()
+	games, err := loadGames("content/games.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := templates.ExecuteTemplate(&out, "games.html", games); err != nil {
+		t.Fatal(err)
+	}
+	html := out.String()
+	for _, want := range []string{`data-game-view="shelf"`, `data-game-panel="shelf">`, `data-game-panel="years" hidden`, `data-game-view="shelf" aria-pressed="true"`, `class="games-page collection-dark"`, `id="shelf-road-rash"`, "title lost to history"} {
+		if !strings.Contains(html, want) {
+			t.Errorf("games missing %q", want)
+		}
+	}
+	for _, g := range games.Playing {
+		if strings.Contains(html, `id="shelf-`+g.ID+`"`) {
+			t.Errorf("currently playing duplicated on shelf: %s", g.ID)
+		}
+	}
+	out.Reset()
+	fixture := PhotosPageData{PageType: "photos", BasePath: "/preview/", Years: groupPhotos([]PhotoEntry{{Title: "A quiet object", Slug: "quiet-object", Year: 2026, MonthNumber: 10, MonthLong: "October", Day: "04", DateISO: "2026-10-04", Image: "/preview/images/test.webp", ImageAlt: "An object on a plain surface"}})}
+	if err := templates.ExecuteTemplate(&out, "photos.html", fixture); err != nil {
+		t.Fatal(err)
+	}
+	for _, want := range []string{`class="photo-contact-sheet"`, `href="/preview/photos/quiet-object"`, `alt="An object on a plain surface"`, `src="/preview/images/test.webp"`, `id="photo-year-2026"`} {
+		if !strings.Contains(out.String(), want) {
+			t.Errorf("photos missing %q", want)
+		}
 	}
 }

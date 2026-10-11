@@ -10,20 +10,20 @@ The routine is small:
 Run `make games-artwork` when new provider games are imported. It downloads reviewed
 Steam portrait art, resizes it to a small local WebP, records the local `portrait`
 path, and updates `content/images/games/SOURCES.md`. Ambiguous or unavailable titles
-are reported rather than guessed. Images are lazy-loaded only after a game opens.
+are reported rather than guessed. Shelf covers are lazy-loaded; journal artwork appears when a game opens.
 
 Run `make games-sync` to reconcile the entire visible Steam library and local Lutris
 database. Completed statuses and entered years remain authoritative. Steam is
 authoritative when the same title exists in both providers; Lutris adds only local
-titles absent from Steam. Games played within 30 days are `playing`; positive
+titles absent from Steam. Games played within 14 days are `playing`; positive
 playtime without a usable date is `played`; zero
-playtime or a last-played date older than 30 days goes to `content/games-backlog.json`. Explicitly completed records
+playtime or a last-played date older than 14 days goes to `content/games-backlog.json`. Explicitly completed records
 and their manually entered years never move. Hours remain available
 in `content/game-stats.json`. Preview a different threshold without writing:
 
 ```bash
 set -a; source .env; set +a
-go run ./cmd/games-sync --import-steam-library --stale-days 30 --dry-run
+go run ./cmd/games-sync --import-steam-library --stale-days 14 --dry-run
 ```
 
 ## Two files, two owners
@@ -32,7 +32,9 @@ go run ./cmd/games-sync --import-steam-library --stale-days 30 --dry-run
   return notes, memories, artwork, and provider mappings. Sync preserves these
   fields when a provider moves a game between Playing and Backlog.
 - `content/game-stats.json`: optional observations keyed by stable game ID:
-  provider, hours, and last-played timestamp when available. Sync only writes this file.
+  provider, hours, and last-played timestamp when available. `additional_hours`
+  records playtime from another source and is added to the displayed total without
+  replacing provider hours. Sync only writes this file and preserves that addition.
 
 Deleting stats never deletes a memory or changes status. Missing or malformed stats
 are omitted from the site; malformed stats also produce a build warning. The sync
@@ -72,7 +74,7 @@ Optional personal fields: `platform`, `source`, `started`, `finished`, `played`,
 `cover` (landscape), `portrait` (portrait), and `tracking`. Images use local
 `images/games/...` paths backed by files in `content/images/games/`. An artifact,
 or existing portrait when no artifact is set, appears only after opening a game.
-The archive does not build a cover grid. The older numeric `rating` field remains
+The shelf view displays these covers in a grid. The older numeric `rating` field remains
 supported for existing records, but personal labels are preferred.
 Provider/source is not shown repeatedly in public metadata.
 
@@ -169,3 +171,37 @@ write and flush. Unchanged syncs do not rewrite it.
 Optional flags: `--games`, `--stats`, `--provider all|steam|lutris`, `--lutris-db`,
 `--list-lutris`, `--dry-run`. Output cannot alias the personal archive.
 Run only one sync at a time; no background scheduler or daemon is installed.
+
+## The remembered years
+
+Games can also carry optional `memory`, `approxYear`, `machine`, `source`, and
+`hoursNote` fields. `approxYear` is displayed verbatim; it is never parsed into an
+exact date. Set a separate integer `sortYear` to place an approximate era among
+the dated year groups. Without it, the game remains in Earlier. A `hoursNote`
+such as “hundreds of hours, probably” replaces numerical telemetry for that record
+and excludes it from the playtime ranking. Do not turn memories into measured hours.
+`unidentified` is a supported status; these entries participate in rediscovery
+without guessed titles. Art is optional, and Currently playing has no portrait art.
+
+The top-level `milestones` array contains hardware annotations: `id`, `date`
+(display text or an exact ISO date), `sortYear`, `title`, `hardware`, and optional
+`memory`. A game's `machine` references a milestone ID. Exact milestone dates
+join the matching year; approximate labels remain visibly approximate. Steam/Lutris
+imports preserve milestones and personal records without provider mappings.
+
+Keep the earliest computer entry text-only unless a suitable real photograph is
+available. Prefer the computer itself, with no recognizable people or identifying
+surroundings. A childhood portrait is not automatically approved for public use.
+Do not substitute stock or generated imagery that implies it depicts the actual
+computer. Optional `photo`, `photoAlt`, and `photoCaption` support a small photograph
+only after reviewing that specific image under the site privacy guidance.
+
+## Journal and shelf views
+
+The game collection opens as a cover shelf. The journal is an alternate view of
+the same historical and planned records, including borrowed and unidentified games. It uses existing
+local cover art when available and title labels otherwise; it does not imply
+ownership. Currently playing stays a measured, cover-free list in both views.
+Click a shelf cover or label to expand the recorded metadata and memories.
+Hardware links return to the journal before navigating. Section shortcuts follow
+the selected view; from the playtime ranking they open the shelf.

@@ -5,12 +5,12 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <meta http-equiv="Content-Security-Policy"
-    content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self' 'unsafe-inline';">
+    content="default-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; script-src 'self' 'unsafe-inline';">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="color-scheme" content="light dark">
-  <meta name="description" content="about karthik and for later, when i forget">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="about this notebook — for later, when i forget">
   <title>about — for later, when i forget</title>
-  <link href="{{.BasePath}}css/permanent.css?v=95" rel="stylesheet" type="text/css">
+  {{template "site-styles" .}}
   <link rel="icon" href="{{.BasePath}}favicon.png" type="image/png">
   <link rel="alternate" type="application/rss+xml" href="{{.BasePath}}rss.xml" title="for later, when i forget">
 </head>
@@ -22,15 +22,12 @@
 
     <main class="page-main prose-page about-page" id="main">
       <header class="section-header">
-        <p class="eyebrow">the person keeping this</p>
+        <p class="eyebrow">why i keep this</p>
         <h1>about</h1>
-        <p class="section-deck">a few notes about the person keeping this archive.</p>
+        <p class="section-deck">a few notes about why i keep this archive.</p>
       </header>
 
-      <p>Hi, I'm Karthik.</p>
-
-      <p>I live in Chennai, India, and work as a systems engineer. Most days involve servers, code, and trying to convince
-        computers to behave. Outside of work, I spend far too much time reading, taking photos of ordinary things, playing
+      <p>Most days involve code and trying to convince computers to behave. I spend far too much time reading, taking photos of ordinary things, playing
         games, and writing about the experiences before I forget them.</p>
 
       <p>This site exists because I realized I was forgetting too many ordinary days.</p>

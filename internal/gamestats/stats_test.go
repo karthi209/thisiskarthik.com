@@ -62,12 +62,12 @@ func TestFetchSteamLibraryIncludesPlayedAndUnplayed(t *testing.T) {
 }
 
 func TestMergePreservesUnmatchedAndFailedProviders(t *testing.T) {
-	old := Cache{"known": {Provider: "steam", Hours: Hours(4), LastPlayed: "2023-11-14T22:13:20Z"}, "missing": {Provider: "steam", Hours: Hours(7)}, "local": {Provider: "lutris", Hours: Hours(3)}, "historical": {Provider: "snapshot", Hours: Hours(8)}}
+	old := Cache{"known": {Provider: "steam", Hours: Hours(4), AdditionalHours: Hours(5), LastPlayed: "2023-11-14T22:13:20Z"}, "missing": {Provider: "steam", Hours: Hours(7)}, "local": {Provider: "lutris", Hours: Hours(3)}, "historical": {Provider: "snapshot", Hours: Hours(8)}}
 	records := []Record{{ID: "known", Title: "Same title", Tracking: &Tracking{Provider: "steam", AppID: 1}}, {ID: "missing", Title: "Same title", Tracking: &Tracking{Provider: "steam", AppID: 2}}, {ID: "local", Title: "Local", Tracking: &Tracking{Provider: "lutris", GameID: 1}}}
 	var output bytes.Buffer
 	opts := Options{Provider: "all", SteamKey: "key", SteamID: "123", LutrisDB: filepath.Join(t.TempDir(), "absent.db"), Client: clientFor(`{"response":{"games":[{"appid":1,"playtime_forever":1123},{"appid":999,"playtime_forever":99999}]}}`, 200)}
 	next, updated, _, failures := Sync(context.Background(), records, old, opts, &output)
-	if updated != 1 || failures != 1 || len(next) != 4 || *next["known"].Hours != 18.72 || next["known"].LastPlayed != old["known"].LastPlayed {
+	if updated != 1 || failures != 1 || len(next) != 4 || *next["known"].Hours != 18.72 || *next["known"].TotalHours() != 23.72 || next["known"].LastPlayed != old["known"].LastPlayed {
 		t.Fatalf("bad merge: %v %s", next, output.String())
 	}
 	if *old["known"].Hours != 4 || !reflect.DeepEqual(next["local"], old["local"]) || !reflect.DeepEqual(next["missing"], old["missing"]) {
@@ -149,7 +149,7 @@ func TestLutrisReadOnlyAndDiscovery(t *testing.T) {
 func TestCacheAtomicRoundTripAndHumanValidation(t *testing.T) {
 	dir := t.TempDir()
 	path := filepath.Join(dir, "stats.json")
-	cache := Cache{"game": {Provider: "steam", Hours: Hours(12.345)}}
+	cache := Cache{"game": {Provider: "steam", Hours: Hours(12.345), AdditionalHours: Hours(5)}}
 	if err := WriteAtomic(path, cache); err != nil {
 		t.Fatal(err)
 	}
@@ -166,6 +166,12 @@ func TestCacheAtomicRoundTripAndHumanValidation(t *testing.T) {
 	}
 	if _, err := Read(path); err == nil {
 		t.Fatal("negative stats accepted")
+	}
+	if err := os.WriteFile(path, []byte(`{"game":{"hours":1,"additional_hours":-1}}`), 0600); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := Read(path); err == nil {
+		t.Fatal("negative additional hours accepted")
 	}
 	human := filepath.Join(dir, "games.json")
 	for _, source := range []string{`{"games":[{"title":"Missing id"}]}`, `{"games":[{"id":"a","title":"A","tracking":{"provider":"bad"}}]}`, `{"games":[{"id":"a","title":"A","tracking":{"provider":"steam","app_id":1}},{"id":"b","title":"B","tracking":{"provider":"steam","app_id":1}}]}`} {

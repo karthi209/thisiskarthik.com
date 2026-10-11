@@ -1,8 +1,27 @@
 {
   "books": [
-    {"id":"the-last-wish","title":"The Last Wish","status":"read"},
-    {"id":"the-left-hand-of-darkness","title":"The Left Hand of Darkness","status":"reading"},
-    {"id":"sword-of-destiny","title":"Sword of Destiny","status":"reading"},
-    {"id":"the-blade-itself","title":"The Blade Itself","status":"reading"}
+    {"id":"the-left-hand-of-darkness","title":"The Left Hand of Darkness","author":"Ursula K. Le Guin","status":"reading","cover":"images/books/the-left-hand-of-darkness.webp"},
+    {"id":"sword-of-destiny","title":"Sword of Destiny","author":"Andrzej Sapkowski","status":"reading","cover":"images/books/sword-of-destiny.webp"},
+    {"id":"the-blade-itself","title":"The Blade Itself","author":"Joe Abercrombie","status":"reading","cover":"images/books/the-blade-itself.webp"},
+    {"id":"the-death-of-ivan-ilyich-and-other-stories","title":"The Death of Ivan Ilyich and Other Stories","author":"Leo Tolstoy","status":"reading","cover":"images/books/the-death-of-ivan-ilyich-and-other-stories.webp"},
+    {"id":"the-last-wish","title":"The Last Wish","author":"Andrzej Sapkowski","status":"read","cover":"images/books/the-last-wish.webp"},
+    {"id":"and-then-there-were-none","title":"And Then There Were None","author":"Agatha Christie","status":"read","cover":"images/books/and-then-there-were-none.webp"},
+    {"id":"code","title":"Code","author":"Charles Petzold","status":"read","cover":"images/books/code.webp"},
+    {"id":"hyperion","title":"Hyperion","author":"Dan Simmons","status":"planned","cover":"images/books/hyperion.webp"},
+    {"id":"flowers-for-algernon","title":"Flowers for Algernon","author":"Daniel Keyes","status":"planned","cover":"images/books/flowers-for-algernon.webp"},
+    {"id":"before-they-are-hanged","title":"Before They Are Hanged","author":"Joe Abercrombie","status":"planned","cover":"images/books/before-they-are-hanged.webp"},
+    {"id":"last-argument-of-kings","title":"Last Argument of Kings","author":"Joe Abercrombie","status":"planned","cover":"images/books/last-argument-of-kings.webp"},
+    {"id":"the-two-towers","title":"The Two Towers","author":"J. R. R. Tolkien","status":"planned","cover":"images/books/the-two-towers.webp"},
+    {"id":"the-fellowship-of-the-ring","title":"The Fellowship of the Ring","author":"J. R. R. Tolkien","status":"planned","cover":"images/books/the-fellowship-of-the-ring.webp"},
+    {"id":"the-return-of-the-king","title":"The Return of the King","author":"J. R. R. Tolkien","status":"planned","cover":"images/books/the-return-of-the-king.webp"},
+    {"id":"crime-and-punishment","title":"Crime and Punishment","author":"Fyodor Dostoevsky","status":"planned","cover":"images/books/crime-and-punishment.webp"},
+    {"id":"anna-karenina","title":"Anna Karenina","author":"Leo Tolstoy","status":"planned","cover":"images/books/anna-karenina.webp"},
+    {"id":"notes-from-underground-and-the-double","title":"Notes from Underground and The Double","author":"Fyodor Dostoevsky","status":"planned","cover":"images/books/notes-from-underground-and-the-double.webp"},
+    {"id":"the-anarchy","title":"The Anarchy","author":"William Dalrymple","status":"planned","cover":"images/books/the-anarchy.webp"},
+    {"id":"night-watch","title":"Night Watch","author":"Sergei Lukyanenko","status":"planned","cover":"images/books/night-watch.webp"},
+    {"id":"murder-on-the-orient-express","title":"Murder on the Orient Express","author":"Agatha Christie","status":"planned","cover":"images/books/murder-on-the-orient-express.webp"},
+    {"id":"the-murder-of-roger-ackroyd","title":"The Murder of Roger Ackroyd","author":"Agatha Christie","status":"planned","cover":"images/books/the-murder-of-roger-ackroyd.webp"},
+    {"id":"stalingrad","title":"Stalingrad","author":"Antony Beevor","status":"planned","cover":"images/books/stalingrad.webp"},
+    {"id":"the-discovery-of-india","title":"The Discovery of India","author":"Jawaharlal Nehru","status":"planned","cover":"images/books/the-discovery-of-india.webp"}
   ]
 }

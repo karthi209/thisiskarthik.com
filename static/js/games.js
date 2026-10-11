@@ -7,6 +7,12 @@ function selectGameView(selectedView) {
     candidate.classList.toggle('is-active', selected);
     candidate.setAttribute('aria-pressed', String(selected));
   }
+  for (const link of document.querySelectorAll('[data-game-section]')) {
+    const shelf = selectedView === 'shelf';
+    link.hash = link.dataset.gameSection === 'history'
+      ? (shelf ? 'collection-heading' : 'history-heading')
+      : (shelf ? 'shelf-backlog' : 'backlog-heading');
+  }
   for (const panel of viewPanels) {
     panel.hidden = panel.dataset.gamePanel !== selectedView;
   }
@@ -26,14 +32,44 @@ if (rediscoveryButton && rememberedGames.length === 0) {
   rediscoveryButton.hidden = true;
 }
 
+let lastRediscoveredGame;
 rediscoveryButton?.addEventListener('click', () => {
-  const game = rememberedGames[Math.floor(Math.random() * rememberedGames.length)];
+  const candidates = [...rememberedGames].filter(game => game !== lastRediscoveredGame);
+  const pool = candidates.length ? candidates : [...rememberedGames];
+  if (!pool.length) return;
+  const game = pool[Math.floor(Math.random() * pool.length)];
+  lastRediscoveredGame = game;
   const details = game.querySelector('details');
   selectGameView('years');
   details.open = true;
   details.querySelector('summary').focus({ preventScroll: true });
-  game.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  game.scrollIntoView({ behavior: reducedMotion ? 'instant' : 'smooth', block: 'center' });
 
   const when = game.dataset.gameDate ? ` · ${game.dataset.gameDate}` : '';
   rediscoveryMessage.textContent = `${game.dataset.gameTitle}${when}`;
 });
+
+// Historical machine links open the journal where their annotations live.
+for (const link of document.querySelectorAll('[data-game-section]')) {
+  link.addEventListener('click', () => {
+    if (!document.querySelector('[data-game-panel="playtime"]').hidden) {
+      selectGameView('shelf');
+    }
+  });
+}
+
+function revealGameTarget() {
+  let id;
+  try { id = decodeURIComponent(location.hash.slice(1)); } catch { return; }
+  const target = document.getElementById(id);
+  const panel = target?.closest('[data-game-panel]');
+  if (panel) selectGameView(panel.dataset.gamePanel);
+}
+
+revealGameTarget();
+window.addEventListener('hashchange', revealGameTarget);
+
+for (const link of document.querySelectorAll('[data-game-jump]')) {
+  link.addEventListener('click', () => selectGameView('years'));
+}

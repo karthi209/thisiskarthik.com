@@ -1,4 +1,4 @@
-.PHONY: build check test preview generate note clean serve server setup optimize-images optimize games-artwork deploy help
+.PHONY: build check test preview generate note clean serve server setup optimize-images optimize games-artwork books-artwork deploy help
 
 build: generate
 
@@ -42,6 +42,9 @@ optimize: optimize-images
 games-artwork:
 	@python3 scripts/fetch-game-artwork.py
 
+books-artwork:
+	@python3 scripts/fetch-book-covers.py
+
 deploy:
 	@echo "▓▓ DEPLOYING TO GITHUB PAGES..."
 	@./scripts/deploy.sh
@@ -59,6 +62,7 @@ help:
 	@echo "  make serve       - Dev server + hot reload (port 5174)"
 	@echo "  make games-sync  - Refresh mapped Steam/Lutris playtime"
 	@echo "  make games-import - Import the visible Steam library"
+	@echo "  make books-artwork - Fetch local Open Library book covers"
 	@echo "  make clean       - Remove public/ directory"
 	@echo "  make optimize    - Optimize images to WebP"
 	@echo "  make deploy      - Build + deploy to GitHub Pages"
@@ -66,7 +70,7 @@ help:
 
 .PHONY: games-sync games-import
 games-sync:
-	@set -a; if [ -f .env ]; then . ./.env; fi; set +a; go run ./cmd/games-sync --import-steam-library --stale-days 30
+	@set -a; if [ -f .env ]; then . ./.env; fi; set +a; go run ./cmd/games-sync --import-steam-library --stale-days 14
 
 games-import:
 	@$(MAKE) games-sync
