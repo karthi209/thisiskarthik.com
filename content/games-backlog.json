@@ -63,6 +63,7 @@
     "id": "batman-arkham-asylum-goty-edition",
     "imported": true,
     "platform": "PC",
+    "portrait": "images/games/batman-arkham-asylum-goty-edition-portrait.webp",
     "source": "Steam",
     "title": "Batman: Arkham Asylum GOTY Edition",
     "tracking": {
@@ -74,6 +75,7 @@
     "id": "batman-arkham-city-goty",
     "imported": true,
     "platform": "PC",
+    "portrait": "images/games/batman-arkham-city-goty-portrait.webp",
     "source": "Steam",
     "title": "Batman: Arkham City GOTY",
     "tracking": {
@@ -85,6 +87,7 @@
     "id": "batman-arkham-knight",
     "imported": true,
     "platform": "PC",
+    "portrait": "images/games/batman-arkham-knight-portrait.webp",
     "source": "Steam",
     "title": "Batman™: Arkham Knight",
     "tracking": {
@@ -105,21 +108,10 @@
     }
   },
   {
-    "id": "cyberpunk-2077",
-    "imported": true,
-    "platform": "PC",
-    "portrait": "images/games/cyberpunk-cover.jpg",
-    "source": "Steam",
-    "title": "Cyberpunk 2077",
-    "tracking": {
-      "app_id": 1091500,
-      "provider": "steam"
-    }
-  },
-  {
     "id": "dead-space",
     "imported": true,
     "platform": "PC",
+    "portrait": "images/games/dead-space-portrait.webp",
     "source": "Steam",
     "title": "Dead Space",
     "tracking": {
@@ -152,14 +144,26 @@
     }
   },
   {
-    "id": "grand-theft-auto-iv-the-complete-edition",
+    "id": "elden-ring",
     "imported": true,
     "platform": "PC",
-    "portrait": "images/games/grand-theft-auto-iv-the-complete-edition-portrait.webp",
-    "source": "Steam",
-    "title": "Grand Theft Auto IV: The Complete Edition",
+    "portrait": "images/games/elden-ring.jpg",
+    "source": "Lutris",
+    "title": "Elden Ring",
     "tracking": {
-      "app_id": 12210,
+      "game_id": 1,
+      "provider": "lutris"
+    }
+  },
+  {
+    "id": "hades",
+    "imported": true,
+    "platform": "PC",
+    "portrait": "images/games/hades-portrait.webp",
+    "source": "Steam",
+    "title": "Hades",
+    "tracking": {
+      "app_id": 1145360,
       "provider": "steam"
     }
   },
@@ -212,14 +216,14 @@
     }
   },
   {
-    "id": "kingdom-come-deliverance",
+    "id": "mass-effect-legendary-edition",
     "imported": true,
     "platform": "PC",
-    "portrait": "images/games/kingdom-come-deliverance-portrait.webp",
+    "portrait": "images/games/mass-effect-legendary-edition-portrait.webp",
     "source": "Steam",
-    "title": "Kingdom Come: Deliverance",
+    "title": "Mass Effect™ Legendary Edition",
     "tracking": {
-      "app_id": 379430,
+      "app_id": 1328670,
       "provider": "steam"
     }
   },
@@ -287,6 +291,7 @@
     "id": "outer-wilds",
     "imported": true,
     "platform": "PC",
+    "portrait": "images/games/outer-wilds-portrait.webp",
     "source": "Steam",
     "title": "Outer Wilds",
     "tracking": {
@@ -310,6 +315,7 @@
     "id": "resident-evil-2",
     "imported": true,
     "platform": "PC",
+    "portrait": "images/games/resident-evil-2-portrait.webp",
     "source": "Steam",
     "title": "Resident Evil 2",
     "tracking": {
@@ -321,6 +327,7 @@
     "id": "resident-evil-4",
     "imported": true,
     "platform": "PC",
+    "portrait": "images/games/resident-evil-4-portrait.webp",
     "source": "Steam",
     "title": "Resident Evil 4",
     "tracking": {
@@ -353,14 +360,38 @@
     }
   },
   {
-    "id": "soma",
+    "id": "shadow-of-the-tomb-raider",
     "imported": true,
     "platform": "PC",
-    "portrait": "images/games/soma.jpg",
+    "portrait": "images/games/shadow-of-the-tomb-raider-portrait.webp",
     "source": "Steam",
-    "title": "SOMA",
+    "title": "Shadow of the Tomb Raider",
     "tracking": {
-      "app_id": 282140,
+      "app_id": 750920,
+      "provider": "steam"
+    }
+  },
+  {
+    "id": "snowrunner",
+    "imported": true,
+    "platform": "PC",
+    "portrait": "images/games/snowrunner-portrait.webp",
+    "source": "Steam",
+    "title": "SnowRunner",
+    "tracking": {
+      "app_id": 1465360,
+      "provider": "steam"
+    }
+  },
+  {
+    "id": "stardew-valley",
+    "imported": true,
+    "platform": "PC",
+    "portrait": "images/games/stardew-valley-portrait.webp",
+    "source": "Steam",
+    "title": "Stardew Valley",
+    "tracking": {
+      "app_id": 413150,
       "provider": "steam"
     }
   },
@@ -377,9 +408,22 @@
     }
   },
   {
+    "id": "skyrim-special-edition",
+    "imported": true,
+    "platform": "PC",
+    "portrait": "images/games/skyrim-cover.jpg",
+    "source": "Steam",
+    "title": "The Elder Scrolls V: Skyrim Special Edition",
+    "tracking": {
+      "app_id": 489830,
+      "provider": "steam"
+    }
+  },
+  {
     "id": "the-outlast-trials",
     "imported": true,
     "platform": "PC",
+    "portrait": "images/games/the-outlast-trials-portrait.webp",
     "source": "Steam",
     "title": "The Outlast Trials",
     "tracking": {
@@ -412,6 +456,18 @@
     }
   },
   {
+    "id": "titanfall-2-1237970",
+    "imported": true,
+    "platform": "PC",
+    "portrait": "images/games/titanfall-2-1237970-portrait.webp",
+    "source": "Steam",
+    "title": "Titanfall® 2",
+    "tracking": {
+      "app_id": 1237970,
+      "provider": "steam"
+    }
+  },
+  {
     "id": "tom-clancy-s-rainbow-six-siege",
     "imported": true,
     "platform": "PC",
@@ -439,6 +495,7 @@
     "id": "vampyr",
     "imported": true,
     "platform": "PC",
+    "portrait": "images/games/vampyr-portrait.webp",
     "source": "Steam",
     "title": "Vampyr",
     "tracking": {

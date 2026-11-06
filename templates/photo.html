@@ -11,7 +11,7 @@
   {{template "site-styles" .}}
   <link rel="icon" href="{{.BasePath}}favicon.png" type="image/png">
 </head>
-<body class="photos-page collection-dark">
+<body class="photos-page">
   <a class="skip-link" href="#main">Skip to photograph</a>
   <div class="page-shell">
     {{template "site-header" .}}
@@ -19,7 +19,6 @@
       <article class="photo-page">
         <a class="back-link" href="{{.BasePath}}photos">← all photos</a>
         <header class="section-header photo-header">
-          <p class="eyebrow">photograph</p>
           <h1>{{.Photo.Title}}</h1>
           <time class="photo-date" datetime="{{.Photo.DateISO}}">{{.Photo.DateLabel}}</time>
         </header>

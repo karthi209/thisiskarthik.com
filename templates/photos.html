@@ -11,15 +11,13 @@
   {{template "site-styles" .}}
   <link rel="icon" href="{{.BasePath}}favicon.png" type="image/png">
 </head>
-<body class="photos-page collection-dark">
+<body class="photos-page">
   <a class="skip-link" href="#main">Skip to photos</a>
   <div class="page-shell">
     {{template "site-header" .}}
     <main class="page-main archive-page" id="main">
       <header class="section-header archive-intro--timeline">
-        {{template "notebook-doodle" .}}
-        <p class="eyebrow">the memories</p>
-        <h1>photos <em> / darkroom</em></h1>
+        <h1>photos</h1>
         <p class="section-deck">photographs kept for later. click a print to see it in full.</p>
       </header>
       {{if .Years}}
