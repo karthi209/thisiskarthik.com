@@ -52,13 +52,13 @@ self-explanatory collection in `content/books.json`.
 
 ## design
 
-the site uses a charcoal background, warm cream text, thin border boxes, and slightly offset frames. IBM Plex Sans is the reading face; Plex Mono carries navigation, dates, and metadata. Fraunces headings and small Caveat annotations add character without competing with the writing. Fonts are local, with their licenses in `static/fonts/`.
+the site is a dark, compact notebook with a playful color assigned to each room. IBM Plex Sans carries the identity, headings, and reading; Plex Mono is reserved for dates and archival metadata. Navigation behaves like bright tabs, collection introductions are bold color blocks, and the real book and game covers remain the focus. Fonts are local, with their licenses in `static/fonts/`.
 
 `static/css/site.css` is the single stylesheet, shared through `site-styles` in `templates/partials.html`. Timeline notes, essays, books, games, photos, and prose pages use the same design. Games opens on the cover shelf; the journal and playtime views remain available. Content keeps its original capitalization.
 
 ## responsive behavior
 
-the layout uses one compact reading column. On mobile the date rail narrows, navigation wraps, shelves and photos use two columns, and prose keeps room to breathe. Keyboard focus and reduced-motion preferences are supported.
+every page shares the same outer frame and navigation rhythm. Reading-heavy pages keep a narrower inner column inside it; collections and photo grids can use the full frame. On mobile every section uses the same gutter, the date rail narrows, navigation scrolls, and catalogue shelves settle into three columns (two on the narrowest screens). Expanded collection entries span the shelf at every size. Keyboard focus and reduced-motion preferences are supported.
 
 `make check` validates generated pages, local fonts, navigation, assets, rss, and removal of obsolete CSS and legacy routes.
 

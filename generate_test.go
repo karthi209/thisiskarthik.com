@@ -215,7 +215,7 @@ func TestGamesArchive(t *testing.T) {
 		t.Fatal(err)
 	}
 	html := out.String()
-	for _, want := range []string{"Currently playing", "Earlier", "Most played", "by playtime", "find something I forgot", "data-memory-game", "game-status-stamp", "game-leader", "game-personal-label", "strange and lovely", "where I left off", "Return to the red room.", `src="/test/images/memory.webp"`, `alt="A red room"`, "Now &lt;game&gt;", "Playtime", "12.4h", `aria-label="favourite"`} {
+	for _, want := range []string{"playing now", "Earlier", "most played", "by year", "by playtime", `data-game-panel="years"`, "game-chronology-grid", "game-card", "game-personal-label", "strange and lovely", "where I left off", "Return to the red room.", `src="/test/images/memory.webp"`, `alt="A red room"`, "Now &lt;game&gt;", "Playtime", "12.4h", `aria-label="favourite"`} {
 		if !strings.Contains(html, want) {
 			t.Errorf("missing %q", want)
 		}
@@ -413,7 +413,7 @@ func TestGamesRememberedEras(t *testing.T) {
 	if err := templates.ExecuteTemplate(&out, "games.html", data); err != nil {
 		t.Fatal(err)
 	}
-	for _, want := range []string{"hundreds of hours, probably", "Driving around.", "game-era-photo", "unidentified", "data-memory-game", "early 2000s"} {
+	for _, want := range []string{"hundreds of hours, probably", "Driving around.", "unidentified", "early 2000s"} {
 		if !strings.Contains(out.String(), want) {
 			t.Errorf("missing %s", want)
 		}
@@ -436,7 +436,7 @@ func TestCollectionPresentations(t *testing.T) {
 	if err := templates.ExecuteTemplate(&out, "books.html", books); err != nil {
 		t.Fatal(err)
 	}
-	for _, want := range []string{"collection-dark", "collection-shelf", "shelf-entry", `alt="Cover of The Left Hand of Darkness"`} {
+	for _, want := range []string{`class="games-page books-page collection-page collection-page--books"`, "collection-shelf", "shelf-entry", `alt="Cover of The Left Hand of Darkness"`} {
 		if !strings.Contains(out.String(), want) {
 			t.Errorf("books missing %q", want)
 		}
@@ -450,15 +450,13 @@ func TestCollectionPresentations(t *testing.T) {
 		t.Fatal(err)
 	}
 	html := out.String()
-	for _, want := range []string{`data-game-view="shelf"`, `data-game-panel="shelf">`, `data-game-panel="years" hidden`, `data-game-view="shelf" aria-pressed="true"`, `class="games-page collection-dark"`, `id="shelf-road-rash"`, "title lost to history"} {
+	for _, want := range []string{`data-game-view="years" aria-pressed="true"`, `data-game-view="playtime"`, `data-game-panel="years">`, `data-game-panel="playtime" hidden`, `class="games-page collection-page collection-page--games"`, `class="collection-shelf game-chronology-grid"`, `id="game-road-rash"`, "year by year"} {
 		if !strings.Contains(html, want) {
 			t.Errorf("games missing %q", want)
 		}
 	}
-	for _, g := range games.Playing {
-		if strings.Contains(html, `id="shelf-`+g.ID+`"`) {
-			t.Errorf("currently playing duplicated on shelf: %s", g.ID)
-		}
+	if strings.Contains(html, `data-game-view="shelf"`) || strings.Contains(html, `data-random-game`) {
+		t.Error("removed game controls still rendered")
 	}
 	out.Reset()
 	fixture := PhotosPageData{PageType: "photos", BasePath: "/preview/", Years: groupPhotos([]PhotoEntry{{Title: "A quiet object", Slug: "quiet-object", Year: 2026, MonthNumber: 10, MonthLong: "October", Day: "04", DateISO: "2026-10-04", Image: "/preview/images/test.webp", ImageAlt: "An object on a plain surface"}})}

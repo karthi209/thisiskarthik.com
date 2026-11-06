@@ -8,6 +8,9 @@ Artwork belongs to the respective game publishers. No runtime hotlinks.
 - Assassin's Creed Origins: https://cdn.akamai.steamstatic.com/steam/apps/582160/library_600x900.jpg
 - Assassin's Creed Unity: https://cdn.akamai.steamstatic.com/steam/apps/289650/library_600x900.jpg
 - Assetto Corsa: https://cdn.akamai.steamstatic.com/steam/apps/244210/library_600x900.jpg
+- Batman: Arkham Asylum GOTY Edition: https://cdn.akamai.steamstatic.com/steam/apps/35140/library_600x900.jpg
+- Batman: Arkham City GOTY: https://cdn.akamai.steamstatic.com/steam/apps/200260/library_600x900.jpg
+- Batman™: Arkham Knight: https://cdn.akamai.steamstatic.com/steam/apps/208650/library_600x900.jpg
 - Battlefield 2: https://images.launchbox-app.com/d0a92a2c-abd2-4ea8-abfe-941d62fee94e.jpg
 - Battlefield 3: https://cdn.akamai.steamstatic.com/steam/apps/1238820/library_600x900.jpg
 - Call of Duty 4: Modern Warfare: https://cdn.akamai.steamstatic.com/steam/apps/7940/library_600x900.jpg
@@ -20,6 +23,8 @@ Artwork belongs to the respective game publishers. No runtime hotlinks.
 - Crysis 2: https://cdn.akamai.steamstatic.com/steam/apps/108800/library_600x900.jpg
 - Crysis 3: https://cdn.akamai.steamstatic.com/steam/apps/1282690/library_600x900.jpg
 - Cyberpunk 2077: existing local Steam promotional art
+- Dead Space: https://cdn.akamai.steamstatic.com/steam/apps/1693980/library_600x900.jpg
+- Dead Space 3: https://cdn.akamai.steamstatic.com/steam/apps/1238060/library_600x900_2x.jpg
 - Detroit: Become Human: existing local Steam promotional art
 - Dirt Track Racing 2: https://images.launchbox-app.com/e34886e0-8252-449f-933c-c662930bca00.jpg
 - Disco Elysium: https://cdn.akamai.steamstatic.com/steam/apps/632470/library_600x900.jpg
@@ -46,6 +51,7 @@ Artwork belongs to the respective game publishers. No runtime hotlinks.
 - Mass Effect: https://cdn.akamai.steamstatic.com/steam/apps/17460/library_600x900.jpg
 - Mass Effect 2: https://cdn.akamai.steamstatic.com/steam/apps/24980/library_600x900.jpg
 - Mass Effect 3: https://cdn.akamai.steamstatic.com/steam/apps/1238020/library_600x900.jpg
+- Mass Effect™ Legendary Edition: https://cdn.akamai.steamstatic.com/steam/apps/1328670/library_600x900.jpg
 - Max Payne: https://cdn.akamai.steamstatic.com/steam/apps/12140/library_600x900.jpg
 - Metro 2033 Redux: https://cdn.akamai.steamstatic.com/steam/apps/286690/library_600x900.jpg
 - Metro Exodus: https://cdn.akamai.steamstatic.com/steam/apps/412020/library_600x900.jpg
@@ -53,14 +59,21 @@ Artwork belongs to the respective game publishers. No runtime hotlinks.
 - Metro: Last Light Redux: https://cdn.akamai.steamstatic.com/steam/apps/287390/library_600x900.jpg
 - Midnight Racing: https://media.senscritique.com/media/000020073612/0/midnight_racing.jpg
 - No Man's Sky: https://cdn.akamai.steamstatic.com/steam/apps/275850/library_600x900.jpg
+- Outer Wilds: https://cdn.akamai.steamstatic.com/steam/apps/753640/library_600x900.jpg
 - Path of Exile: https://cdn.akamai.steamstatic.com/steam/apps/238960/library_600x900.jpg
 - Red Dead Redemption 2: https://cdn.akamai.steamstatic.com/steam/apps/1174180/library_600x900.jpg
+- Resident Evil 2: https://cdn.akamai.steamstatic.com/steam/apps/883710/library_600x900.jpg
+- Resident Evil 4: https://cdn.akamai.steamstatic.com/steam/apps/2050650/library_600x900.jpg
 - Resident Evil 7 Biohazard: https://cdn.akamai.steamstatic.com/steam/apps/418370/library_600x900.jpg
 - Rise of the Tomb Raider: https://cdn.akamai.steamstatic.com/steam/apps/391220/library_600x900.jpg
 - SOMA: existing local Steam promotional art
 - Shadow of the Tomb Raider: https://cdn.akamai.steamstatic.com/steam/apps/750920/library_600x900.jpg
+- SnowRunner: https://cdn.akamai.steamstatic.com/steam/apps/1465360/library_600x900.jpg
+- Stardew Valley: https://cdn.akamai.steamstatic.com/steam/apps/413150/library_600x900.jpg
 - Subnautica: https://cdn.akamai.steamstatic.com/steam/apps/264710/library_600x900.jpg
+- The Blood of Dawnwalker: https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3751260/9a83d0fa47c662298e15a989ff142fb5c0fda5c7/header_alt_assets_0.jpg
 - The Elder Scrolls V: Skyrim Special Edition: existing local Steam promotional art
+- The Outlast Trials: https://cdn.akamai.steamstatic.com/steam/apps/1304930/library_600x900.jpg
 - The Witcher 2: Assassins of Kings Enhanced Edition: https://cdn.akamai.steamstatic.com/steam/apps/20920/library_600x900.jpg
 - The Witcher 3: Wild Hunt: https://cdn.akamai.steamstatic.com/steam/apps/292030/library_600x900.jpg
 - The Witcher: Enhanced Edition: https://cdn.akamai.steamstatic.com/steam/apps/20900/library_600x900.jpg
@@ -68,4 +81,5 @@ Artwork belongs to the respective game publishers. No runtime hotlinks.
 - Tom Clancy's Rainbow Six Siege: https://cdn.akamai.steamstatic.com/steam/apps/359550/library_600x900.jpg
 - Tomb Raider: https://cdn.akamai.steamstatic.com/steam/apps/203160/library_600x900.jpg
 - Uncharted 4: A Thief's End: https://cdn.akamai.steamstatic.com/steam/apps/1659420/library_600x900.jpg
+- Vampyr: https://cdn.akamai.steamstatic.com/steam/apps/427290/library_600x900.jpg
 - Warframe: https://cdn.akamai.steamstatic.com/steam/apps/230410/library_600x900.jpg

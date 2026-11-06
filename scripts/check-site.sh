@@ -35,7 +35,7 @@ done
 
 grep -q "@media (prefers-reduced-motion: reduce)" public/css/site.css
 grep -q "class=\"timeline\"" public/index.html
-grep -q "daily journal" public/index.html
+grep -q '<h1>timeline</h1>' public/index.html
 grep -q "life, more or less in the order it happened" public/index.html
 grep -q 'class="timeline-origin">the beginning' public/index.html
 grep -q "for later, when i forget" public/index.html
@@ -64,8 +64,8 @@ test -s public/js/games.js
 grep -q 'class="game-year"' public/games/index.html
 grep -q 'id="games-year-2026"' public/games/index.html
 test -s public/images/games/elden-ring.jpg
-test -s public/images/games/ghost-of-tsushima.jpg
-test -s public/images/games/soma.jpg
+test -s public/images/games/ghost-of-tsushima.webp
+test -s public/images/games/soma.webp
 grep -q "no photographs here yet" public/photos/index.html
 grep -q "photo-figure img" public/css/site.css
 grep -q "height: auto" public/css/site.css
@@ -77,7 +77,6 @@ grep -q "timeline-weekday\">thu" public/index.html
 grep -q "memory-image" public/css/site.css
 grep -q "image_caption" content/journal/README.md
 grep -q "aspect-ratio: 4 / 3" public/css/site.css
-grep -q 'content: "no. " attr(data-archive-number)' public/css/site.css
 grep -q "@media (max-width: 620px)" public/css/site.css
 grep -q "grid-template-columns: 54px minmax(0, 1fr)" public/css/site.css
 
@@ -161,7 +160,7 @@ for font in ibm-plex-sans-regular.woff2 ibm-plex-sans-semibold.woff2 ibm-plex-mo
   test -s "public/fonts/$font"
 done
 while IFS= read -r page; do
-  grep -q 'css/site.css?v=1' "$page"
+  grep -q 'css/site.css?v=16' "$page"
   grep -q 'name="color-scheme" content="dark"' "$page"
 done < <(find public -name index.html -type f -print)
 if rg -q 'permanent.css|flow.css|fonts.googleapis.com|site-wallpaper|spine-squiggle' public templates --glob '*.html' --glob '*.css'; then

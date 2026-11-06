@@ -44,9 +44,11 @@ REVIEWED_APP_IDS = {
     "far-cry-4": 298110,
     "mass-effect-3": 1238020,
     "battlefield-3": 1238820,
+    "dead-space-3": 1238060,
     "firewatch": 383870,
     "elden-ring": 1245620,
     "ghost-of-tsushima": 2215430,
+    "the-blood-of-dawnwalker": 3751260,
 }
 
 EXISTING_ART = {
@@ -71,6 +73,7 @@ ARCHIVE_ART_URLS = {
     "battlefield-2": "https://images.launchbox-app.com/d0a92a2c-abd2-4ea8-abfe-941d62fee94e.jpg",
     "iron-nest-heavy-turret-simulator": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2950790/e6c9e990560078611472e5dab98e79a405ed33f4/header.jpg",
     "ea-sports-fc-26": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3405690/2d96aa1b06e453cd62dae9029d412f19e61932c3/header.jpg",
+    "the-blood-of-dawnwalker": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3751260/9a83d0fa47c662298e15a989ff142fb5c0fda5c7/header_alt_assets_0.jpg",
 }
 
 
@@ -162,7 +165,7 @@ def main() -> int:
                 if not used:
                     unresolved.append(game["title"])
                     continue
-                if used.endswith("/header.jpg"):
+                if "/header" in used:
                     backdrop = scratch / f"{game['id']}-backdrop.png"
                     subprocess.run(
                         ["magick", str(original), "-auto-orient", "-resize", "300x450^", "-gravity", "center", "-extent", "300x450", "-blur", "0x18", str(backdrop)],
