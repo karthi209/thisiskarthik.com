@@ -18,24 +18,28 @@
     <div class="games-layout">
       <main class="games-paper archive-page" id="main">
         <header class="section-header games-intro collection-intro">
-          <p class="collection-kicker">the reading pile</p>
           <h1>books</h1>
-          <p class="section-deck">Books I've finished, books currently keeping me company, and what comes next.</p>
         </header>
+        {{template "book-stats" .Stats}}
+        <nav class="book-shelf-nav" aria-label="Reading shelves">
+          <a href="#reading-heading">Currently reading</a>
+          <a href="#read-heading">Read</a>
+          <a href="#planned-heading">Want to read</a>
+        </nav>
         <section class="games-section reading-slip collection-section collection-section--mint" aria-labelledby="reading-heading">
-          <h2 id="reading-heading"><span>Currently reading</span>{{if .Reading}}<small>{{len .Reading}} on the nightstand</small>{{end}}</h2>
+          <h2 id="reading-heading"><span>Currently reading</span></h2>
           {{if .Reading}}{{template "book-rows" .Reading}}{{else}}<p class="game-meta">Nothing recorded here just now.</p>{{end}}
         </section>
         <section class="games-section books-read collection-section collection-section--rose" aria-labelledby="read-heading">
-          <h2 id="read-heading"><span>Read</span>{{if .Read}}<small>{{len .Read}} finished</small>{{end}}</h2>
+          <h2 id="read-heading"><span>Read</span></h2>
           {{if .Read}}{{template "book-rows" .Read}}{{else}}<p class="game-meta">Nothing recorded here yet.</p>{{end}}
         </section>
         <section class="games-section books-planned collection-section collection-section--ochre" aria-labelledby="planned-heading">
-          <h2 id="planned-heading"><span>Planning to read</span>{{if .Planned}}<small>{{len .Planned}} waiting</small>{{end}}</h2>
+          <h2 id="planned-heading"><span>Want to read</span></h2>
           {{if .Planned}}{{template "book-rows" .Planned}}{{else}}<p class="game-meta">Nothing planned just now.</p>{{end}}
         </section>
         {{template "site-footer" .}}
-      <script src="{{.BasePath}}js/collections.js"></script>
+      <script src="{{.BasePath}}js/collections.js?v=4"></script>
       </main>
     </div>
   </div>
@@ -52,10 +56,42 @@
         <span class="shelf-title">{{.Title}}</span><span class="book-author">{{.Author}}</span>
       </summary>
       <div class="shelf-notes">
-        <dl><div><dt>Author</dt><dd>{{.Author}}</dd></div><div><dt>Status</dt><dd>{{.Status}}</dd></div></dl>
+        <dl>{{template "collection-rating" .}}<div><dt>Author</dt><dd>{{.Author}}</dd></div><div><dt>Status</dt><dd class="collection-status">{{if eq .Status "planned"}}Planning to read{{else if eq .Status "reading"}}Currently reading{{else}}Finished reading{{end}}</dd></div>{{if .Started}}<div><dt>Started</dt><dd>{{.StartedLabel}}</dd></div>{{end}}{{if .Finished}}<div><dt>Finished</dt><dd>{{.FinishedLabel}}</dd></div>{{end}}{{if .Pages}}<div><dt>Pages</dt><dd>{{.Pages}}</dd></div>{{end}}</dl>
         {{if .Notes}}<p>{{.Notes}}</p>{{else}}<p class="shelf-quiet-note">No notes written here yet.</p>{{end}}
+        <p class="collection-more-info"><a href="https://www.goodreads.com/search?q={{.Title | urlquery}}+{{.Author | urlquery}}" target="_blank" rel="noopener noreferrer">Find on Goodreads <span aria-hidden="true">↗</span><span class="collection-link-context"> (opens in a new tab)</span></a></p>
       </div>
     </details>
   </li>{{end}}
 </ul>
+{{end}}
+
+{{define "book-stats"}}
+<section class="collection-stats" aria-labelledby="book-stats-heading">
+  <h2 id="book-stats-heading">My books</h2>
+  <dl class="collection-stat-totals">
+    <div><dt>Read</dt><dd>{{.Read}}</dd></div>
+    <div><dt>Reading</dt><dd>{{.Reading}}</dd></div>
+    <div><dt>Want to read</dt><dd>{{.Planned}}</dd></div>
+    <div><dt>Authors</dt><dd>{{.Authors}}</dd></div>
+    <div><dt>Rated</dt><dd>{{.Rated}}</dd></div>
+    <div><dt>Average rating</dt><dd>{{.AverageLabel}}</dd></div>
+    {{if .BooksWithPages}}<div><dt>Pages recorded</dt><dd>{{.PagesRead}}</dd></div>{{end}}
+  </dl>
+  <div class="collection-stat-charts">
+    <section class="collection-stat-chart book-author-chart" aria-labelledby="book-authors-heading">
+      <h3 id="book-authors-heading">Authors on my shelves</h3>
+      {{if .AuthorCounts}}<ol class="collection-bar-chart">
+        {{range .AuthorCounts}}<li><span>{{.Label}}</span><span class="collection-chart-track" aria-hidden="true"><span class="collection-chart-bar" style="width: {{.Percent}}%"></span></span><strong aria-label="{{.Count}} books">{{.Count}}</strong></li>{{end}}
+      </ol>{{else}}<p class="collection-chart-empty">No authors recorded yet.</p>{{end}}
+    </section>
+    <section class="collection-stat-chart" aria-labelledby="book-ratings-heading">
+      <h3 id="book-ratings-heading">My ratings</h3>
+      {{template "ratings-distribution" .}}
+    </section>
+    {{if .Years}}<section class="collection-stat-chart" aria-labelledby="book-years-heading">
+      <h3 id="book-years-heading">Read by year</h3>
+      <ol class="collection-bar-chart">{{range .Years}}<li><span>{{.Label}}</span><span class="collection-chart-track" aria-hidden="true"><span class="collection-chart-bar" style="width: {{.Percent}}%"></span></span><strong aria-label="{{.Count}} books">{{.Count}}</strong></li>{{end}}</ol>
+    </section>{{end}}
+  </div>
+</section>
 {{end}}

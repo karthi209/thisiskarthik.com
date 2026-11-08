@@ -47,8 +47,8 @@ draft: false
 longer pieces go in `content/posts/`. they appear only in the essays section, not on the homepage timeline.
 
 the game archive and photographs have their own small formats documented in
-`content/GAMES.md` and `content/photos/README.md`. The reading log is the small,
-self-explanatory collection in `content/books.json`.
+`content/GAMES.md` and `content/photos/README.md`. The reading log lives in `content/books.json`; optional reading dates, page counts,
+ratings, and statistics are documented in `content/BOOKS.md`.
 
 ## design
 

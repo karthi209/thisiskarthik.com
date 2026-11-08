@@ -10,7 +10,7 @@ The routine is small:
 Run `make games-artwork` when new provider games are imported. It downloads reviewed
 Steam portrait art, resizes it to a small local WebP, records the local `portrait`
 path, and updates `content/images/games/SOURCES.md`. Ambiguous or unavailable titles
-are reported rather than guessed. Shelf covers are lazy-loaded; journal artwork appears when a game opens.
+are reported rather than guessed. Shelf covers are lazy-loaded; explicitly saved artifacts appear in the detail card when a game opens.
 
 Run `make games-sync` to reconcile the entire visible Steam library and local Lutris
 database. Completed statuses and entered years remain authoritative. Steam is
@@ -69,7 +69,7 @@ break the join. Valid statuses: `playing`, `completed`, `paused`, `dropped`, `pl
 Playing or History. Completing a game moves it into History; no duplication.
 
 Optional personal fields: `platform`, `source`, `started`, `finished`, `played`,
-`label` (a personal phrase instead of a score), `resume_note` (where to continue),
+`label` (a personal phrase), `resume_note` (where to continue),
 `notes` (a lasting memory), `favorite` (boolean), `artifact` and `artifact_alt`,
 `cover` (landscape), `portrait` (portrait), and `tracking`. Images use local
 `images/games/...` paths backed by files in `content/images/games/`. An artifact,
@@ -172,6 +172,22 @@ Optional flags: `--games`, `--stats`, `--provider all|steam|lutris`, `--lutris-d
 `--list-lutris`, `--dry-run`. Output cannot alias the personal archive.
 Run only one sync at a time; no background scheduler or daemon is installed.
 
+## Release dates and personal dates
+
+`original_release` is catalogue information, separate from `started`, `finished`,
+`played`, and `approxYear`. It never changes archive ordering. Use `YYYY`,
+`YYYY-MM`, or `YYYY-MM-DD` according to the precision supported by the source.
+`original_release_source` stores the HTTPS reference internally.
+`original_release_note` explains edition differences or limited precision internally.
+Cards display only the release year, without source links or explanatory notes.
+
+Use the original game's first standard/full release across platforms, rather than
+its later PC port or GOTY/remastered reissue. Treat distinct remakes, VR adaptations,
+and multi-game collections as their own releases and explain that in the note.
+For games with early access, the date is the full release; note early access
+separately. Leave an uncertain release unset instead of guessing the game version.
+An undated personal entry remains undated even when its release date is known.
+
 ## The remembered years
 
 Games can also carry optional `memory`, `approxYear`, `machine`, `source`, and
@@ -196,12 +212,25 @@ Do not substitute stock or generated imagery that implies it depicts the actual
 computer. Optional `photo`, `photoAlt`, and `photoCaption` support a small photograph
 only after reviewing that specific image under the site privacy guidance.
 
-## Journal and shelf views
+## Shelf and detail cards
 
-The game collection opens as a cover shelf. The journal is an alternate view of
-the same historical and planned records, including borrowed and unidentified games. It uses existing
-local cover art when available and title labels otherwise; it does not imply
-ownership. Currently playing stays a measured, cover-free list in both views.
-Click a shelf cover or label to expand the recorded metadata and memories.
-Hardware links return to the journal before navigating. Section shortcuts follow
-the selected view; from the playtime ranking they open the shelf.
+Games open as a cover shelf, with a separate playtime ranking. Clicking an entry
+opens a shared detail dialog with its cover, metadata, rating, and personal notes.
+Escape, the close button, or a backdrop tap dismisses it and restores focus.
+Hash links reveal the appropriate view and open the matching entry. Without
+JavaScript or dialog support, native disclosures still expose the same details.
+
+`rating` accepts 0 to 5 in half-star steps; omit it for an unrated entry.
+Only an explicit `artifact` adds another image. Cover art is never duplicated as
+an artifact. Collection behavior lives in `static/js/collections.js`.
+
+## Statistics
+
+The overview is generated from unique game records in the personal archive and
+backlog. Played includes completed, played, paused, dropped, and unidentified memories;
+Completed is a subset of Played. Playing and Backlog are separate counts.
+Recorded hours sum available measured totals, excluding unknown or remembered
+playtimes. The year chart uses the archive's personal date groups, preserving
+approximate eras. The rating histogram counts assigned ratings, including zero,
+in half-star bins. Empty ratings remain empty. No chart library or external
+statistics service is loaded.

@@ -83,3 +83,5 @@ Artwork belongs to the respective game publishers. No runtime hotlinks.
 - Uncharted 4: A Thief's End: https://cdn.akamai.steamstatic.com/steam/apps/1659420/library_600x900.jpg
 - Vampyr: https://cdn.akamai.steamstatic.com/steam/apps/427290/library_600x900.jpg
 - Warframe: https://cdn.akamai.steamstatic.com/steam/apps/230410/library_600x900.jpg
+
+- Road Rash (Windows 95 front cover): https://i.pinimg.com/originals/95/3d/c1/953dc17cc55f5bba393c21ecf428dca3.jpg — reviewed cover artwork, normalized and stripped for the local WebP.

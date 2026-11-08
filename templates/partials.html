@@ -30,5 +30,15 @@
 {{end}}
 
 {{define "site-styles"}}
-<link href="{{.BasePath}}css/site.css?v=16" rel="stylesheet" type="text/css">
+<link href="{{.BasePath}}css/site.css?v=26" rel="stylesheet" type="text/css">
+{{end}}
+
+{{define "collection-rating"}}
+<div><dt>My rating</dt><dd>{{if .Rating}}<span class="collection-rating" role="img" aria-label="{{.Rating}} out of 5 stars"><span class="collection-rating-stars" aria-hidden="true">{{range .RatingStars}}<span class="rating-star rating-star--{{.}}">★</span>{{end}}</span><span class="collection-rating-value" aria-hidden="true">{{.Rating}} / 5</span></span>{{else}}<span class="shelf-quiet-note">Not rated</span>{{end}}</dd></div>
+{{end}}
+
+{{define "ratings-distribution"}}
+{{if .Rated}}<ol class="collection-rating-chart">
+  {{range .Ratings}}<li aria-label="{{.Label}} stars: {{.Count}} ratings" title="{{.Label}} stars: {{.Count}} ratings"><span class="collection-rating-column" aria-hidden="true">{{if .Count}}<strong>{{.Count}}</strong>{{end}}<span class="collection-chart-bar" style="height: {{.Percent}}%"></span></span><span aria-hidden="true">{{.Label}}</span></li>{{end}}
+</ol>{{else}}<div class="collection-rating-empty"><span aria-hidden="true">☆☆☆☆☆</span><p>No ratings yet.</p><p>Your half-star ratings will appear here.</p></div>{{end}}
 {{end}}

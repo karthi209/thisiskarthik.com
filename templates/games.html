@@ -18,24 +18,24 @@
       <div class="games-layout">
         <main class="games-paper archive-page" id="main">
       <header class="section-header games-intro collection-intro">
-        <p class="collection-kicker">the save-file museum</p>
         <h1>games</h1>
-        <p class="section-deck">played, finished, and remembered.</p>
       </header>
+      {{template "game-stats" .Stats}}
       <nav class="game-view-switch" aria-label="Arrange games">
         <button type="button" class="is-active" data-game-view="years" aria-pressed="true">by year</button>
         <button type="button" data-game-view="playtime" aria-pressed="false">by playtime</button>
+        <button type="button" data-game-view="backlog" aria-pressed="false">backlog</button>
       </nav>
       <div data-game-panel="years">
         {{if .Playing}}<section class="games-section games-playing collection-section collection-section--mint" aria-labelledby="playing-heading">
-          <h2 id="playing-heading"><span>playing now</span><small>current save</small></h2>
+          <h2 id="playing-heading"><span>playing now</span></h2>
           {{template "game-cards" .Playing}}
         </section>{{end}}
       <section class="games-section games-history collection-section collection-section--blue" aria-labelledby="history-heading">
-        <h2 id="history-heading"><span>year by year</span><small>the long shelf</small></h2>
+        <h2 id="history-heading"><span>year by year</span></h2>
         {{range .Years}}
         <section class="game-year{{if lt .SortYear 2018}} game-year--remembered{{end}}{{if lt .SortYear 2008}} game-year--childhood{{end}}" aria-labelledby="games-year-{{.ID}}">
-          <h3 class="game-year-title" id="games-year-{{.ID}}"><span>{{.Year}}</span>{{if .Summary}}<small>{{.Summary}}</small>{{end}}</h3>
+          <h3 class="game-year-title" id="games-year-{{.ID}}"><span>{{.Year}}</span></h3>
           {{if .Games}}{{template "game-cards" .Games}}{{end}}
         </section>
         {{end}}
@@ -49,14 +49,19 @@
       </div>
       <div data-game-panel="playtime" hidden>
         <section class="games-section games-playtime collection-section collection-section--rose" aria-labelledby="playtime-heading">
-          <h2 id="playtime-heading"><span>most played</span><small>hours that survived</small></h2>
+          <h2 id="playtime-heading"><span>most played</span></h2>
           <p class="game-meta">Recorded playtime, longest first.</p>
           {{if .Playtime}}{{template "playtime-rows" .Playtime}}{{else}}<p class="game-meta">No playtime recorded yet.</p>{{end}}
         </section>
       </div>
+      <div data-game-panel="backlog" hidden>
+        <section class="games-section collection-section collection-section--ochre" aria-labelledby="backlog-heading">
+          <h2 id="backlog-heading"><span>backlog</span></h2>
+          {{if .Backlog}}{{template "game-cards" .Backlog}}{{else}}<p class="game-meta">Nothing waiting just now.</p>{{end}}
+        </section>
+      </div>
       {{template "site-footer" .}}
-      <script src="{{.BasePath}}js/games.js"></script>
-      <script src="{{.BasePath}}js/collections.js"></script>
+      <script src="{{.BasePath}}js/collections.js?v=4"></script>
         </main>
       </div>
     </div>
@@ -97,10 +102,13 @@
     <div class="game-entry-writing">
       {{if .Label}}<p class="game-personal-label">{{.Label}}</p>{{end}}
       <dl>
+        {{template "collection-rating" .}}
+        <div><dt>Status</dt><dd class="collection-status">{{if eq .Status "backlog"}}Backlogged{{else if eq .Status "playing"}}Currently playing{{else if eq .Status "completed"}}Completed{{else if eq .Status "paused"}}Paused{{else if eq .Status "dropped"}}Dropped{{else if eq .Status "unidentified"}}Unidentified{{else}}Played{{end}}</dd></div>
         {{if .Platform}}<div><dt>Platform</dt><dd>{{.Platform}}</dd></div>{{end}}
-        {{if and .Date (not .ApproxYear)}}<div><dt>Date</dt><dd><time datetime="{{.Date}}">{{.DateLabel}}</time></dd></div>{{end}}
+        <div><dt>Released</dt><dd>{{if .OriginalRelease}}<time datetime="{{.OriginalReleaseLabel}}">{{.OriginalReleaseLabel}}</time>{{else}}<span class="shelf-quiet-note">Unknown</span>{{end}}</dd></div>
+        <div><dt>{{.PersonalDateHeading}}</dt><dd>{{.PersonalDateLabel}}</dd></div>
         {{if .Hours}}<div><dt>Playtime</dt><dd>{{.HoursLabel}}</dd></div>{{end}}
-        {{if .ApproxYear}}<div><dt>Remembered</dt><dd>{{.ApproxYear}}</dd></div>{{end}}
+        {{if and .Started .Finished}}<div><dt>Started</dt><dd>{{.StartedLabel}}</dd></div>{{end}}
         {{if .MachineLabel}}<div><dt>Computer</dt><dd>{{.MachineLabel}}</dd></div>{{end}}
         {{if and .Source (not .Tracking)}}<div><dt>From</dt><dd>{{.Source}}</dd></div>{{end}}
         {{if .HoursNote}}<div><dt>Playtime</dt><dd>{{.HoursNote}}</dd></div>{{end}}
@@ -108,8 +116,35 @@
       {{if .ResumeNote}}<aside class="game-resume-note"><strong>where I left off</strong><p>{{.ResumeNote}}</p></aside>{{end}}
       {{if .Memory}}<p class="game-thoughts game-personal-memory">{{.Memory}}</p>{{end}}
       {{if .Notes}}<p class="game-thoughts">{{.Notes}}</p>{{end}}
+      <p class="collection-more-info"><a href="https://www.igdb.com/search?type=1&amp;q={{.Title | urlquery}}" target="_blank" rel="noopener noreferrer">Find on IGDB <span aria-hidden="true">↗</span><span class="collection-link-context"> — more info (opens in a new tab)</span></a></p>
     </div>
     {{if .ArtifactURL}}<figure class="game-artifact"><img src="{{.ArtifactURL}}" alt="{{.ArtifactAlt}}" loading="lazy" decoding="async"></figure>{{end}}
   </div>
 </div>
+{{end}}
+
+{{define "game-stats"}}
+<section class="collection-stats" aria-labelledby="game-stats-heading">
+  <h2 id="game-stats-heading">My games</h2>
+  <dl class="collection-stat-totals">
+    <div><dt>Played</dt><dd>{{.Played}}</dd></div>
+    <div><dt>Completed</dt><dd>{{.Completed}}</dd></div>
+    <div><dt>Playing</dt><dd>{{.Playing}}</dd></div>
+    <div><dt>Backlog</dt><dd>{{.Backlog}}</dd></div>
+    <div><dt>Rated</dt><dd>{{.Rated}}</dd></div>
+    <div><dt>Recorded hours</dt><dd>{{.HoursLabel}}</dd></div>
+  </dl>
+  <div class="collection-stat-charts">
+    <section class="collection-stat-chart" aria-labelledby="game-years-chart-heading">
+      <h3 id="game-years-chart-heading">Played by year</h3>
+      {{if .Years}}<ol class="collection-bar-chart">
+        {{range .Years}}<li><span>{{.Label}}</span><span class="collection-chart-track" aria-hidden="true"><span class="collection-chart-bar" style="width: {{.Percent}}%"></span></span><strong aria-label="{{.Count}} games">{{.Count}}</strong></li>{{end}}
+      </ol>{{else}}<p class="collection-chart-empty">No years recorded yet.</p>{{end}}
+    </section>
+    <section class="collection-stat-chart" aria-labelledby="game-ratings-chart-heading">
+      <h3 id="game-ratings-chart-heading">My ratings</h3>
+      {{template "ratings-distribution" .}}
+    </section>
+  </div>
+</section>
 {{end}}

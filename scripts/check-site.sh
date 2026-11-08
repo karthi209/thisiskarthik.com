@@ -59,14 +59,16 @@ test -s public/images/books/the-discovery-of-india.webp
 grep -q 'id="playing-heading"' public/games/index.html
 grep -q 'data-game-view="playtime"' public/games/index.html
 grep -q 'id="playtime-heading"' public/games/index.html
-grep -q 'js/games.js' public/games/index.html
-test -s public/js/games.js
+grep -q 'js/collections.js' public/games/index.html
+test -s public/js/collections.js
 grep -q 'class="game-year"' public/games/index.html
 grep -q 'id="games-year-2026"' public/games/index.html
 test -s public/images/games/elden-ring.jpg
 test -s public/images/games/ghost-of-tsushima.webp
 test -s public/images/games/soma.webp
-grep -q "no photographs here yet" public/photos/index.html
+grep -q 'class="photo-print"' public/photos/index.html
+test -s public/photos/stone-and-sky/index.html
+test -s public/images/photos/2021/11/stone-and-sky.webp
 grep -q "photo-figure img" public/css/site.css
 grep -q "height: auto" public/css/site.css
 grep -q 'data-archive-number="003"' public/index.html
@@ -146,7 +148,6 @@ if grep -Eqi 'camera model|aperture|shutter speed|exif|<dt>|masonry' public/phot
 fi
 
 
-
 if grep -Eqi 'older snapshot|lifetime|hours unknown|>library</a>' public/games/index.html; then
   echo "Removed game UI leaked into the archive." >&2
   exit 1
@@ -159,8 +160,9 @@ fi
 for font in ibm-plex-sans-regular.woff2 ibm-plex-sans-semibold.woff2 ibm-plex-mono-regular.woff2 ibm-plex-mono-italic.woff2; do
   test -s "public/fonts/$font"
 done
+stylesheet=$(grep -oE 'css/site.css\?v=[0-9]+' templates/partials.html)
 while IFS= read -r page; do
-  grep -q 'css/site.css?v=16' "$page"
+  grep -Fq "$stylesheet" "$page"
   grep -q 'name="color-scheme" content="dark"' "$page"
 done < <(find public -name index.html -type f -print)
 if rg -q 'permanent.css|flow.css|fonts.googleapis.com|site-wallpaper|spine-squiggle' public templates --glob '*.html' --glob '*.css'; then

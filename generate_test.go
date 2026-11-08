@@ -110,6 +110,25 @@ image_alt: Rain falling outside a window
 	}
 }
 
+func TestPhotoYearOnlyDoesNotInventMonthOrDay(t *testing.T) {
+	path := filepath.Join(t.TempDir(), "year-only.md")
+	source := "---\ntitle: The clock tower\ndate: 2023\nimage: /images/photos/2023/clock.webp\nimage_alt: A clock tower\n---"
+	if err := os.WriteFile(path, []byte(source), 0600); err != nil {
+		t.Fatal(err)
+	}
+	photo, err := processPhotoFile(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if photo.Year != 2023 || photo.DateISO != "2023" || photo.DateLabel != "2023" || photo.Day != "" || photo.MonthNumber != 0 || photo.MonthLong != "" {
+		t.Fatalf("year-only photo gained invented precision: %#v", photo)
+	}
+	groups := groupPhotos([]PhotoEntry{photo})
+	if len(groups) != 1 || len(groups[0].Months) != 1 || groups[0].Months[0].Name != "" {
+		t.Fatalf("year-only photo gained a month heading: %#v", groups)
+	}
+}
+
 func TestProcessPhotoFileRequiresAltText(t *testing.T) {
 	path := filepath.Join(t.TempDir(), "missing-alt.md")
 	source := `---
@@ -203,6 +222,12 @@ func TestGamesArchive(t *testing.T) {
 	if data.Years[0].Summary != "2 games · 12.4 hours recorded" {
 		t.Fatal(data.Years[0].Summary)
 	}
+	if data.Years[0].Games[0].ArtifactURL != "" {
+		t.Fatal("cover must not become a second artifact image")
+	}
+	if data.Playing[0].ArtifactURL != "/test/images/memory.webp" {
+		t.Fatal("explicit saved artifact was lost")
+	}
 	if len(data.Playtime) != 1 || data.Playtime[0].ID != "done" {
 		t.Fatalf("playtime view includes zero-hour games: %#v", data.Playtime)
 	}
@@ -220,7 +245,7 @@ func TestGamesArchive(t *testing.T) {
 			t.Errorf("missing %q", want)
 		}
 	}
-	for _, bad := range []string{"backlog", "unknown", "N/A", "snapshot", "lifetime", "Steam", "999"} {
+	for _, bad := range []string{"unknown", "N/A", "snapshot", "lifetime", "Steam", "999"} {
 		if strings.Contains(html, bad) {
 			t.Errorf("unwanted public text %q", bad)
 		}
@@ -339,7 +364,7 @@ func TestGamesStarterFacts(t *testing.T) {
 	if records["red-dead-redemption-2"].Finished != "2024" {
 		t.Fatal("Red Dead Redemption 2 year changed")
 	}
-	if records["icy-tower"].ApproxYear != "early 2000s" || records["firewatch"].Finished != "2020" {
+	if records["icy-tower"].Finished != "2006" || records["icy-tower"].ApproxYear != "" || records["firewatch"].Finished != "2020" {
 		t.Fatal("expanded game history changed")
 	}
 	if len(data.Backlog) == 0 {
@@ -352,8 +377,11 @@ func TestGamesStarterFacts(t *testing.T) {
 		if g.Status == "playing" && g.ArtifactURL != "" {
 			t.Fatalf("%s currently playing has cover art", g.Title)
 		}
-		if g.ArtifactURL == "" && g.Portrait != "" && g.Status != "playing" {
+		if g.Portrait != "" && g.PortraitURL == "" {
 			t.Fatalf("%s portrait was not prepared for rendering", g.Title)
+		}
+		if g.Artifact == "" && g.ArtifactURL != "" {
+			t.Fatalf("%s cover was duplicated as an artifact", g.Title)
 		}
 		for _, art := range []string{g.Cover, g.Portrait, g.Artifact} {
 			if art != "" {
@@ -466,6 +494,221 @@ func TestCollectionPresentations(t *testing.T) {
 	for _, want := range []string{`class="photo-contact-sheet"`, `href="/preview/photos/quiet-object"`, `alt="An object on a plain surface"`, `src="/preview/images/test.webp"`, `id="photo-year-2026"`} {
 		if !strings.Contains(out.String(), want) {
 			t.Errorf("photos missing %q", want)
+		}
+	}
+}
+
+func TestHalfStarRatings(t *testing.T) {
+	for _, value := range []float64{0, 0.5, 2.5, 4.5, 5} {
+		if !validRating(&value) {
+			t.Errorf("rejected valid rating %v", value)
+		}
+	}
+	for _, value := range []float64{-0.5, 2.3, 5.5} {
+		if validRating(&value) {
+			t.Errorf("accepted invalid rating %v", value)
+		}
+	}
+	value := 2.5
+	stars := ratingStars(&value)
+	want := []string{"full", "full", "half", "empty", "empty"}
+	for i := range want {
+		if stars[i] != want[i] {
+			t.Errorf("star %d = %s; want %s", i, stars[i], want[i])
+		}
+	}
+	if !validRating(nil) {
+		t.Fatal("unrated entries should be valid")
+	}
+}
+
+func TestOriginalReleaseAndPersonalHistoryStaySeparate(t *testing.T) {
+	dir := t.TempDir()
+	path := filepath.Join(dir, "games.json")
+	source := `{"games":[
+ {"id":"older-game","title":"Older game","status":"completed","finished":"2026","original_release":"2001-12-22","original_release_source":"https://example.com/release"},
+ {"id":"newer-game","title":"Newer game","status":"completed","finished":"2024","original_release":"2020"},
+ {"id":"remembered","title":"Remembered","status":"completed","approxYear":"early 2000s","sortYear":2001,"original_release":"1994"}]}`
+	if err := os.WriteFile(path, []byte(source), 0600); err != nil {
+		t.Fatal(err)
+	}
+	data, err := loadGames(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if data.Years[0].Year != "2026" || data.Years[0].Games[0].ID != "older-game" {
+		t.Fatal("release dates changed the personal archive order")
+	}
+	game := data.Years[0].Games[0]
+	if game.OriginalReleaseLabel() != "2001" || game.PersonalDateLabel() != "2026" || game.PersonalDateHeading() != "Completed" {
+		t.Fatalf("date semantics lost: %#v", game)
+	}
+	templates, err := template.ParseGlob("templates/*.html")
+	if err != nil {
+		t.Fatal(err)
+	}
+	var out bytes.Buffer
+	if err := templates.ExecuteTemplate(&out, "games.html", data); err != nil {
+		t.Fatal(err)
+	}
+	for _, want := range []string{`<dt>Released</dt>`, `<time datetime="2001">2001</time>`, `<dt>Completed</dt><dd>2026</dd>`, `<dt>Completed (approx.)</dt><dd>early 2000s</dd>`} {
+		if !strings.Contains(out.String(), want) {
+			t.Errorf("missing distinct date display %q", want)
+		}
+	}
+	// Backlogged records receive the same catalogue metadata without invented play dates.
+	backlog := `[{"id":"waiting","title":"Waiting","original_release":"2010-05"}]`
+	if err := os.WriteFile(filepath.Join(dir, "games-backlog.json"), []byte(backlog), 0600); err != nil {
+		t.Fatal(err)
+	}
+	data, err = loadGames(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(data.Backlog) != 1 || data.Backlog[0].OriginalReleaseLabel() != "2010" || data.Backlog[0].PersonalDateLabel() != "Not dated" {
+		t.Fatal("backlog dates lost or invented")
+	}
+}
+
+func TestOriginalReleaseValidation(t *testing.T) {
+	for _, date := range []string{"", "1994", "2002-09", "2020-07-17"} {
+		if err := validateGameRelease(Game{OriginalRelease: date}); err != nil {
+			t.Errorf("valid precision %q: %v", date, err)
+		}
+	}
+	for _, game := range []Game{
+		{OriginalRelease: "2020-02-30"},
+		{OriginalRelease: "circa 2000"},
+		{OriginalRelease: "2020", OriginalReleaseSource: "javascript:alert(1)"},
+		{OriginalRelease: "2020", OriginalReleaseSource: "https:///missing-host"},
+		{OriginalReleaseSource: "https://example.com/release"},
+	} {
+		if err := validateGameRelease(game); err == nil {
+			t.Errorf("accepted invalid release: %#v", game)
+		}
+	}
+}
+
+func TestGameStatsCountUniqueRecordsAndHalfStars(t *testing.T) {
+	hours, rating, zero := 12.5, 4.5, 0.0
+	done := Game{ID: "done", Status: "completed", Hours: &hours, Rating: &rating, OriginalRelease: "1990"}
+	playing := Game{ID: "now", Status: "playing", Rating: &zero}
+	data := GamesPageData{
+		Playing:  []Game{playing},
+		Years:    []GameYear{{Year: "2026", Games: []Game{done}}, {Year: "2007", Games: []Game{{ID: "old", Status: "played", HoursNote: "many hours"}}}},
+		Backlog:  []Game{{ID: "queued", Status: "backlog"}},
+		Playtime: []Game{done},
+	}
+	stats := summarizeGames(data)
+	if stats.Played != 2 || stats.Completed != 1 || stats.Playing != 1 || stats.Backlog != 1 || stats.Rated != 2 || stats.HoursLabel != "12.5h" {
+		t.Fatalf("incorrect statistics: %#v", stats)
+	}
+	if stats.Ratings[9].Count != 1 || stats.Ratings[0].Count != 1 || stats.Ratings[10].Count != 0 {
+		t.Fatal("half stars or zero rating lost")
+	}
+	if stats.Years[0].Label != "2007" || stats.Years[1].Label != "2026" {
+		t.Fatal("chart used release dates or lost personal years")
+	}
+	empty := summarizeGames(GamesPageData{})
+	if empty.Rated != 0 || empty.HoursLabel != "0.0h" {
+		t.Fatal("empty archive invented statistics")
+	}
+	for _, bar := range empty.Ratings {
+		if bar.Count != 0 || bar.Percent != 0 {
+			t.Fatal("empty rating histogram invented bars")
+		}
+	}
+}
+
+func TestGameArchiveRoadRashUpdate(t *testing.T) {
+	data, err := loadGames("content/games.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	found := false
+	for _, year := range data.Years {
+		for _, g := range year.Games {
+			if g.ID == "brainsbreaker" {
+				t.Fatal("removed game remains in archive")
+			}
+			if g.ID == "road-rash" {
+				found = true
+				if year.Year != "2007" || g.Played != "2007" || g.PortraitURL == "" {
+					t.Fatal("Road Rash year or cover missing")
+				}
+			}
+		}
+	}
+	if !found {
+		t.Fatal("Road Rash missing from dated archive")
+	}
+}
+
+func TestBookStatsUseOnlyRecordedReadingData(t *testing.T) {
+	four, half, zero, pages := 4.0, 4.5, 0.0, 250
+	data := BooksPageData{
+		Read:    []Book{{ID: "first", Author: "An author", Status: "read", Rating: &four, Finished: "2024", Pages: &pages}, {ID: "second", Author: "An author", Status: "read", Rating: &half, Finished: "2026-02"}, {ID: "undated", Author: "Another author", Status: "read"}},
+		Reading: []Book{{ID: "current", Author: "Third author", Status: "reading"}},
+		Planned: []Book{{ID: "waiting", Author: "An author", Status: "planned", Rating: &zero, Pages: &pages, Finished: "2027"}},
+	}
+	stats := summarizeBooks(data)
+	if stats.Read != 3 || stats.Reading != 1 || stats.Planned != 1 || stats.Authors != 3 || stats.Rated != 3 || stats.AverageLabel != "2.83" {
+		t.Fatalf("incorrect book summary: %#v", stats)
+	}
+	if stats.PagesRead != 250 || stats.BooksWithPages != 1 {
+		t.Fatal("unfinished books or unknown pages counted as read")
+	}
+	if len(stats.Years) != 2 || stats.Years[0].Label != "2024" || stats.Years[1].Label != "2026" {
+		t.Fatal("undated or unfinished books gained a reading year")
+	}
+	if stats.Ratings[9].Count != 1 || stats.Ratings[0].Count != 1 {
+		t.Fatal("half-star or zero rating missing")
+	}
+	if stats.AuthorCounts[0].Label != "An author" || stats.AuthorCounts[0].Count != 3 {
+		t.Fatal("author chart doesn't reflect all shelves")
+	}
+	empty := summarizeBooks(BooksPageData{})
+	if empty.AverageLabel != "—" || empty.Rated != 0 || len(empty.Years) != 0 || empty.BooksWithPages != 0 {
+		t.Fatal("empty reading data invented statistics")
+	}
+}
+
+func TestBooksRejectInvalidOptionalReadingData(t *testing.T) {
+	for _, fields := range []string{`"pages":0`, `"pages":-5`, `"finished":"2026-02-30"`, `"started":"2026-05","finished":"2026-04"`, `"rating":3.7`} {
+		path := filepath.Join(t.TempDir(), "books.json")
+		if err := os.WriteFile(path, []byte(`{"books":[{"id":"test","title":"Test","author":"An author","status":"read",`+fields+`}]}`), 0600); err != nil {
+			t.Fatal(err)
+		}
+		if _, err := loadBooks(path); err == nil {
+			t.Errorf("accepted invalid book fields: %s", fields)
+		}
+	}
+}
+
+func TestBooksOverviewPreservesUndatedHistory(t *testing.T) {
+	data, err := loadBooks("content/books.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if data.Stats.Read != 3 || data.Stats.Reading != 4 || data.Stats.Planned != 16 || data.Stats.Rated != 0 || len(data.Stats.Years) != 0 {
+		t.Fatalf("incorrect recorded book statistics: %#v", data.Stats)
+	}
+	templates, err := template.ParseGlob("templates/*.html")
+	if err != nil {
+		t.Fatal(err)
+	}
+	var out bytes.Buffer
+	if err := templates.ExecuteTemplate(&out, "books.html", data); err != nil {
+		t.Fatal(err)
+	}
+	for _, want := range []string{"My books", "Authors on my shelves", "My ratings", "No ratings yet.", "Find on Goodreads", `aria-label="Reading shelves"`} {
+		if !strings.Contains(out.String(), want) {
+			t.Errorf("missing book overview feature: %s", want)
+		}
+	}
+	for _, bad := range []string{"Read by year", "Pages recorded", "on the nightstand", "the reading pile"} {
+		if strings.Contains(out.String(), bad) {
+			t.Errorf("unrecorded or decorative book text: %s", bad)
 		}
 	}
 }

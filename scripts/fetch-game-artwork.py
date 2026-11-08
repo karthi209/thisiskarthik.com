@@ -64,6 +64,7 @@ EXISTING_ART = {
 # Steam portrait assets. LaunchBox links point to the first front-cover image on
 # each matching Windows record; Midnight Racing uses its catalogued cover.
 ARCHIVE_ART_URLS = {
+    "road-rash": "https://i.pinimg.com/originals/95/3d/c1/953dc17cc55f5bba393c21ecf428dca3.jpg",
     "icy-tower": "https://images.launchbox-app.com/c41c0548-d311-4f37-a859-b1b09fa90a7d.jpg",
     "glace": "https://images.launchbox-app.com/97444d6c-bdca-4bfc-9fd0-cd8173473f4a.png",
     "midnight-racing": "https://media.senscritique.com/media/000020073612/0/midnight_racing.jpg",

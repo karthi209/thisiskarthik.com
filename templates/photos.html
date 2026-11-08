@@ -18,7 +18,6 @@
     <main class="page-main archive-page" id="main">
       <header class="section-header archive-intro--timeline">
         <h1>photos</h1>
-        <p class="section-deck">photographs kept for later. click a print to see it in full.</p>
       </header>
       {{if .Years}}
       <div class="timeline photo-archive" aria-label="Photo archive">
@@ -27,13 +26,13 @@
           <h2 id="photo-year-{{.Year}}"><span>{{.Year}}</span></h2>
           {{range .Months}}
           <section class="photo-month">
-            <h3>{{.Name}}</h3>
+            {{if .Name}}<h3>{{.Name}}</h3>{{end}}
             <ol class="photo-contact-sheet">
               {{range .Photos}}
               <li>
                 <a class="photo-print" href="{{$.BasePath}}photos/{{.Slug}}">
                   <img src="{{.Image}}" alt="{{.ImageAlt}}" loading="lazy" decoding="async">
-                  <span class="photo-print-label">{{.Title}} <time datetime="{{.DateISO}}">{{.Day}}</time></span>
+                  <span class="photo-print-label">{{.Title}} {{if .Day}}<time datetime="{{.DateISO}}">{{.Day}}</time>{{end}}</span>
                 </a>
               </li>
               {{end}}

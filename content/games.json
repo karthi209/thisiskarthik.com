@@ -1,13 +1,14 @@
 {
   "games": [
     {
-      "approxYear": "early 2000s",
       "hoursNote": "playtime lost to history",
       "id": "icy-tower",
       "portrait": "images/games/icy-tower-portrait.webp",
-      "sortYear": 2001,
       "status": "completed",
-      "title": "Icy Tower"
+      "title": "Icy Tower",
+      "original_release": "2001-12-22",
+      "original_release_source": "https://www.igdb.com/games/icy-tower/presskit",
+      "finished": "2006"
     },
     {
       "approxYear": "2007",
@@ -16,21 +17,29 @@
       "portrait": "images/games/glace-portrait.webp",
       "sortYear": 2007,
       "status": "completed",
-      "title": "Glace"
+      "title": "Glace",
+      "original_release": "2004",
+      "original_release_source": "https://www.gamespress.com/en-US/Spirit-of-Glace-reimagines-2004-cult-classic"
     },
     {
       "finished": "2007",
       "id": "midnight-racing",
       "portrait": "images/games/midnight-racing-portrait.webp",
       "status": "completed",
-      "title": "Midnight Racing"
+      "title": "Midnight Racing",
+      "original_release": "2000",
+      "original_release_source": "https://gamefaqs.gamespot.com/pc/106647-midnight-racing/data",
+      "original_release_note": "Only the release year is established."
     },
     {
       "finished": "2008",
       "id": "dirt-track-racing-2",
       "portrait": "images/games/dirt-track-racing-2-portrait.webp",
       "status": "completed",
-      "title": "Dirt Track Racing 2"
+      "title": "Dirt Track Racing 2",
+      "original_release": "2002-09",
+      "original_release_source": "https://en.wikipedia.org/wiki/Dirt_Track_Racing_2",
+      "original_release_note": "Sources disagree on the day; September 2002 is established."
     },
     {
       "finished": "2009",
@@ -39,14 +48,19 @@
       "portrait": "images/games/harry-potter-sorcerers-stone-portrait.webp",
       "sortYear": 2009,
       "status": "completed",
-      "title": "Harry Potter and the Sorcerer's Stone"
+      "title": "Harry Potter and the Sorcerer's Stone",
+      "original_release": "2001-11",
+      "original_release_source": "https://en.wikipedia.org/wiki/Harry_Potter_and_the_Philosopher%27s_Stone_(PC_video_game)",
+      "original_release_note": "Original PC game."
     },
     {
       "finished": "2012",
       "id": "grand-theft-auto-vice-city",
       "portrait": "images/games/grand-theft-auto-vice-city-portrait.webp",
       "status": "completed",
-      "title": "Grand Theft Auto: Vice City"
+      "title": "Grand Theft Auto: Vice City",
+      "original_release": "2002-10-29",
+      "original_release_source": "https://en.wikipedia.org/wiki/Grand_Theft_Auto:_Vice_City"
     },
     {
       "finished": "2014",
@@ -55,7 +69,9 @@
       "portrait": "images/games/grand-theft-auto-san-andreas-portrait.webp",
       "source": "friend's CD",
       "status": "completed",
-      "title": "Grand Theft Auto: San Andreas"
+      "title": "Grand Theft Auto: San Andreas",
+      "original_release": "2004-10-26",
+      "original_release_source": "https://en.wikipedia.org/wiki/Grand_Theft_Auto:_San_Andreas"
     },
     {
       "finished": "2014",
@@ -64,7 +80,10 @@
       "portrait": "images/games/igi-2-portrait.webp",
       "sortYear": 2014,
       "status": "completed",
-      "title": "IGI 2"
+      "title": "IGI 2",
+      "original_release": "2003-02",
+      "original_release_source": "https://en.wikipedia.org/wiki/I.G.I.-2:_Covert_Strike",
+      "original_release_note": "Original release month; regional dates differ."
     },
     {
       "finished": "2014",
@@ -73,119 +92,153 @@
       "portrait": "images/games/max-payne-portrait.webp",
       "sortYear": 2014,
       "status": "completed",
-      "title": "Max Payne"
+      "title": "Max Payne",
+      "original_release": "2001-07-25",
+      "original_release_source": "https://en.wikipedia.org/wiki/Max_Payne_(video_game)"
     },
     {
       "finished": "2018",
       "id": "grand-theft-auto-v",
       "portrait": "images/games/grand-theft-auto-v-portrait.webp",
       "status": "completed",
-      "title": "Grand Theft Auto V"
+      "title": "Grand Theft Auto V",
+      "original_release": "2013-09-17",
+      "original_release_source": "https://en.wikipedia.org/wiki/Grand_Theft_Auto_V"
     },
     {
       "finished": "2018",
       "id": "call-of-duty-4-modern-warfare",
       "portrait": "images/games/call-of-duty-4-modern-warfare-portrait.webp",
       "status": "completed",
-      "title": "Call of Duty 4: Modern Warfare"
+      "title": "Call of Duty 4: Modern Warfare",
+      "original_release": "2007-11-05",
+      "original_release_source": "https://en.wikipedia.org/wiki/Call_of_Duty_4:_Modern_Warfare"
     },
     {
       "finished": "2018",
       "id": "call-of-duty-modern-warfare-2",
       "portrait": "images/games/call-of-duty-modern-warfare-2-portrait.webp",
       "status": "completed",
-      "title": "Call of Duty: Modern Warfare 2"
+      "title": "Call of Duty: Modern Warfare 2",
+      "original_release": "2009-11-10",
+      "original_release_source": "https://en.wikipedia.org/wiki/Call_of_Duty:_Modern_Warfare_2"
     },
     {
       "finished": "2018",
       "id": "call-of-duty-modern-warfare-3",
       "portrait": "images/games/call-of-duty-modern-warfare-3-portrait.webp",
       "status": "completed",
-      "title": "Call of Duty: Modern Warfare 3"
+      "title": "Call of Duty: Modern Warfare 3",
+      "original_release": "2011-11-08",
+      "original_release_source": "https://en.wikipedia.org/wiki/Call_of_Duty:_Modern_Warfare_3"
     },
     {
       "finished": "2018",
       "id": "crysis",
       "portrait": "images/games/crysis-portrait.webp",
       "status": "completed",
-      "title": "Crysis"
+      "title": "Crysis",
+      "original_release": "2007-11-13",
+      "original_release_source": "https://www.igdb.com/games/crysis/presskit"
     },
     {
       "finished": "2018",
       "id": "crysis-2",
       "portrait": "images/games/crysis-2-portrait.webp",
       "status": "completed",
-      "title": "Crysis 2"
+      "title": "Crysis 2",
+      "original_release": "2011-03-22",
+      "original_release_source": "https://www.ea.com/news/ea-and-crytek-announce-crysis-2-multiplayer-demo"
     },
     {
       "finished": "2018",
       "id": "crysis-3",
       "portrait": "images/games/crysis-3-portrait.webp",
       "status": "completed",
-      "title": "Crysis 3"
+      "title": "Crysis 3",
+      "original_release": "2013-02-19",
+      "original_release_source": "https://www.gamespot.com/games/crysis-3/"
     },
     {
       "finished": "2019",
       "id": "call-of-duty-black-ops",
       "portrait": "images/games/call-of-duty-black-ops-portrait.webp",
       "status": "completed",
-      "title": "Call of Duty: Black Ops"
+      "title": "Call of Duty: Black Ops",
+      "original_release": "2010-11-09",
+      "original_release_source": "https://www.igdb.com/games/call-of-duty-black-ops/presskit"
     },
     {
       "finished": "2019",
       "id": "call-of-duty-black-ops-2",
       "portrait": "images/games/call-of-duty-black-ops-2-portrait.webp",
       "status": "completed",
-      "title": "Call of Duty: Black Ops 2"
+      "title": "Call of Duty: Black Ops 2",
+      "original_release": "2012-11-13",
+      "original_release_source": "https://www.activision.com/games/call-of-duty/call-of-duty-black-ops-2"
     },
     {
       "finished": "2019",
       "id": "mass-effect",
       "portrait": "images/games/mass-effect-portrait.webp",
       "status": "completed",
-      "title": "Mass Effect"
+      "title": "Mass Effect",
+      "original_release": "2007-11-20",
+      "original_release_source": "https://www.gamespot.com/articles/mass-effect-goes-critical-nov-20/1100-6177894/"
     },
     {
       "finished": "2019",
       "id": "mass-effect-2",
       "portrait": "images/games/mass-effect-2-portrait.webp",
       "status": "completed",
-      "title": "Mass Effect 2"
+      "title": "Mass Effect 2",
+      "original_release": "2010-01-26",
+      "original_release_source": "https://en.wikipedia.org/wiki/Mass_Effect_2"
     },
     {
       "finished": "2020",
       "id": "far-cry-4",
       "portrait": "images/games/far-cry-4-portrait.webp",
       "status": "completed",
-      "title": "Far Cry 4"
+      "title": "Far Cry 4",
+      "original_release": "2014-11-18",
+      "original_release_source": "https://blog.playstation.com/2014/11/18/far-cry-4-out-today-on-ps4-ps3/"
     },
     {
       "finished": "2020",
       "id": "mass-effect-3",
       "portrait": "images/games/mass-effect-3-portrait.webp",
       "status": "completed",
-      "title": "Mass Effect 3"
+      "title": "Mass Effect 3",
+      "original_release": "2012-03-06",
+      "original_release_source": "https://en.wikipedia.org/wiki/Mass_Effect_3"
     },
     {
       "finished": "2020",
       "id": "battlefield-2",
       "portrait": "images/games/battlefield-2-portrait.webp",
       "status": "completed",
-      "title": "Battlefield 2"
+      "title": "Battlefield 2",
+      "original_release": "2005-06-21",
+      "original_release_source": "https://en.wikipedia.org/wiki/Battlefield_2"
     },
     {
       "finished": "2020",
       "id": "battlefield-3",
       "portrait": "images/games/battlefield-3-portrait.webp",
       "status": "completed",
-      "title": "Battlefield 3"
+      "title": "Battlefield 3",
+      "original_release": "2011-10-25",
+      "original_release_source": "https://en.wikipedia.org/wiki/Battlefield_3"
     },
     {
       "finished": "2020",
       "id": "firewatch",
       "portrait": "images/games/firewatch-portrait.webp",
       "status": "completed",
-      "title": "Firewatch"
+      "title": "Firewatch",
+      "original_release": "2016-02-09",
+      "original_release_source": "https://en.wikipedia.org/wiki/Firewatch"
     },
     {
       "finished": "2024",
@@ -199,7 +252,9 @@
       "tracking": {
         "app_id": 1174180,
         "provider": "steam"
-      }
+      },
+      "original_release": "2018-10-26",
+      "original_release_source": "https://en.wikipedia.org/wiki/Red_Dead_Redemption_2"
     },
     {
       "finished": "2026",
@@ -212,7 +267,10 @@
       "tracking": {
         "app_id": 1659420,
         "provider": "steam"
-      }
+      },
+      "original_release": "2016-05-10",
+      "original_release_source": "https://blog.playstation.com/2016/05/10/uncharted-4-a-thiefs-end-out-today-on-ps4/",
+      "original_release_note": "Original Uncharted 4 release, before the Legacy of Thieves collection."
     },
     {
       "finished": "2026",
@@ -225,7 +283,9 @@
       "tracking": {
         "app_id": 292030,
         "provider": "steam"
-      }
+      },
+      "original_release": "2015-05-19",
+      "original_release_source": "https://en.wikipedia.org/wiki/The_Witcher_3:_Wild_Hunt"
     },
     {
       "finished": "2026",
@@ -238,7 +298,9 @@
       "tracking": {
         "app_id": 414340,
         "provider": "steam"
-      }
+      },
+      "original_release": "2017-08-08",
+      "original_release_source": "https://en.wikipedia.org/wiki/Hellblade:_Senua%27s_Sacrifice"
     },
     {
       "finished": "2026",
@@ -252,14 +314,9 @@
       "tracking": {
         "app_id": 1222140,
         "provider": "steam"
-      }
-    },
-    {
-      "approxYear": "early 2000s",
-      "id": "brainsbreaker",
-      "sortYear": 2001,
-      "status": "played",
-      "title": "BrainsBreaker"
+      },
+      "original_release": "2018-05-25",
+      "original_release_source": "https://en.wikipedia.org/wiki/Detroit:_Become_Human"
     },
     {
       "approxYear": "2015",
@@ -267,14 +324,19 @@
       "portrait": "images/games/dead-space-3-portrait.webp",
       "sortYear": 2015,
       "status": "played",
-      "title": "Dead Space 3"
+      "title": "Dead Space 3",
+      "original_release": "2013-02-05",
+      "original_release_source": "https://en.wikipedia.org/wiki/Dead_Space_3"
     },
     {
       "id": "road-rash",
       "memory": "Played on a friend's computer.",
       "source": "friend's computer",
       "status": "played",
-      "title": "Road Rash"
+      "title": "Road Rash",
+      "original_release_note": "The version is not recorded, so its release date is unverified.",
+      "played": "2007",
+      "portrait": "images/games/road-rash-portrait.webp"
     },
     {
       "finished": "2026",
@@ -288,7 +350,9 @@
       "tracking": {
         "game_id": 2,
         "provider": "lutris"
-      }
+      },
+      "original_release": "2020-07-17",
+      "original_release_source": "https://en.wikipedia.org/wiki/Ghost_of_Tsushima"
     },
     {
       "id": "bloodborne",
@@ -301,7 +365,9 @@
       "tracking": {
         "game_id": 5,
         "provider": "lutris"
-      }
+      },
+      "original_release": "2015-03-24",
+      "original_release_source": "https://en.wikipedia.org/wiki/Bloodborne"
     },
     {
       "id": "cyberpunk-2077",
@@ -314,7 +380,9 @@
       "tracking": {
         "app_id": 1091500,
         "provider": "steam"
-      }
+      },
+      "original_release": "2020-12-10",
+      "original_release_source": "https://en.wikipedia.org/wiki/Cyberpunk_2077"
     },
     {
       "id": "grand-theft-auto-iv-the-complete-edition",
@@ -327,7 +395,10 @@
       "tracking": {
         "app_id": 12210,
         "provider": "steam"
-      }
+      },
+      "original_release": "2008-04-29",
+      "original_release_source": "https://en.wikipedia.org/wiki/Grand_Theft_Auto_IV",
+      "original_release_note": "Original GTA IV release, before the Complete Edition."
     },
     {
       "id": "kingdom-come-deliverance",
@@ -340,7 +411,9 @@
       "tracking": {
         "app_id": 379430,
         "provider": "steam"
-      }
+      },
+      "original_release": "2018-02-13",
+      "original_release_source": "https://en.wikipedia.org/wiki/Kingdom_Come:_Deliverance"
     },
     {
       "id": "soma",
@@ -353,7 +426,9 @@
       "tracking": {
         "app_id": 282140,
         "provider": "steam"
-      }
+      },
+      "original_release": "2015-09-22",
+      "original_release_source": "https://en.wikipedia.org/wiki/Soma_(video_game)"
     },
     {
       "id": "the-blood-of-dawnwalker",
@@ -366,7 +441,9 @@
       "tracking": {
         "game_id": 4,
         "provider": "lutris"
-      }
+      },
+      "original_release": "2026-09-03",
+      "original_release_source": "https://en.wikipedia.org/wiki/The_Blood_of_Dawnwalker"
     }
   ]
 }

@@ -8,6 +8,7 @@ import (
 	"html/template"
 	"io/fs"
 	"math"
+	"net/url"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -28,39 +29,42 @@ import (
 
 // Game records are manually maintained; nil hours and ratings mean unknown.
 type Game struct {
-	Memory       string              `json:"memory,omitempty"`
-	ApproxYear   string              `json:"approxYear,omitempty"`
-	SortYear     int                 `json:"sortYear,omitempty"`
-	Machine      string              `json:"machine,omitempty"`
-	MachineLabel string              `json:"-"`
-	HoursNote    string              `json:"hoursNote,omitempty"`
-	ID           string              `json:"id,omitempty"`
-	Title        string              `json:"title"`
-	Status       string              `json:"status,omitempty"`
-	Platform     string              `json:"platform,omitempty"`
-	Source       string              `json:"source,omitempty"`
-	Hours        *float64            `json:"-"`
-	Started      string              `json:"started,omitempty"`
-	Finished     string              `json:"finished,omitempty"`
-	Played       string              `json:"played,omitempty"`
-	Rating       *float64            `json:"rating,omitempty"`
-	Favorite     bool                `json:"favorite,omitempty"`
-	Label        string              `json:"label,omitempty"`
-	Notes        string              `json:"notes,omitempty"`
-	ResumeNote   string              `json:"resume_note,omitempty"`
-	Artifact     string              `json:"artifact,omitempty"`
-	ArtifactAlt  string              `json:"artifact_alt,omitempty"`
-	Cover        string              `json:"cover,omitempty"`
-	Portrait     string              `json:"portrait,omitempty"`
-	Tracking     *gamestats.Tracking `json:"tracking,omitempty"`
-	Imported     bool                `json:"imported,omitempty"`
-	PortraitURL  string              `json:"-"`
-	Date         string              `json:"-"`
-	DateLabel    string              `json:"-"`
-	StartedLabel string              `json:"-"`
-	HoursLabel   string              `json:"-"`
-	CoverURL     string              `json:"-"`
-	ArtifactURL  string              `json:"-"`
+	OriginalRelease       string              `json:"original_release,omitempty"`
+	OriginalReleaseSource string              `json:"original_release_source,omitempty"`
+	OriginalReleaseNote   string              `json:"original_release_note,omitempty"`
+	Memory                string              `json:"memory,omitempty"`
+	ApproxYear            string              `json:"approxYear,omitempty"`
+	SortYear              int                 `json:"sortYear,omitempty"`
+	Machine               string              `json:"machine,omitempty"`
+	MachineLabel          string              `json:"-"`
+	HoursNote             string              `json:"hoursNote,omitempty"`
+	ID                    string              `json:"id,omitempty"`
+	Title                 string              `json:"title"`
+	Status                string              `json:"status,omitempty"`
+	Platform              string              `json:"platform,omitempty"`
+	Source                string              `json:"source,omitempty"`
+	Hours                 *float64            `json:"-"`
+	Started               string              `json:"started,omitempty"`
+	Finished              string              `json:"finished,omitempty"`
+	Played                string              `json:"played,omitempty"`
+	Rating                *float64            `json:"rating,omitempty"`
+	Favorite              bool                `json:"favorite,omitempty"`
+	Label                 string              `json:"label,omitempty"`
+	Notes                 string              `json:"notes,omitempty"`
+	ResumeNote            string              `json:"resume_note,omitempty"`
+	Artifact              string              `json:"artifact,omitempty"`
+	ArtifactAlt           string              `json:"artifact_alt,omitempty"`
+	Cover                 string              `json:"cover,omitempty"`
+	Portrait              string              `json:"portrait,omitempty"`
+	Tracking              *gamestats.Tracking `json:"tracking,omitempty"`
+	Imported              bool                `json:"imported,omitempty"`
+	PortraitURL           string              `json:"-"`
+	Date                  string              `json:"-"`
+	DateLabel             string              `json:"-"`
+	StartedLabel          string              `json:"-"`
+	HoursLabel            string              `json:"-"`
+	CoverURL              string              `json:"-"`
+	ArtifactURL           string              `json:"-"`
 }
 
 type GameCollection struct {
@@ -90,7 +94,19 @@ type GameYear struct {
 	Summary    string
 }
 
+type CollectionChartBar struct {
+	Label          string
+	Count, Percent int
+}
+
+type GameStats struct {
+	Played, Completed, Playing, Backlog, Rated int
+	HoursLabel                                 string
+	Years, Ratings                             []CollectionChartBar
+}
+
 type GamesPageData struct {
+	Stats                     GameStats
 	PageType, Title, BasePath string
 	Playing, Undated, Backlog []Game
 	Playtime                  []Game
@@ -98,20 +114,32 @@ type GamesPageData struct {
 }
 
 type Book struct {
-	ID       string `json:"id,omitempty"`
-	Title    string `json:"title"`
-	Author   string `json:"author"`
-	Status   string `json:"status"`
-	Notes    string `json:"notes,omitempty"`
-	Cover    string `json:"cover,omitempty"`
-	CoverURL string `json:"-"`
+	Started  string   `json:"started,omitempty"`
+	Finished string   `json:"finished,omitempty"`
+	Pages    *int     `json:"pages,omitempty"`
+	Rating   *float64 `json:"rating,omitempty"`
+	ID       string   `json:"id,omitempty"`
+	Title    string   `json:"title"`
+	Author   string   `json:"author"`
+	Status   string   `json:"status"`
+	Notes    string   `json:"notes,omitempty"`
+	Cover    string   `json:"cover,omitempty"`
+	CoverURL string   `json:"-"`
 }
 
 type BookCollection struct {
 	Books []Book `json:"books"`
 }
 
+type BookStats struct {
+	Read, Reading, Planned, Authors, Rated int
+	AverageLabel                           string
+	PagesRead, BooksWithPages              int
+	AuthorCounts, Years, Ratings           []CollectionChartBar
+}
+
 type BooksPageData struct {
+	Stats                     BookStats
 	PageType, Title, BasePath string
 	Reading, Read, Planned    []Book
 }
@@ -137,6 +165,23 @@ func loadBooks(path string) (BooksPageData, error) {
 		if !validID.MatchString(book.ID) || seen[book.ID] || strings.TrimSpace(book.Title) == "" {
 			return data, fmt.Errorf("book %d needs a unique lowercase slug id and title", i+1)
 		}
+		if !validRating(book.Rating) {
+			return data, fmt.Errorf("%s: rating must be 0 to 5 in half-star steps", book.ID)
+		}
+		if book.Pages != nil && *book.Pages <= 0 {
+			return data, fmt.Errorf("%s: pages must be positive when known", book.ID)
+		}
+		for _, date := range []string{book.Started, book.Finished} {
+			if _, err := gameDate(date); err != nil {
+				return data, fmt.Errorf("%s: %w", book.ID, err)
+			}
+		}
+		if book.Started != "" && book.Finished != "" {
+			precision := min(len(book.Started), len(book.Finished))
+			if book.Finished[:precision] < book.Started[:precision] {
+				return data, fmt.Errorf("%s: finished precedes started", book.ID)
+			}
+		}
 		seen[book.ID] = true
 		if book.Cover != "" {
 			book.CoverURL = basePath + book.Cover
@@ -152,7 +197,75 @@ func loadBooks(path string) (BooksPageData, error) {
 			return data, fmt.Errorf("%s: invalid book status %q", book.ID, book.Status)
 		}
 	}
+	data.Stats = summarizeBooks(data)
 	return data, nil
+}
+
+func (b Book) StartedLabel() string  { return gameDateLabel(b.Started) }
+func (b Book) FinishedLabel() string { return gameDateLabel(b.Finished) }
+
+func summarizeBooks(data BooksPageData) BookStats {
+	stats := BookStats{Read: len(data.Read), Reading: len(data.Reading), Planned: len(data.Planned), AverageLabel: "—"}
+	authors, years := map[string]int{}, map[string]int{}
+	ratings := make([]int, 11)
+	ratingSum := 0.0
+	for _, shelf := range [][]Book{data.Read, data.Reading, data.Planned} {
+		for _, book := range shelf {
+			if author := strings.TrimSpace(book.Author); author != "" {
+				authors[author]++
+			}
+			if book.Rating != nil {
+				stats.Rated++
+				ratingSum += *book.Rating
+				ratings[int(*book.Rating*2)]++
+			}
+			if book.Status == "read" {
+				if book.Finished != "" {
+					years[book.Finished[:4]]++
+				}
+				if book.Pages != nil {
+					stats.PagesRead += *book.Pages
+					stats.BooksWithPages++
+				}
+			}
+		}
+	}
+	stats.Authors = len(authors)
+	if stats.Rated > 0 {
+		stats.AverageLabel = strconv.FormatFloat(ratingSum/float64(stats.Rated), 'f', 2, 64)
+	}
+	for author, count := range authors {
+		stats.AuthorCounts = append(stats.AuthorCounts, CollectionChartBar{Label: author, Count: count})
+	}
+	sort.Slice(stats.AuthorCounts, func(i, j int) bool {
+		a, b := stats.AuthorCounts[i], stats.AuthorCounts[j]
+		if a.Count != b.Count {
+			return a.Count > b.Count
+		}
+		return a.Label < b.Label
+	})
+	if len(stats.AuthorCounts) > 5 {
+		stats.AuthorCounts = stats.AuthorCounts[:5]
+	}
+	if len(stats.AuthorCounts) > 0 {
+		maxCount := stats.AuthorCounts[0].Count
+		for i := range stats.AuthorCounts {
+			stats.AuthorCounts[i].Percent = int(math.Round(float64(stats.AuthorCounts[i].Count) * 100 / float64(maxCount)))
+		}
+	}
+	maxYear := 0
+	for year, count := range years {
+		stats.Years = append(stats.Years, CollectionChartBar{Label: year, Count: count})
+		if count > maxYear {
+			maxYear = count
+		}
+	}
+	sort.Slice(stats.Years, func(i, j int) bool { return stats.Years[i].Label < stats.Years[j].Label })
+	for i := range stats.Years {
+		stats.Years[i].Percent = int(math.Round(float64(stats.Years[i].Count) * 100 / float64(maxYear)))
+	}
+	stats.Ratings = ratingHistogram(ratings)
+	return stats
 }
 
 func gameDate(value string) (time.Time, error) {
@@ -235,6 +348,9 @@ func loadGames(path string) (GamesPageData, error) {
 		default:
 			return data, fmt.Errorf("%s: invalid history status %q", g.ID, g.Status)
 		}
+		if err := validateGameRelease(*g); err != nil {
+			return data, err
+		}
 		for _, value := range []string{g.Started, g.Finished, g.Played} {
 			if _, err := gameDate(value); err != nil {
 				return data, fmt.Errorf("%s: %w", g.ID, err)
@@ -268,8 +384,8 @@ func loadGames(path string) (GamesPageData, error) {
 			}
 			g.HoursLabel = strconv.FormatFloat(math.Round(*g.Hours*100)/100, 'f', -1, 64) + "h"
 		}
-		if g.Rating != nil && (*g.Rating < 0 || *g.Rating > 5) {
-			return data, fmt.Errorf("%s: rating must be between 0 and 5", g.ID)
+		if !validRating(g.Rating) {
+			return data, fmt.Errorf("%s: rating must be 0 to 5 in half-star steps", g.ID)
 		}
 		for _, artwork := range []string{g.Cover, g.Portrait, g.Artifact} {
 			if artwork != "" && (!strings.HasPrefix(artwork, "images/") || strings.Contains(artwork, "..") || strings.ContainsAny(artwork, `\?#`)) {
@@ -284,9 +400,7 @@ func loadGames(path string) (GamesPageData, error) {
 		}
 		if g.Artifact != "" {
 			g.ArtifactURL = basePath + g.Artifact
-		} else if g.Portrait != "" && g.Status != "playing" {
-			// Existing portrait art doubles as the optional saved artifact.
-			g.ArtifactURL = g.PortraitURL
+
 		}
 
 		g.Date = g.Finished
@@ -392,6 +506,12 @@ func loadGames(path string) (GamesPageData, error) {
 				return data, fmt.Errorf("backlog game %d needs a unique lowercase slug id and title", i+1)
 			}
 			seen[g.ID] = true
+			if !validRating(g.Rating) {
+				return data, fmt.Errorf("%s: rating must be 0 to 5 in half-star steps", g.ID)
+			}
+			if err := validateGameRelease(g); err != nil {
+				return data, err
+			}
 			g.Status = "backlog"
 			for _, artwork := range []string{g.Cover, g.Portrait, g.Artifact} {
 				if artwork != "" && (!strings.HasPrefix(artwork, "images/") || strings.Contains(artwork, "..") || strings.ContainsAny(artwork, `\?#`)) {
@@ -406,8 +526,7 @@ func loadGames(path string) (GamesPageData, error) {
 			}
 			if g.Artifact != "" {
 				g.ArtifactURL = basePath + g.Artifact
-			} else if g.Portrait != "" {
-				g.ArtifactURL = g.PortraitURL
+
 			}
 			g.Hours = stats[g.ID].TotalHours()
 			if g.Hours != nil {
@@ -426,7 +545,89 @@ func loadGames(path string) (GamesPageData, error) {
 		return *data.Playtime[i].Hours > *data.Playtime[j].Hours
 	})
 
+	data.Stats = summarizeGames(data)
 	return data, nil
+}
+
+// summarizeGames uses unique personal records, never release dates or provider IDs.
+func summarizeGames(data GamesPageData) GameStats {
+	stats := GameStats{}
+	seen := map[string]bool{}
+	ratings := make([]int, 11)
+	hours := 0.0
+	add := func(g Game) {
+		if seen[g.ID] {
+			return
+		}
+		seen[g.ID] = true
+		switch g.Status {
+		case "backlog":
+			stats.Backlog++
+		case "playing":
+			stats.Playing++
+		case "completed":
+			stats.Completed++
+			stats.Played++
+		case "played", "paused", "dropped", "unidentified":
+			stats.Played++
+		}
+		if g.Hours != nil {
+			hours += *g.Hours
+		}
+		if g.Rating != nil {
+			stats.Rated++
+			ratings[int(*g.Rating*2)]++
+		}
+	}
+	for _, g := range data.Playing {
+		add(g)
+	}
+	for _, year := range data.Years {
+		for _, g := range year.Games {
+			add(g)
+		}
+	}
+	for _, g := range data.Undated {
+		add(g)
+	}
+	for _, g := range data.Backlog {
+		add(g)
+	}
+	stats.HoursLabel = strconv.FormatFloat(math.Round(hours*10)/10, 'f', 1, 64) + "h"
+	maxYear := 0
+	for i := len(data.Years) - 1; i >= 0; i-- {
+		year := data.Years[i]
+		count := len(year.Games)
+		if count > maxYear {
+			maxYear = count
+		}
+		stats.Years = append(stats.Years, CollectionChartBar{Label: year.Year, Count: count})
+	}
+	for i := range stats.Years {
+		if maxYear > 0 {
+			stats.Years[i].Percent = int(math.Round(float64(stats.Years[i].Count) * 100 / float64(maxYear)))
+		}
+	}
+	stats.Ratings = ratingHistogram(ratings)
+	return stats
+}
+
+func ratingHistogram(ratings []int) []CollectionChartBar {
+	maxRating := 0
+	for _, count := range ratings {
+		if count > maxRating {
+			maxRating = count
+		}
+	}
+	bars := make([]CollectionChartBar, 0, len(ratings))
+	for i, count := range ratings {
+		bar := CollectionChartBar{Label: strconv.FormatFloat(float64(i)/2, 'f', -1, 64), Count: count}
+		if maxRating > 0 {
+			bar.Percent = int(math.Round(float64(count) * 100 / float64(maxRating)))
+		}
+		bars = append(bars, bar)
+	}
+	return bars
 }
 
 // Configuration
@@ -817,12 +1018,6 @@ func main() {
 		}
 	}
 
-	if templates.Lookup("forai.html") != nil {
-		if err := generateForAIPage(templates); err != nil {
-			fmt.Printf("▓▓ ERROR: forai page failed: %v\n", err)
-		}
-	}
-
 	buildDuration := time.Since(buildStart)
 	if err := generateMetaPage(templates, buildDuration); err != nil {
 		fmt.Printf("▓▓ ERROR: meta page failed: %v\n", err)
@@ -854,6 +1049,84 @@ func main() {
 	}
 	fmt.Printf("▓▓ TIME: %dms\n", buildDuration.Milliseconds())
 	fmt.Println()
+}
+
+// Catalogue dates are independent of the personal dates used for archive ordering.
+func validateGameRelease(g Game) error {
+	if _, err := gameDate(g.OriginalRelease); err != nil {
+		return fmt.Errorf("%s: original release: %w", g.ID, err)
+	}
+	if g.OriginalReleaseSource != "" {
+		source, err := url.Parse(g.OriginalReleaseSource)
+		if err != nil || source.Scheme != "https" || source.Hostname() == "" || source.User != nil {
+			return fmt.Errorf("%s: original release source must be an HTTPS URL", g.ID)
+		}
+		if g.OriginalRelease == "" {
+			return fmt.Errorf("%s: release source needs a release date", g.ID)
+		}
+	}
+	return nil
+}
+
+func (g Game) OriginalReleaseLabel() string {
+	if len(g.OriginalRelease) < 4 {
+		return ""
+	}
+	return g.OriginalRelease[:4]
+}
+
+func (g Game) PersonalDateHeading() string {
+	if g.ApproxYear != "" {
+		if g.Status == "completed" {
+			return "Completed (approx.)"
+		}
+		return "Played (approx.)"
+	}
+	if g.Finished != "" {
+		return "Completed"
+	}
+	if g.Played != "" {
+		return "Played"
+	}
+	if g.Started != "" {
+		return "Started"
+	}
+	return "My entry"
+}
+
+func (g Game) PersonalDateLabel() string {
+	if g.ApproxYear != "" {
+		return g.ApproxYear
+	}
+	for _, date := range []string{g.Finished, g.Played, g.Started} {
+		if date != "" {
+			return gameDateLabel(date)
+		}
+	}
+	return "Not dated"
+}
+
+func validRating(rating *float64) bool {
+	return rating == nil || (!math.IsNaN(*rating) && !math.IsInf(*rating, 0) && *rating >= 0 && *rating <= 5 && math.Mod(*rating*2, 1) == 0)
+}
+
+func (g Game) RatingStars() []string { return ratingStars(g.Rating) }
+func (b Book) RatingStars() []string { return ratingStars(b.Rating) }
+
+func ratingStars(rating *float64) []string {
+	if rating == nil {
+		return nil
+	}
+	stars := make([]string, 5)
+	for i := range stars {
+		stars[i] = "empty"
+		if *rating >= float64(i+1) {
+			stars[i] = "full"
+		} else if *rating >= float64(i)+0.5 {
+			stars[i] = "half"
+		}
+	}
+	return stars
 }
 
 func loadTemplates() (*template.Template, error) {
@@ -969,21 +1242,6 @@ func generatePhotoPage(templates *template.Template, photo PhotoEntry) error {
 		filepath.Join(outputDir, "photos", photo.Slug, "index.html"),
 		data,
 	)
-}
-
-func generateForAIPage(templates *template.Template) error {
-	data := AboutPageData{
-		PageType: "forai",
-		Title:    "For AI",
-		BasePath: basePath,
-	}
-
-	foraiDir := filepath.Join(outputDir, "forai")
-	if err := os.MkdirAll(foraiDir, 0755); err != nil {
-		return err
-	}
-
-	return writeTemplate(templates, "forai.html", filepath.Join(foraiDir, "index.html"), data)
 }
 
 func generateMetaPage(templates *template.Template, buildDuration time.Duration) error {
@@ -1395,7 +1653,12 @@ func processPhotoFile(path string) (PhotoEntry, error) {
 	if title == "" {
 		return PhotoEntry{}, fmt.Errorf("photo needs a title: %s", path)
 	}
-	photoDate, err := parseJournalDate(meta["date"], "")
+	dateText := strings.TrimSpace(meta["date"])
+	yearOnly := len(dateText) == 4
+	photoDate, err := parseJournalDate(dateText, "")
+	if yearOnly {
+		photoDate, err = time.Parse("2006", dateText)
+	}
 	if err != nil {
 		return PhotoEntry{}, fmt.Errorf("photo needs a valid date: %s", path)
 	}
@@ -1416,7 +1679,7 @@ func processPhotoFile(path string) (PhotoEntry, error) {
 		return PhotoEntry{}, fmt.Errorf("photo needs a valid slug: %s", path)
 	}
 
-	return PhotoEntry{
+	photo := PhotoEntry{
 		Title:       title,
 		Slug:        slug,
 		Date:        photoDate,
@@ -1431,7 +1694,16 @@ func processPhotoFile(path string) (PhotoEntry, error) {
 		ImageAlt:    meta["image_alt"],
 		Caption:     meta["caption"],
 		IsDraft:     strings.EqualFold(meta["draft"], "true"),
-	}, nil
+	}
+	if yearOnly {
+		photo.DateISO = dateText
+		photo.DateLabel = dateText
+		photo.Day = ""
+		photo.Month = ""
+		photo.MonthLong = ""
+		photo.MonthNumber = 0
+	}
+	return photo, nil
 }
 
 func groupPhotos(photos []PhotoEntry) []PhotoYear {
@@ -1468,37 +1740,6 @@ func formatDate(dateStr string) string {
 	}
 
 	return t.Format("Jan 2")
-}
-
-func formatDateFormal(dateStr string) string {
-	if dateStr == "" {
-		return "—"
-	}
-
-	t, err := time.Parse(time.RFC3339, dateStr)
-	if err != nil {
-		return "—"
-	}
-
-	// Format in formal vintage book style: "the 15th of May, 2025"
-	day := t.Day()
-	month := t.Format("January")
-	year := t.Year()
-
-	// Add ordinal suffix for day (1st, 2nd, 3rd, 4th, etc.)
-	var suffix string
-	switch day {
-	case 1, 21, 31:
-		suffix = "st"
-	case 2, 22:
-		suffix = "nd"
-	case 3, 23:
-		suffix = "rd"
-	default:
-		suffix = "th"
-	}
-
-	return fmt.Sprintf("the %d%s of %s, %d", day, suffix, month, year)
 }
 
 func calculateReadingTime(content string) int {

@@ -9,7 +9,9 @@
     "tracking": {
       "app_id": 752590,
       "provider": "steam"
-    }
+    },
+    "original_release": "2019-05-14",
+    "original_release_source": "https://en.wikipedia.org/wiki/A_Plague_Tale:_Innocence"
   },
   {
     "id": "alan-wake",
@@ -21,7 +23,9 @@
     "tracking": {
       "app_id": 108710,
       "provider": "steam"
-    }
+    },
+    "original_release": "2010-05-14",
+    "original_release_source": "https://en.wikipedia.org/wiki/Alan_Wake"
   },
   {
     "id": "assassins-creed-origins",
@@ -33,7 +37,9 @@
     "tracking": {
       "app_id": 582160,
       "provider": "steam"
-    }
+    },
+    "original_release": "2017-10-27",
+    "original_release_source": "https://en.wikipedia.org/wiki/Assassin%27s_Creed_Origins"
   },
   {
     "id": "assassins-creed-unity",
@@ -45,7 +51,9 @@
     "tracking": {
       "app_id": 289650,
       "provider": "steam"
-    }
+    },
+    "original_release": "2014-11-11",
+    "original_release_source": "https://en.wikipedia.org/wiki/Assassin%27s_Creed_Unity"
   },
   {
     "id": "assetto-corsa",
@@ -57,7 +65,10 @@
     "tracking": {
       "app_id": 244210,
       "provider": "steam"
-    }
+    },
+    "original_release": "2014-12-19",
+    "original_release_source": "https://en.wikipedia.org/wiki/Assetto_Corsa",
+    "original_release_note": "Full release; early access began in November 2013."
   },
   {
     "id": "batman-arkham-asylum-goty-edition",
@@ -69,7 +80,10 @@
     "tracking": {
       "app_id": 35140,
       "provider": "steam"
-    }
+    },
+    "original_release": "2009-08-25",
+    "original_release_source": "https://en.wikipedia.org/wiki/Batman:_Arkham_Asylum",
+    "original_release_note": "Original game, before the GOTY edition."
   },
   {
     "id": "batman-arkham-city-goty",
@@ -81,7 +95,10 @@
     "tracking": {
       "app_id": 200260,
       "provider": "steam"
-    }
+    },
+    "original_release": "2011-10-18",
+    "original_release_source": "https://en.wikipedia.org/wiki/Batman:_Arkham_City",
+    "original_release_note": "Original game, before the GOTY edition."
   },
   {
     "id": "batman-arkham-knight",
@@ -93,7 +110,9 @@
     "tracking": {
       "app_id": 208650,
       "provider": "steam"
-    }
+    },
+    "original_release": "2015-06-23",
+    "original_release_source": "https://en.wikipedia.org/wiki/Batman:_Arkham_Knight"
   },
   {
     "id": "control-ultimate-edition",
@@ -105,7 +124,10 @@
     "tracking": {
       "app_id": 870780,
       "provider": "steam"
-    }
+    },
+    "original_release": "2019-08-27",
+    "original_release_source": "https://en.wikipedia.org/wiki/Control_(video_game)",
+    "original_release_note": "Original Control release, before the Ultimate Edition."
   },
   {
     "id": "dead-space",
@@ -117,7 +139,10 @@
     "tracking": {
       "app_id": 1693980,
       "provider": "steam"
-    }
+    },
+    "original_release": "2023-01-27",
+    "original_release_source": "https://store.steampowered.com/app/1693980/Dead_Space/",
+    "original_release_note": "The 2023 remake, not the 2008 game."
   },
   {
     "id": "disco-elysium",
@@ -129,7 +154,9 @@
     "tracking": {
       "app_id": 632470,
       "provider": "steam"
-    }
+    },
+    "original_release": "2019-10-15",
+    "original_release_source": "https://en.wikipedia.org/wiki/Disco_Elysium"
   },
   {
     "id": "ea-sports-fc-26",
@@ -141,7 +168,10 @@
     "tracking": {
       "app_id": 3405690,
       "provider": "steam"
-    }
+    },
+    "original_release": "2025-09-26",
+    "original_release_source": "https://www.playstation.com/en-us/support/games/ea-sports-fc-support/",
+    "original_release_note": "Standard release."
   },
   {
     "id": "elden-ring",
@@ -153,7 +183,9 @@
     "tracking": {
       "game_id": 1,
       "provider": "lutris"
-    }
+    },
+    "original_release": "2022-02-25",
+    "original_release_source": "https://www.fromsoftware.jp/ww/detail.html?csm=105"
   },
   {
     "id": "hades",
@@ -165,7 +197,10 @@
     "tracking": {
       "app_id": 1145360,
       "provider": "steam"
-    }
+    },
+    "original_release": "2020-09-17",
+    "original_release_source": "https://en.wikipedia.org/wiki/Hades_(video_game)",
+    "original_release_note": "Full release; early access began in December 2018."
   },
   {
     "id": "hellblade-senua-s-sacrifice-vr-edition",
@@ -177,7 +212,10 @@
     "tracking": {
       "app_id": 747350,
       "provider": "steam"
-    }
+    },
+    "original_release": "2018-07-31",
+    "original_release_source": "https://www.mobygames.com/game/112096/hellblade-senuas-sacrifice-vr-edition/releases/",
+    "original_release_note": "VR edition."
   },
   {
     "id": "hitman-world-of-assassination",
@@ -189,7 +227,10 @@
     "tracking": {
       "app_id": 1659040,
       "provider": "steam"
-    }
+    },
+    "original_release": "2021-01-20",
+    "original_release_source": "https://www.gematsu.com/games/hitman-world-of-assassination",
+    "original_release_note": "Originally released as Hitman 3; renamed World of Assassination in January 2023."
   },
   {
     "id": "hogwarts-legacy",
@@ -201,7 +242,10 @@
     "tracking": {
       "app_id": 990080,
       "provider": "steam"
-    }
+    },
+    "original_release": "2023-02-10",
+    "original_release_source": "https://www.gematsu.com/2022/08/hogwarts-legacy-delayed-to-february-10-2023-for-ps5-xbox-series-ps4-xbox-one-and-pc-later-for-switch",
+    "original_release_note": "Standard release."
   },
   {
     "id": "iron-nest-heavy-turret-simulator",
@@ -213,7 +257,9 @@
     "tracking": {
       "app_id": 2950790,
       "provider": "steam"
-    }
+    },
+    "original_release": "2026-08-06",
+    "original_release_source": "https://steamcommunity.com/app/2950790/discussions/0/604170759802194525/"
   },
   {
     "id": "mass-effect-legendary-edition",
@@ -225,7 +271,10 @@
     "tracking": {
       "app_id": 1328670,
       "provider": "steam"
-    }
+    },
+    "original_release": "2021-05-14",
+    "original_release_source": "https://news.ea.com/press-releases/press-releases-details/2021/Save-the-Galaxy-in-the-Epic-Saga-of-Commander-Shepard-With-Mass-Effect-Legendary-Edition-Today/",
+    "original_release_note": "Remastered trilogy collection."
   },
   {
     "id": "metro-2033-redux",
@@ -237,7 +286,10 @@
     "tracking": {
       "app_id": 286690,
       "provider": "steam"
-    }
+    },
+    "original_release": "2010-03-16",
+    "original_release_source": "https://www.metacritic.com/game/metro-2033/",
+    "original_release_note": "Original Metro 2033 release, before Redux."
   },
   {
     "id": "metro-exodus",
@@ -249,7 +301,9 @@
     "tracking": {
       "app_id": 412020,
       "provider": "steam"
-    }
+    },
+    "original_release": "2019-02-15",
+    "original_release_source": "https://en.wikipedia.org/wiki/Metro_Exodus"
   },
   {
     "id": "metro-exodus-enhanced-edition",
@@ -261,7 +315,10 @@
     "tracking": {
       "app_id": 1449560,
       "provider": "steam"
-    }
+    },
+    "original_release": "2019-02-15",
+    "original_release_source": "https://en.wikipedia.org/wiki/Metro_Exodus",
+    "original_release_note": "Original Metro Exodus release, before the Enhanced Edition."
   },
   {
     "id": "metro-last-light-redux",
@@ -273,7 +330,10 @@
     "tracking": {
       "app_id": 287390,
       "provider": "steam"
-    }
+    },
+    "original_release": "2013-05-14",
+    "original_release_source": "https://en.wikipedia.org/wiki/Metro:_Last_Light",
+    "original_release_note": "Original Last Light release, before Redux."
   },
   {
     "id": "no-mans-sky",
@@ -285,7 +345,9 @@
     "tracking": {
       "app_id": 275850,
       "provider": "steam"
-    }
+    },
+    "original_release": "2016-08-09",
+    "original_release_source": "https://en.wikipedia.org/wiki/No_Man%27s_Sky"
   },
   {
     "id": "outer-wilds",
@@ -297,7 +359,9 @@
     "tracking": {
       "app_id": 753640,
       "provider": "steam"
-    }
+    },
+    "original_release": "2019-05-30",
+    "original_release_source": "https://news.xbox.com/en-us/2019/05/30/outer-wilds-available-today-xbox-game-pass/"
   },
   {
     "id": "path-of-exile",
@@ -309,7 +373,10 @@
     "tracking": {
       "app_id": 238960,
       "provider": "steam"
-    }
+    },
+    "original_release": "2013-10-23",
+    "original_release_source": "https://store.steampowered.com/app/238960/Path_of_Exile/",
+    "original_release_note": "Full release."
   },
   {
     "id": "resident-evil-2",
@@ -321,7 +388,10 @@
     "tracking": {
       "app_id": 883710,
       "provider": "steam"
-    }
+    },
+    "original_release": "2019-01-25",
+    "original_release_source": "https://en.wikipedia.org/wiki/Resident_Evil_2_(2019_video_game)",
+    "original_release_note": "The 2019 remake, not the 1998 game."
   },
   {
     "id": "resident-evil-4",
@@ -333,7 +403,10 @@
     "tracking": {
       "app_id": 2050650,
       "provider": "steam"
-    }
+    },
+    "original_release": "2023-03-24",
+    "original_release_source": "https://en.wikipedia.org/wiki/Resident_Evil_4_(2023_video_game)",
+    "original_release_note": "The 2023 remake, not the 2005 game."
   },
   {
     "id": "resident-evil-7-biohazard",
@@ -345,7 +418,9 @@
     "tracking": {
       "app_id": 418370,
       "provider": "steam"
-    }
+    },
+    "original_release": "2017-01-24",
+    "original_release_source": "https://en.wikipedia.org/wiki/Resident_Evil_7:_Biohazard"
   },
   {
     "id": "rise-of-the-tomb-raider",
@@ -357,7 +432,9 @@
     "tracking": {
       "app_id": 391220,
       "provider": "steam"
-    }
+    },
+    "original_release": "2015-11-10",
+    "original_release_source": "https://en.wikipedia.org/wiki/Rise_of_the_Tomb_Raider"
   },
   {
     "id": "shadow-of-the-tomb-raider",
@@ -369,7 +446,9 @@
     "tracking": {
       "app_id": 750920,
       "provider": "steam"
-    }
+    },
+    "original_release": "2018-09-14",
+    "original_release_source": "https://en.wikipedia.org/wiki/Shadow_of_the_Tomb_Raider"
   },
   {
     "id": "snowrunner",
@@ -381,7 +460,9 @@
     "tracking": {
       "app_id": 1465360,
       "provider": "steam"
-    }
+    },
+    "original_release": "2020-04-28",
+    "original_release_source": "https://en.wikipedia.org/wiki/SnowRunner"
   },
   {
     "id": "stardew-valley",
@@ -393,7 +474,9 @@
     "tracking": {
       "app_id": 413150,
       "provider": "steam"
-    }
+    },
+    "original_release": "2016-02-26",
+    "original_release_source": "https://en.wikipedia.org/wiki/Stardew_Valley"
   },
   {
     "id": "subnautica",
@@ -405,7 +488,10 @@
     "tracking": {
       "app_id": 264710,
       "provider": "steam"
-    }
+    },
+    "original_release": "2018-01-23",
+    "original_release_source": "https://en.wikipedia.org/wiki/Subnautica",
+    "original_release_note": "Full release; early access began in December 2014."
   },
   {
     "id": "skyrim-special-edition",
@@ -417,7 +503,10 @@
     "tracking": {
       "app_id": 489830,
       "provider": "steam"
-    }
+    },
+    "original_release": "2011-11-11",
+    "original_release_source": "https://en.wikipedia.org/wiki/The_Elder_Scrolls_V:_Skyrim",
+    "original_release_note": "Original Skyrim release, before the Special Edition."
   },
   {
     "id": "the-outlast-trials",
@@ -429,7 +518,10 @@
     "tracking": {
       "app_id": 1304930,
       "provider": "steam"
-    }
+    },
+    "original_release": "2024-03-05",
+    "original_release_source": "https://en.wikipedia.org/wiki/The_Outlast_Trials",
+    "original_release_note": "Full release; early access began in May 2023."
   },
   {
     "id": "the-witcher-2-assassins-of-kings-enhanced-edition",
@@ -441,7 +533,10 @@
     "tracking": {
       "app_id": 20920,
       "provider": "steam"
-    }
+    },
+    "original_release": "2011-05-17",
+    "original_release_source": "https://en.wikipedia.org/wiki/The_Witcher_2:_Assassins_of_Kings",
+    "original_release_note": "Original game, before the Enhanced Edition."
   },
   {
     "id": "the-witcher-enhanced-edition",
@@ -453,7 +548,10 @@
     "tracking": {
       "app_id": 20900,
       "provider": "steam"
-    }
+    },
+    "original_release": "2007-10-26",
+    "original_release_source": "https://en.wikipedia.org/wiki/The_Witcher_(video_game)",
+    "original_release_note": "Original game, before the Enhanced Edition."
   },
   {
     "id": "titanfall-2-1237970",
@@ -465,7 +563,9 @@
     "tracking": {
       "app_id": 1237970,
       "provider": "steam"
-    }
+    },
+    "original_release": "2016-10-28",
+    "original_release_source": "https://news.ea.com/press-releases/press-releases-details/2016/Standby-for-Titanfall-2-on-October-28/default.aspx"
   },
   {
     "id": "tom-clancy-s-rainbow-six-siege",
@@ -477,7 +577,9 @@
     "tracking": {
       "app_id": 359550,
       "provider": "steam"
-    }
+    },
+    "original_release": "2015-12-01",
+    "original_release_source": "https://news.ubisoft.com/en-us/article/2a9aKobhEQ7SNI6Lw1yYdr/an-update-from-the-rainbow-six-siege-development-team"
   },
   {
     "id": "tomb-raider",
@@ -489,7 +591,10 @@
     "tracking": {
       "app_id": 203160,
       "provider": "steam"
-    }
+    },
+    "original_release": "2013-03-05",
+    "original_release_source": "https://en.wikipedia.org/wiki/Tomb_Raider_(2013_video_game)",
+    "original_release_note": "The 2013 reboot."
   },
   {
     "id": "vampyr",
@@ -501,7 +606,9 @@
     "tracking": {
       "app_id": 427290,
       "provider": "steam"
-    }
+    },
+    "original_release": "2018-06-05",
+    "original_release_source": "https://en.wikipedia.org/wiki/Vampyr_(video_game)"
   },
   {
     "id": "warframe",
@@ -513,6 +620,8 @@
     "tracking": {
       "app_id": 230410,
       "provider": "steam"
-    }
+    },
+    "original_release": "2013-03-25",
+    "original_release_source": "https://en.wikipedia.org/wiki/Warframe"
   }
 ]

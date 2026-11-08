@@ -49,3 +49,13 @@ The photo index uses a dark contact sheet grouped by year and month. Each thumbn
 links to its full photograph page; cropped previews do not change the source image.
 An empty archive remains empty until approved photo entries are added. Test fixtures
 for the contact sheet are not published as real memories.
+
+Local imports can stay in `phot_dump/` (ignored by Git). Reviewed, resized WebP
+copies belong in `content/images/photos/YYYY/MM/`, with matching entries here.
+Keep originals unchanged; the published copy should have no camera or location
+metadata. The November and December 2021 entries use the dates recorded in the
+source images; titles describe the scene without guessing an exact location.
+
+When only the year is known, use `date: 2023` and folders such as
+`content/photos/2023/` and `content/images/photos/2023/`. The archive and photo
+page show only that year, without assuming a month or day.
