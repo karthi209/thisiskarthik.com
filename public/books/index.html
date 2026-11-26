@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; script-src 'self' 'unsafe-inline';">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="dark">
+    <meta name="description" content="books read, being read, and saved for another day.">
+    <title>books — for later, when i forget</title>
+      <link rel="preload" href="/fonts/source-serif-4-roman-variable.woff2" as="font" type="font/woff2" crossorigin>
+      <link rel="preload" href="/fonts/ibm-plex-sans-regular.woff2" as="font" type="font/woff2" crossorigin>
+      <script src="/js/preferences.js?v=1">
+      </script>
+      <script src="/js/reading.js?v=12" defer>
+      </script>
+      <link href="/css/site.css?v=115" rel="stylesheet" type="text/css">
+      <link rel="icon" href="/favicon.png" type="image/png">
+    </head>
+    <body class="games-page books-page collection-page collection-page--books">
+      <a class="skip-link" href="#main">Skip to content</a>
+      <div class="games-site-shell">
+        <header class="site-header">
+          <div class="journal-identity">
+            <a class="site-title" href="/" aria-label="for later, when i forget — by karthik">
+            <span class="masthead-name">for later, when i forget</span>
+            <span class="masthead-byline">by karthik</span>
+          </a>
+        </div>
+        <nav class="site-nav" aria-label="Journal">
+          <a href="/">home</a>
+          <a href="/essays">essays</a>
+          <a href="/games">games</a>
+          <a href="/books" aria-current="page">books</a>
+          <a href="/photos">photos</a>
+          <a href="/about">about</a>
+        </nav>
+        <details class="reading-tools">
+          <summary aria-label="Reading settings" title="Reading settings">
+            <svg class="reading-settings-mark" viewBox="0 0 28 24" width="28" height="24" aria-hidden="true" focusable="false">
+              <path d="M2 19 8 4l6 15M4 14h8M1 19h4m6 0h4"/>
+              <path class="reading-settings-lines" d="M18 7h8M18 12h6M18 17h8"/>
+            </svg>
+          </summary>
+          <section class="reading-panel" aria-label="Reading preferences">
+            <header class="reading-panel-header">
+              <h2>Set the page</h2>
+                <button type="button" id="reading-close">Close</button>
+                </header>
+                <div class="reading-proof" aria-hidden="true">
+                  <span>for later, when i forget</span>
+                    <p>A little space, a little ink.<br>The page should feel like yours.</p>
+                    </div>
+                    <fieldset class="reading-presets">
+                      <legend>Start with</legend>
+                        <button type="button" data-reading-preset="book">Book</button>
+                          <button type="button" data-reading-preset="compact">Compact</button>
+                            <button type="button" data-reading-preset="large">Large print</button>
+                            </fieldset>
+                            <fieldset class="reading-themes">
+                              <legend>Light</legend>
+                                <button type="button" data-reading-theme="light" aria-pressed="false">Light</button>
+                                  <button type="button" data-reading-theme="dark" aria-pressed="false">Dark</button>
+                                    <button type="button" data-reading-theme="auto" aria-pressed="false">Auto</button>
+                                    </fieldset>
+                                    <label class="reading-size-label" for="reading-size">Type size <output id="reading-size-value" for="reading-size">
+                                    </output>
+                                  </label>
+                                  <input type="range" id="reading-size" min="16" max="26" step="1" value="20">
+                                  <div class="reading-measures">
+                                    <label for="reading-leading">Line spacing<select id="reading-leading">
+                                      <option value="1.4">Close</option>
+                                        <option value="1.5" selected>Book</option>
+                                          <option value="1.7">Open</option>
+                                          </select>
+                                        </label>
+                                        <label for="reading-width">Text width<select id="reading-width">
+                                          <option value="56">Narrow</option>
+                                            <option value="68" selected>Book</option>
+                                              <option value="80">Wide</option>
+                                              </select>
+                                            </label>
+                                          </div>
+                                          <label class="reading-quiet">
+                                            <input type="checkbox" id="reading-focus"> Quiet view <span>hide menus and contents</span>
+                                          </label>
+                                          <footer class="reading-panel-footer">
+                                            <button type="button" id="reading-reset">Reset</button>
+                                              <span id="reading-status" role="status">Saved on this device</span>
+                                            </footer>
+                                          </section>
+                                        </details>
+                                      </header>
+                                      <div class="games-layout">
+                                        <main class="games-paper archive-page" id="main">
+                                          <header class="section-header games-intro collection-intro">
+                                            <h1>books</h1>
+                                              <p class="section-deck">read, being read, and saved for another day.</p>
+                                              </header>
+                                              <section class="games-section games-playing reading-slip collection-section collection-section--mint" aria-labelledby="reading-heading">
+                                                <h2 id="reading-heading">
+                                                  <span>reading now</span>
+                                                    <small>4 books</small>
+                                                    </h2>
+                                                    <ul class="collection-shelf book-shelf game-chronology-grid">
+                                                      <li id="book-the-left-hand-of-darkness" data-game-title="The Left Hand of Darkness" data-game-author="Ursula K. Le Guin" data-game-status="reading" data-game-date="" data-game-rating="" data-game-tier="" data-game-tier-label="" data-game-hours="">
+                                                        <details class="shelf-entry book-entry">
+                                                          <summary>
+                                                            <span class="book-cover">
+                                                            <img src="/images/books/the-left-hand-of-darkness.webp" alt="Cover of The Left Hand of Darkness" loading="lazy" decoding="async" width="302" height="475">
+                                                          </span>
+                                                          <span class="shelf-title">The Left Hand of Darkness</span>
+                                                          <span class="book-author">Ursula K. Le Guin</span>
+                                                          <span class="game-arranged-value" hidden>
+                                                        </span>
+                                                        <span class="game-hover-preview" aria-hidden="true">
+                                                        <strong>The Left Hand of Darkness</strong>
+                                                          <span class="game-hover-status">Ursula K. Le Guin</span>
+                                                          <span>
+                                                          <span class="shelf-quiet-note">Not rated yet</span>
+                                                        </span>
+                                                      </span>
+                                                    </summary>
+                                                    <div class="shelf-notes">
+                                                      <div class="game-entry-writing">
+                                                        <p class="book-detail-author">Ursula K. Le Guin</p>
+                                                          <dl class="game-verdict">
+                                                            <div>
+                                                              <dt class="sr-only">My rating</dt>
+                                                                <dd>
+                                                                  <span class="shelf-quiet-note">Not rated yet</span>
+                                                                </dd>
+                                                              </div>
+                                                            </dl>
+                                                            <p class="game-entry-status">
+                                                              <span class="collection-status">Reading now</span>
+                                                            </p>
+                                                            <dl class="game-play-history">
+                                                            </dl>
+                                                            <p class="collection-more-info">
+                                                              <a href="https://www.goodreads.com/search?q=The&#43;Left&#43;Hand&#43;of&#43;Darkness+Ursula&#43;K.&#43;Le&#43;Guin" target="_blank" rel="noopener noreferrer">Find on Goodreads <span class="collection-link-context"> (opens in a new tab)</span>
+                                                            </a>
+                                                          </p>
+                                                        </div>
+                                                      </div>
+                                                    </details>
+                                                  </li>
+                                                  <li id="book-sword-of-destiny" data-game-title="Sword of Destiny" data-game-author="Andrzej Sapkowski" data-game-status="reading" data-game-date="" data-game-rating="" data-game-tier="" data-game-tier-label="" data-game-hours="">
+                                                    <details class="shelf-entry book-entry">
+                                                      <summary>
+                                                        <span class="book-cover">
+                                                        <img src="/images/books/sword-of-destiny.webp" alt="Cover of Sword of Destiny" loading="lazy" decoding="async" width="300" height="482">
+                                                      </span>
+                                                      <span class="shelf-title">Sword of Destiny</span>
+                                                      <span class="book-author">Andrzej Sapkowski</span>
+                                                      <span class="game-arranged-value" hidden>
+                                                    </span>
+                                                    <span class="game-hover-preview" aria-hidden="true">
+                                                    <strong>Sword of Destiny</strong>
+                                                      <span class="game-hover-status">Andrzej Sapkowski</span>
+                                                      <span>
+                                                      <span class="shelf-quiet-note">Not rated yet</span>
+                                                    </span>
+                                                  </span>
+                                                </summary>
+                                                <div class="shelf-notes">
+                                                  <div class="game-entry-writing">
+                                                    <p class="book-detail-author">Andrzej Sapkowski</p>
+                                                      <dl class="game-verdict">
+                                                        <div>
+                                                          <dt class="sr-only">My rating</dt>
+                                                            <dd>
+                                                              <span class="shelf-quiet-note">Not rated yet</span>
+                                                            </dd>
+                                                          </div>
+                                                        </dl>
+                                                        <p class="game-entry-status">
+                                                          <span class="collection-status">Reading now</span>
+                                                        </p>
+                                                        <dl class="game-play-history">
+                                                        </dl>
+                                                        <p class="collection-more-info">
+                                                          <a href="https://www.goodreads.com/search?q=Sword&#43;of&#43;Destiny+Andrzej&#43;Sapkowski" target="_blank" rel="noopener noreferrer">Find on Goodreads <span class="collection-link-context"> (opens in a new tab)</span>
+                                                        </a>
+                                                      </p>
+                                                    </div>
+                                                  </div>
+                                                </details>
+                                              </li>
+                                              <li id="book-the-blade-itself" data-game-title="The Blade Itself" data-game-author="Joe Abercrombie" data-game-status="reading" data-game-date="" data-game-rating="" data-game-tier="" data-game-tier-label="" data-game-hours="">
+                                                <details class="shelf-entry book-entry">
+                                                  <summary>
+                                                    <span class="book-cover">
+                                                    <img src="/images/books/the-blade-itself.webp" alt="Cover of The Blade Itself" loading="lazy" decoding="async" width="355" height="500">
+                                                  </span>
+                                                  <span class="shelf-title">The Blade Itself</span>
+                                                  <span class="book-author">Joe Abercrombie</span>
+                                                  <span class="game-arranged-value" hidden>
+                                                </span>
+                                                <span class="game-hover-preview" aria-hidden="true">
+                                                <strong>The Blade Itself</strong>
+                                                  <span class="game-hover-status">Joe Abercrombie</span>
+                                                  <span>
+                                                  <span class="shelf-quiet-note">Not rated yet</span>
+                                                </span>
+                                              </span>
+                                            </summary>
+                                            <div class="shelf-notes">
+                                              <div class="game-entry-writing">
+                                                <p class="book-detail-author">Joe Abercrombie</p>
+                                                  <dl class="game-verdict">
+                                                    <div>
+                                                      <dt class="sr-only">My rating</dt>
+                                                        <dd>
+                                                          <span class="shelf-quiet-note">Not rated yet</span>
+                                                        </dd>
+                                                      </div>
+                                                    </dl>
+                                                    <p class="game-entry-status">
+                                                      <span class="collection-status">Reading now</span>
+                                                    </p>
+                                                    <dl class="game-play-history">
+                                                    </dl>
+                                                    <p class="collection-more-info">
+                                                      <a href="https://www.goodreads.com/search?q=The&#43;Blade&#43;Itself+Joe&#43;Abercrombie" target="_blank" rel="noopener noreferrer">Find on Goodreads <span class="collection-link-context"> (opens in a new tab)</span>
+                                                    </a>
+                                                  </p>
+                                                </div>
+                                              </div>
+                                            </details>
+                                          </li>
+                                          <li id="book-the-death-of-ivan-ilyich-and-other-stories" data-game-title="The Death of Ivan Ilyich and Other Stories" data-game-author="Leo Tolstoy" data-game-status="reading" data-game-date="" data-game-rating="" data-game-tier="" data-game-tier-label="" data-game-hours="">
+                                            <details class="shelf-entry book-entry">
+                                              <summary>
+                                                <span class="book-cover">
+                                                <img src="/images/books/the-death-of-ivan-ilyich-and-other-stories.webp" alt="Cover of The Death of Ivan Ilyich and Other Stories" loading="lazy" decoding="async" width="258" height="400">
+                                              </span>
+                                              <span class="shelf-title">The Death of Ivan Ilyich and Other Stories</span>
+                                              <span class="book-author">Leo Tolstoy</span>
+                                              <span class="game-arranged-value" hidden>
+                                            </span>
+                                            <span class="game-hover-preview" aria-hidden="true">
+                                            <strong>The Death of Ivan Ilyich and Other Stories</strong>
+                                              <span class="game-hover-status">Leo Tolstoy</span>
+                                              <span>
+                                              <span class="shelf-quiet-note">Not rated yet</span>
+                                            </span>
+                                          </span>
+                                        </summary>
+                                        <div class="shelf-notes">
+                                          <div class="game-entry-writing">
+                                            <p class="book-detail-author">Leo Tolstoy</p>
+                                              <dl class="game-verdict">
+                                                <div>
+                                                  <dt class="sr-only">My rating</dt>
+                                                    <dd>
+                                                      <span class="shelf-quiet-note">Not rated yet</span>
+                                                    </dd>
+                                                  </div>
+                                                </dl>
+                                                <p class="game-entry-status">
+                                                  <span class="collection-status">Reading now</span>
+                                                </p>
+                                                <dl class="game-play-history">
+                                                </dl>
+                                                <p class="collection-more-info">
+                                                  <a href="https://www.goodreads.com/search?q=The&#43;Death&#43;of&#43;Ivan&#43;Ilyich&#43;and&#43;Other&#43;Stories+Leo&#43;Tolstoy" target="_blank" rel="noopener noreferrer">Find on Goodreads <span class="collection-link-context"> (opens in a new tab)</span>
+                                                </a>
+                                              </p>
+                                            </div>
+                                          </div>
+                                        </details>
+                                      </li>
+                                    </ul>
+                                  </section>
+                                  <section class="collection-stats game-stats" aria-labelledby="book-stats-heading">
+                                    <h2 id="book-stats-heading" class="sr-only">My books</h2>
+                                      <dl class="collection-stat-totals game-kpi-totals">
+                                        <div>
+                                          <dt>
+                                            <span class="stat-label">Read</span>
+                                          </dt>
+                                          <dd>3</dd>
+                                          </div>
+                                          <div>
+                                            <dt>
+                                              <span class="stat-label">Reading</span>
+                                            </dt>
+                                            <dd>4</dd>
+                                            </div>
+                                            <div>
+                                              <dt>
+                                                <span class="stat-label">Want to read</span>
+                                              </dt>
+                                              <dd>16</dd>
+                                              </div>
+                                              <div>
+                                                <dt>
+                                                  <span class="stat-label">Authors</span>
+                                                </dt>
+                                                <dd>14</dd>
+                                                </div>
+                                              </dl>
+                                              <div class="collection-stat-charts">
+                                                <section class="collection-stat-chart" aria-labelledby="collection-ratings-heading">
+                                                  <header class="rating-board-header">
+                                                    <h3 id="collection-ratings-heading">Ratings</h3>
+                                                      <span class="rating-board-total">0 books</span>
+                                                    </header>
+                                                    <p class="collection-chart-empty">No ratings yet.</p>
+                                                    </section>
+                                                  </div>
+                                                </section>
+                                                <section class="game-collection" aria-labelledby="book-collection-heading">
+                                                  <h2 id="book-collection-heading">collection</h2>
+                                                    <div class="game-browser-controls" hidden>
+                                                      <div class="game-browser-toolbar">
+                                                        <nav class="game-view-switch" aria-label="Reading shelves">
+                                                          <button type="button" class="is-active" data-game-scope="history" aria-pressed="true" title="Read" aria-label="Read">Read</button>
+                                                            <button type="button" data-game-scope="backlog" aria-pressed="false" title="Want to read" aria-label="Want to read">Want to read</button>
+                                                            </nav>
+                                                            <label class="game-search-label" for="game-search">
+                                                              <span class="sr-only">Search this collection</span>
+                                                              <input type="search" id="game-search" placeholder="Search books" autocomplete="off">
+                                                            </label>
+                                                            <label class="game-arrange-label" for="game-arrange" title="Arrange books">
+                                                              <span>Sort</span>
+                                                                <select id="game-arrange">
+                                                                  <option value="years">Year</option>
+                                                                    <option value="rating">Tier</option>
+                                                                    </select>
+                                                                  </label>
+                                                                </div>
+                                                                <div class="game-browser-selection">
+                                                                  <div class="game-filter-chips" aria-label="Active filters">
+                                                                  </div>
+                                                                  <button type="button" class="game-filter-clear" title="Clear filters" aria-label="Clear filters" hidden>Clear</button>
+                                                                    <p class="game-result-count" role="status" aria-live="polite">
+                                                                    </p>
+                                                                  </div>
+                                                                </div>
+                                                                <div id="game-browser-results" hidden>
+                                                                </div>
+                                                                <div data-game-panel="years">
+                                                                  <section class="games-section books-read collection-section collection-section--rose" aria-labelledby="read-heading">
+                                                                    <h2 id="read-heading">
+                                                                      <span>Read</span>
+                                                                      </h2>
+                                                                      <ul class="collection-shelf book-shelf game-chronology-grid">
+                                                                        <li id="book-the-last-wish" data-game-title="The Last Wish" data-game-author="Andrzej Sapkowski" data-game-status="read" data-game-date="" data-game-rating="" data-game-tier="" data-game-tier-label="" data-game-hours="">
+                                                                          <details class="shelf-entry book-entry">
+                                                                            <summary>
+                                                                              <span class="book-cover">
+                                                                              <img src="/images/books/the-last-wish.webp" alt="Cover of The Last Wish" loading="lazy" decoding="async" width="297" height="500">
+                                                                            </span>
+                                                                            <span class="shelf-title">The Last Wish</span>
+                                                                            <span class="book-author">Andrzej Sapkowski</span>
+                                                                            <span class="game-arranged-value" hidden>
+                                                                          </span>
+                                                                          <span class="game-hover-preview" aria-hidden="true">
+                                                                          <strong>The Last Wish</strong>
+                                                                            <span class="game-hover-status">Andrzej Sapkowski</span>
+                                                                            <span>
+                                                                            <span class="shelf-quiet-note">Not rated yet</span>
+                                                                          </span>
+                                                                        </span>
+                                                                      </summary>
+                                                                      <div class="shelf-notes">
+                                                                        <div class="game-entry-writing">
+                                                                          <p class="book-detail-author">Andrzej Sapkowski</p>
+                                                                            <dl class="game-verdict">
+                                                                              <div>
+                                                                                <dt class="sr-only">My rating</dt>
+                                                                                  <dd>
+                                                                                    <span class="shelf-quiet-note">Not rated yet</span>
+                                                                                  </dd>
+                                                                                </div>
+                                                                              </dl>
+                                                                              <p class="game-entry-status">
+                                                                                <span class="collection-status">Read</span>
+                                                                              </p>
+                                                                              <dl class="game-play-history">
+                                                                              </dl>
+                                                                              <p class="collection-more-info">
+                                                                                <a href="https://www.goodreads.com/search?q=The&#43;Last&#43;Wish+Andrzej&#43;Sapkowski" target="_blank" rel="noopener noreferrer">Find on Goodreads <span class="collection-link-context"> (opens in a new tab)</span>
+                                                                              </a>
+                                                                            </p>
+                                                                          </div>
+                                                                        </div>
+                                                                      </details>
+                                                                    </li>
+                                                                    <li id="book-and-then-there-were-none" data-game-title="And Then There Were None" data-game-author="Agatha Christie" data-game-status="read" data-game-date="" data-game-rating="" data-game-tier="" data-game-tier-label="" data-game-hours="">
+                                                                      <details class="shelf-entry book-entry">
+                                                                        <summary>
+                                                                          <span class="book-cover">
+                                                                          <img src="/images/books/and-then-there-were-none.webp" alt="Cover of And Then There Were None" loading="lazy" decoding="async" width="300" height="500">
+                                                                        </span>
+                                                                        <span class="shelf-title">And Then There Were None</span>
+                                                                        <span class="book-author">Agatha Christie</span>
+                                                                        <span class="game-arranged-value" hidden>
+                                                                      </span>
+                                                                      <span class="game-hover-preview" aria-hidden="true">
+                                                                      <strong>And Then There Were None</strong>
+                                                                        <span class="game-hover-status">Agatha Christie</span>
+                                                                        <span>
+                                                                        <span class="shelf-quiet-note">Not rated yet</span>
+                                                                      </span>
+                                                                    </span>
+                                                                  </summary>
+                                                                  <div class="shelf-notes">
+                                                                    <div class="game-entry-writing">
+                                                                      <p class="book-detail-author">Agatha Christie</p>
+                                                                        <dl class="game-verdict">
+                                                                          <div>
+                                                                            <dt class="sr-only">My rating</dt>
+                                                                              <dd>
+                                                                                <span class="shelf-quiet-note">Not rated yet</span>
+                                                                              </dd>
+                                                                            </div>
+                                                                          </dl>
+                                                                          <p class="game-entry-status">
+                                                                            <span class="collection-status">Read</span>
+                                                                          </p>
+                                                                          <dl class="game-play-history">
+                                                                          </dl>
+                                                                          <p class="collection-more-info">
+                                                                            <a href="https://www.goodreads.com/search?q=And&#43;Then&#43;There&#43;Were&#43;None+Agatha&#43;Christie" target="_blank" rel="noopener noreferrer">Find on Goodreads <span class="collection-link-context"> (opens in a new tab)</span>
+                                                                          </a>
+                                                                        </p>
+                                                                      </div>
+                                                                    </div>
+                                                                  </details>
+                                                                </li>
+                                                                <li id="book-code" data-game-title="Code" data-game-author="Charles Petzold" data-game-status="read" data-game-date="" data-game-rating="" data-game-tier="" data-game-tier-label="" data-game-hours="">
+                                                                  <details class="shelf-entry book-entry">
+                                                                    <summary>
+                                                                      <span class="book-cover">
+                                                                      <img src="/images/books/code.webp" alt="Cover of Code" loading="lazy" decoding="async" width="314" height="475">
+                                                                    </span>
+                                                                    <span class="shelf-title">Code</span>
+                                                                    <span class="book-author">Charles Petzold</span>
+                                                                    <span class="game-arranged-value" hidden>
+                                                                  </span>
+                                                                  <span class="game-hover-preview" aria-hidden="true">
+                                                                  <strong>Code</strong>
+                                                                    <span class="game-hover-status">Charles Petzold</span>
+                                                                    <span>
+                                                                    <span class="shelf-quiet-note">Not rated yet</span>
+                                                                  </span>
+                                                                </span>
+                                                              </summary>
+                                                              <div class="shelf-notes">
+                                                                <div class="game-entry-writing">
+                                                                  <p class="book-detail-author">Charles Petzold</p>
+                                                                    <dl class="game-verdict">
+                                                                      <div>
+                                                                        <dt class="sr-only">My rating</dt>
+                                                                          <dd>
+                                                                            <span class="shelf-quiet-note">Not rated yet</span>
+                                                                          </dd>
+                                                                        </div>
+                                                                      </dl>
+                                                                      <p class="game-entry-status">
+                                                                        <span class="collection-status">Read</span>
+                                                                      </p>
+                                                                      <dl class="game-play-history">
+                                                                      </dl>
+                                                                      <p class="collection-more-info">
+                                                                        <a href="https://www.goodreads.com/search?q=Code+Charles&#43;Petzold" target="_blank" rel="noopener noreferrer">Find on Goodreads <span class="collection-link-context"> (opens in a new tab)</span>
+                                                                      </a>
+                                                                    </p>
+                                                                  </div>
+                                                                </div>
+                                                              </details>
+                                                            </li>
+                                                          </ul>
+                                                        </section>
+                                                      </div>
+                                                      <div data-game-panel="backlog">
+                                                        <section class="games-section books-planned collection-section collection-section--blue" aria-labelledby="planned-heading">
+                                                          <h2 id="planned-heading">
+                                                            <span>Want to read</span>
+                                                            </h2>
+                                                            <ul class="collection-shelf book-shelf game-chronology-grid">
+                                                              <li id="book-hyperion" data-game-title="Hyperion" data-game-author="Dan Simmons" data-game-status="planned" data-game-date="" data-game-rating="" data-game-tier="" data-game-tier-label="" data-game-hours="">
+                                                                <details class="shelf-entry book-entry">
+                                                                  <summary>
+                                                                    <span class="book-cover">
+                                                                    <img src="/images/books/hyperion.webp" alt="Cover of Hyperion" loading="lazy" decoding="async" width="307" height="500">
+                                                                  </span>
+                                                                  <span class="shelf-title">Hyperion</span>
+                                                                  <span class="book-author">Dan Simmons</span>
+                                                                  <span class="game-arranged-value" hidden>
+                                                                </span>
+                                                                <span class="game-hover-preview" aria-hidden="true">
+                                                                <strong>Hyperion</strong>
+                                                                  <span class="game-hover-status">Dan Simmons</span>
+                                                                  <span>
+                                                                  <span class="shelf-quiet-note">Not rated yet</span>
+                                                                </span>
+                                                              </span>
+                                                            </summary>
+                                                            <div class="shelf-notes">
+                                                              <div class="game-entry-writing">
+                                                                <p class="book-detail-author">Dan Simmons</p>
+                                                                  <dl class="game-verdict">
+                                                                    <div>
+                                                                      <dt class="sr-only">My rating</dt>
+                                                                        <dd>
+                                                                          <span class="shelf-quiet-note">Not rated yet</span>
+                                                                        </dd>
+                                                                      </div>
+                                                                    </dl>
+                                                                    <p class="game-entry-status">
+                                                                      <span class="collection-status">Want to read</span>
+                                                                    </p>
+                                                                    <dl class="game-play-history">
+                                                                    </dl>
+                                                                    <p class="collection-more-info">
+                                                                      <a href="https://www.goodreads.com/search?q=Hyperion+Dan&#43;Simmons" target="_blank" rel="noopener noreferrer">Find on Goodreads <span class="collection-link-context"> (opens in a new tab)</span>
+                                                                    </a>
+                                                                  </p>
+                                                                </div>
+                                                              </div>
+                                                            </details>
+                                                          </li>
+                                                          <li id="book-flowers-for-algernon" data-game-title="Flowers for Algernon" data-game-author="Daniel Keyes" data-game-status="planned" data-game-date="" data-game-rating="" data-game-tier="" data-game-tier-label="" data-game-hours="">
+                                                            <details class="shelf-entry book-entry">
+                                                              <summary>
+                                                                <span class="book-cover">
+                                                                <img src="/images/books/flowers-for-algernon.webp" alt="Cover of Flowers for Algernon" loading="lazy" decoding="async" width="276" height="500">
+                                                              </span>
+                                                              <span class="shelf-title">Flowers for Algernon</span>
+                                                              <span class="book-author">Daniel Keyes</span>
+                                                              <span class="game-arranged-value" hidden>
+                                                            </span>
+                                                            <span class="game-hover-preview" aria-hidden="true">
+                                                            <strong>Flowers for Algernon</strong>
+                                                              <span class="game-hover-status">Daniel Keyes</span>
+                                                              <span>
+                                                              <span class="shelf-quiet-note">Not rated yet</span>
+                                                            </span>
+                                                          </span>
+                                                        </summary>
+                                                        <div class="shelf-notes">
+                                                          <div class="game-entry-writing">
+                                                            <p class="book-detail-author">Daniel Keyes</p>
+                                                              <dl class="game-verdict">
+                                                                <div>
+                                                                  <dt class="sr-only">My rating</dt>
+                                                                    <dd>
+                                                                      <span class="shelf-quiet-note">Not rated yet</span>
+                                                                    </dd>
+                                                                  </div>
+                                                                </dl>
+                                                                <p class="game-entry-status">
+                                                                  <span class="collection-status">Want to read</span>
+                                                                </p>
+                                                                <dl class="game-play-history">
+                                                                </dl>
+                                                                <p class="collection-more-info">
+                                                                  <a href="https://www.goodreads.com/search?q=Flowers&#43;for&#43;Algernon+Daniel&#43;Keyes" target="_blank" rel="noopener noreferrer">Find on Goodreads <span class="collection-link-context"> (opens in a new tab)</span>
+                                                                </a>
+                                                              </p>
+                                                            </div>
+                                                          </div>
+                                                        </details>
+                                                      </li>
+                                                      <li id="book-before-they-are-hanged" data-game-title="Before They Are Hanged" data-game-author="Joe Abercrombie" data-game-status="planned" data-game-date="" data-game-rating="" data-game-tier="" data-game-tier-label="" data-game-hours="">
+                                                        <details class="shelf-entry book-entry">
+                                                          <summary>
+                                                            <span class="book-cover">
+                                                            <img src="/images/books/before-they-are-hanged.webp" alt="Cover of Before They Are Hanged" loading="lazy" decoding="async" width="320" height="500">
+                                                          </span>
+                                                          <span class="shelf-title">Before They Are Hanged</span>
+                                                          <span class="book-author">Joe Abercrombie</span>
+                                                          <span class="game-arranged-value" hidden>
+                                                        </span>
+                                                        <span class="game-hover-preview" aria-hidden="true">
+                                                        <strong>Before They Are Hanged</strong>
+                                                          <span class="game-hover-status">Joe Abercrombie</span>
+                                                          <span>
+                                                          <span class="shelf-quiet-note">Not rated yet</span>
+                                                        </span>
+                                                      </span>
+                                                    </summary>
+                                                    <div class="shelf-notes">
+                                                      <div class="game-entry-writing">
+                                                        <p class="book-detail-author">Joe Abercrombie</p>
+                                                          <dl class="game-verdict">
+                                                            <div>
+                                                              <dt class="sr-only">My rating</dt>
+                                                                <dd>
+                                                                  <span class="shelf-quiet-note">Not rated yet</span>
+                                                                </dd>
+                                                              </div>
+                                                            </dl>
+                                                            <p class="game-entry-status">
+                                                              <span class="collection-status">Want to read</span>
+                                                            </p>
+                                                            <dl class="game-play-history">
+                                                            </dl>
+                                                            <p class="collection-more-info">
+                                                              <a href="https://www.goodreads.com/search?q=Before&#43;They&#43;Are&#43;Hanged+Joe&#43;Abercrombie" target="_blank" rel="noopener noreferrer">Find on Goodreads <span class="collection-link-context"> (opens in a new tab)</span>
+                                                            </a>
+                                                          </p>
+                                                        </div>
+                                                      </div>
+                                                    </details>
+                                                  </li>
+                                                  <li id="book-last-argument-of-kings" data-game-title="Last Argument of Kings" data-game-author="Joe Abercrombie" data-game-status="planned" data-game-date="" data-game-rating="" data-game-tier="" data-game-tier-label="" data-game-hours="">
+                                                    <details class="shelf-entry book-entry">
+                                                      <summary>
+                                                        <span class="book-cover">
+                                                        <img src="/images/books/last-argument-of-kings.webp" alt="Cover of Last Argument of Kings" loading="lazy" decoding="async" width="329" height="500">
+                                                      </span>
+                                                      <span class="shelf-title">Last Argument of Kings</span>
+                                                      <span class="book-author">Joe Abercrombie</span>
+                                                      <span class="game-arranged-value" hidden>
+                                                    </span>
+                                                    <span class="game-hover-preview" aria-hidden="true">
+                                                    <strong>Last Argument of Kings</strong>
+                                                      <span class="game-hover-status">Joe Abercrombie</span>
+                                                      <span>
+                                                      <span class="shelf-quiet-note">Not rated yet</span>
+                                                    </span>
+                                                  </span>
+                                                </summary>
+                                                <div class="shelf-notes">
+                                                  <div class="game-entry-writing">
+                                                    <p class="book-detail-author">Joe Abercrombie</p>
+                                                      <dl class="game-verdict">
+                                                        <div>
+                                                          <dt class="sr-only">My rating</dt>
+                                                            <dd>
+                                                              <span class="shelf-quiet-note">Not rated yet</span>
+                                                            </dd>
+                                                          </div>
+                                                        </dl>
+                                                        <p class="game-entry-status">
+                                                          <span class="collection-status">Want to read</span>
+                                                        </p>
+                                                        <dl class="game-play-history">
+                                                        </dl>
+                                                        <p class="collection-more-info">
+                                                          <a href="https://www.goodreads.com/search?q=Last&#43;Argument&#43;of&#43;Kings+Joe&#43;Abercrombie" target="_blank" rel="noopener noreferrer">Find on Goodreads <span class="collection-link-context"> (opens in a new tab)</span>
+                                                        </a>
+                                                      </p>
+                                                    </div>
+                                                  </div>
+                                                </details>
+                                              </li>
+                                              <li id="book-the-two-towers" data-game-title="The Two Towers" data-game-author="J. R. R. Tolkien" data-game-status="planned" data-game-date="" data-game-rating="" data-game-tier="" data-game-tier-label="" data-game-hours="">
+                                                <details class="shelf-entry book-entry">
+                                                  <summary>
+                                                    <span class="book-cover">
+                                                    <img src="/images/books/the-two-towers.webp" alt="Cover of The Two Towers" loading="lazy" decoding="async" width="307" height="500">
+                                                  </span>
+                                                  <span class="shelf-title">The Two Towers</span>
+                                                  <span class="book-author">J. R. R. Tolkien</span>
+                                                  <span class="game-arranged-value" hidden>
+                                                </span>
+                                                <span class="game-hover-preview" aria-hidden="true">
+                                                <strong>The Two Towers</strong>
+                                                  <span class="game-hover-status">J. R. R. Tolkien</span>
+                                                  <span>
+                                                  <span class="shelf-quiet-note">Not rated yet</span>
+                                                </span>
+                                              </span>
+                                            </summary>
+                                            <div class="shelf-notes">
+                                              <div class="game-entry-writing">
+                                                <p class="book-detail-author">J. R. R. Tolkien</p>
+                                                  <dl class="game-verdict">
+                                                    <div>
+                                                      <dt class="sr-only">My rating</dt>
+                                                        <dd>
+                                                          <span class="shelf-quiet-note">Not rated yet</span>
+                                                        </dd>
+                                                      </div>
+                                                    </dl>
+                                                    <p class="game-entry-status">
+                                                      <span class="collection-status">Want to read</span>
+                                                    </p>
+                                                    <dl class="game-play-history">
+                                                    </dl>
+                                                    <p class="collection-more-info">
+                                                      <a href="https://www.goodreads.com/search?q=The&#43;Two&#43;Towers+J.&#43;R.&#43;R.&#43;Tolkien" target="_blank" rel="noopener noreferrer">Find on Goodreads <span class="collection-link-context"> (opens in a new tab)</span>
+                                                    </a>
+                                                  </p>
+                                                </div>
+                                              </div>
+                                            </details>
+                                          </li>
+                                          <li id="book-the-fellowship-of-the-ring" data-game-title="The Fellowship of the Ring" data-game-author="J. R. R. Tolkien" data-game-status="planned" data-game-date="" data-game-rating="" data-game-tier="" data-game-tier-label="" data-game-hours="">
+                                            <details class="shelf-entry book-entry">
+                                              <summary>
+                                                <span class="book-cover">
+                                                <img src="/images/books/the-fellowship-of-the-ring.webp" alt="Cover of The Fellowship of the Ring" loading="lazy" decoding="async" width="301" height="500">
+                                              </span>
+                                              <span class="shelf-title">The Fellowship of the Ring</span>
+                                              <span class="book-author">J. R. R. Tolkien</span>
+                                              <span class="game-arranged-value" hidden>
+                                            </span>
+                                            <span class="game-hover-preview" aria-hidden="true">
+                                            <strong>The Fellowship of the Ring</strong>
+                                              <span class="game-hover-status">J. R. R. Tolkien</span>
+                                              <span>
+                                              <span class="shelf-quiet-note">Not rated yet</span>
+                                            </span>
+                                          </span>
+                                        </summary>
+                                        <div class="shelf-notes">
+                                          <div class="game-entry-writing">
+                                            <p class="book-detail-author">J. R. R. Tolkien</p>
+                                              <dl class="game-verdict">
+                                                <div>
+                                                  <dt class="sr-only">My rating</dt>
+                                                    <dd>
+                                                      <span class="shelf-quiet-note">Not rated yet</span>
+                                                    </dd>
+                                                  </div>
+                                                </dl>
+                                                <p class="game-entry-status">
+                                                  <span class="collection-status">Want to read</span>
+                                                </p>
+                                                <dl class="game-play-history">
+                                                </dl>
+                                                <p class="collection-more-info">
+                                                  <a href="https://www.goodreads.com/search?q=The&#43;Fellowship&#43;of&#43;the&#43;Ring+J.&#43;R.&#43;R.&#43;Tolkien" target="_blank" rel="noopener noreferrer">Find on Goodreads <span class="collection-link-context"> (opens in a new tab)</span>
+                                                </a>
+                                              </p>
+                                            </div>
+                                          </div>
+                                        </details>
+                                      </li>
+                                      <li id="book-the-return-of-the-king" data-game-title="The Return of the King" data-game-author="J. R. R. Tolkien" data-game-status="planned" data-game-date="" data-game-rating="" data-game-tier="" data-game-tier-label="" data-game-hours="">
+                                        <details class="shelf-entry book-entry">
+                                          <summary>
+                                            <span class="book-cover">
+                                            <img src="/images/books/the-return-of-the-king.webp" alt="Cover of The Return of the King" loading="lazy" decoding="async" width="301" height="500">
+                                          </span>
+                                          <span class="shelf-title">The Return of the King</span>
+                                          <span class="book-author">J. R. R. Tolkien</span>
+                                          <span class="game-arranged-value" hidden>
+                                        </span>
+                                        <span class="game-hover-preview" aria-hidden="true">
+                                        <strong>The Return of the King</strong>
+                                          <span class="game-hover-status">J. R. R. Tolkien</span>
+                                          <span>
+                                          <span class="shelf-quiet-note">Not rated yet</span>
+                                        </span>
+                                      </span>
+                                    </summary>
+                                    <div class="shelf-notes">
+                                      <div class="game-entry-writing">
+                                        <p class="book-detail-author">J. R. R. Tolkien</p>
+                                          <dl class="game-verdict">
+                                            <div>
+                                              <dt class="sr-only">My rating</dt>
+                                                <dd>
+                                                  <span class="shelf-quiet-note">Not rated yet</span>
+                                                </dd>
+                                              </div>
+                                            </dl>
+                                            <p class="game-entry-status">
+                                              <span class="collection-status">Want to read</span>
+                                            </p>
+                                            <dl class="game-play-history">
+                                            </dl>
+                                            <p class="collection-more-info">
+                                              <a href="https://www.goodreads.com/search?q=The&#43;Return&#43;of&#43;the&#43;King+J.&#43;R.&#43;R.&#43;Tolkien" target="_blank" rel="noopener noreferrer">Find on Goodreads <span class="collection-link-context"> (opens in a new tab)</span>
+                                            </a>
+                                          </p>
+                                        </div>
+                                      </div>
+                                    </details>
+                                  </li>
+                                  <li id="book-crime-and-punishment" data-game-title="Crime and Punishment" data-game-author="Fyodor Dostoevsky" data-game-status="planned" data-game-date="" data-game-rating="" data-game-tier="" data-game-tier-label="" data-game-hours="">
+                                    <details class="shelf-entry book-entry">
+                                      <summary>
+                                        <span class="book-cover">
+                                        <img src="/images/books/crime-and-punishment.webp" alt="Cover of Crime and Punishment" loading="lazy" decoding="async" width="289" height="423">
+                                      </span>
+                                      <span class="shelf-title">Crime and Punishment</span>
+                                      <span class="book-author">Fyodor Dostoevsky</span>
+                                      <span class="game-arranged-value" hidden>
+                                    </span>
+                                    <span class="game-hover-preview" aria-hidden="true">
+                                    <strong>Crime and Punishment</strong>
+                                      <span class="game-hover-status">Fyodor Dostoevsky</span>
+                                      <span>
+                                      <span class="shelf-quiet-note">Not rated yet</span>
+                                    </span>
+                                  </span>
+                                </summary>
+                                <div class="shelf-notes">
+                                  <div class="game-entry-writing">
+                                    <p class="book-detail-author">Fyodor Dostoevsky</p>
+                                      <dl class="game-verdict">
+                                        <div>
+                                          <dt class="sr-only">My rating</dt>
+                                            <dd>
+                                              <span class="shelf-quiet-note">Not rated yet</span>
+                                            </dd>
+                                          </div>
+                                        </dl>
+                                        <p class="game-entry-status">
+                                          <span class="collection-status">Want to read</span>
+                                        </p>
+                                        <dl class="game-play-history">
+                                        </dl>
+                                        <p class="collection-more-info">
+                                          <a href="https://www.goodreads.com/search?q=Crime&#43;and&#43;Punishment+Fyodor&#43;Dostoevsky" target="_blank" rel="noopener noreferrer">Find on Goodreads <span class="collection-link-context"> (opens in a new tab)</span>
+                                        </a>
+                                      </p>
+                                    </div>
+                                  </div>
+                                </details>
+                              </li>
+                              <li id="book-anna-karenina" data-game-title="Anna Karenina" data-game-author="Leo Tolstoy" data-game-status="planned" data-game-date="" data-game-rating="" data-game-tier="" data-game-tier-label="" data-game-hours="">
+                                <details class="shelf-entry book-entry">
+                                  <summary>
+                                    <span class="book-cover">
+                                    <img src="/images/books/anna-karenina.webp" alt="Cover of Anna Karenina" loading="lazy" decoding="async" width="334" height="500">
+                                  </span>
+                                  <span class="shelf-title">Anna Karenina</span>
+                                  <span class="book-author">Leo Tolstoy</span>
+                                  <span class="game-arranged-value" hidden>
+                                </span>
+                                <span class="game-hover-preview" aria-hidden="true">
+                                <strong>Anna Karenina</strong>
+                                  <span class="game-hover-status">Leo Tolstoy</span>
+                                  <span>
+                                  <span class="shelf-quiet-note">Not rated yet</span>
+                                </span>
+                              </span>
+                            </summary>
+                            <div class="shelf-notes">
+                              <div class="game-entry-writing">
+                                <p class="book-detail-author">Leo Tolstoy</p>
+                                  <dl class="game-verdict">
+                                    <div>
+                                      <dt class="sr-only">My rating</dt>
+                                        <dd>
+                                          <span class="shelf-quiet-note">Not rated yet</span>
+                                        </dd>
+                                      </div>
+                                    </dl>
+                                    <p class="game-entry-status">
+                                      <span class="collection-status">Want to read</span>
+                                    </p>
+                                    <dl class="game-play-history">
+                                    </dl>
+                                    <p class="collection-more-info">
+                                      <a href="https://www.goodreads.com/search?q=Anna&#43;Karenina+Leo&#43;Tolstoy" target="_blank" rel="noopener noreferrer">Find on Goodreads <span class="collection-link-context"> (opens in a new tab)</span>
+                                    </a>
+                                  </p>
+                                </div>
+                              </div>
+                            </details>
+                          </li>
+                          <li id="book-notes-from-underground-and-the-double" data-game-title="Notes from Underground and The Double" data-game-author="Fyodor Dostoevsky" data-game-status="planned" data-game-date="" data-game-rating="" data-game-tier="" data-game-tier-label="" data-game-hours="">
+                            <details class="shelf-entry book-entry">
+                              <summary>
+                                <span class="book-cover">
+                                <img src="/images/books/notes-from-underground-and-the-double.webp" alt="Cover of Notes from Underground and The Double" loading="lazy" decoding="async" width="301" height="500">
+                              </span>
+                              <span class="shelf-title">Notes from Underground and The Double</span>
+                              <span class="book-author">Fyodor Dostoevsky</span>
+                              <span class="game-arranged-value" hidden>
+                            </span>
+                            <span class="game-hover-preview" aria-hidden="true">
+                            <strong>Notes from Underground and The Double</strong>
+                              <span class="game-hover-status">Fyodor Dostoevsky</span>
+                              <span>
+                              <span class="shelf-quiet-note">Not rated yet</span>
+                            </span>
+                          </span>
+                        </summary>
+                        <div class="shelf-notes">
+                          <div class="game-entry-writing">
+                            <p class="book-detail-author">Fyodor Dostoevsky</p>
+                              <dl class="game-verdict">
+                                <div>
+                                  <dt class="sr-only">My rating</dt>
+                                    <dd>
+                                      <span class="shelf-quiet-note">Not rated yet</span>
+                                    </dd>
+                                  </div>
+                                </dl>
+                                <p class="game-entry-status">
+                                  <span class="collection-status">Want to read</span>
+                                </p>
+                                <dl class="game-play-history">
+                                </dl>
+                                <p class="collection-more-info">
+                                  <a href="https://www.goodreads.com/search?q=Notes&#43;from&#43;Underground&#43;and&#43;The&#43;Double+Fyodor&#43;Dostoevsky" target="_blank" rel="noopener noreferrer">Find on Goodreads <span class="collection-link-context"> (opens in a new tab)</span>
+                                </a>
+                              </p>
+                            </div>
+                          </div>
+                        </details>
+                      </li>
+                      <li id="book-the-anarchy" data-game-title="The Anarchy" data-game-author="William Dalrymple" data-game-status="planned" data-game-date="" data-game-rating="" data-game-tier="" data-game-tier-label="" data-game-hours="">
+                        <details class="shelf-entry book-entry">
+                          <summary>
+                            <span class="book-cover">
+                            <img src="/images/books/the-anarchy.webp" alt="Cover of The Anarchy" loading="lazy" decoding="async" width="263" height="400">
+                          </span>
+                          <span class="shelf-title">The Anarchy</span>
+                          <span class="book-author">William Dalrymple</span>
+                          <span class="game-arranged-value" hidden>
+                        </span>
+                        <span class="game-hover-preview" aria-hidden="true">
+                        <strong>The Anarchy</strong>
+                          <span class="game-hover-status">William Dalrymple</span>
+                          <span>
+                          <span class="shelf-quiet-note">Not rated yet</span>
+                        </span>
+                      </span>
+                    </summary>
+                    <div class="shelf-notes">
+                      <div class="game-entry-writing">
+                        <p class="book-detail-author">William Dalrymple</p>
+                          <dl class="game-verdict">
+                            <div>
+                              <dt class="sr-only">My rating</dt>
+                                <dd>
+                                  <span class="shelf-quiet-note">Not rated yet</span>
+                                </dd>
+                              </div>
+                            </dl>
+                            <p class="game-entry-status">
+                              <span class="collection-status">Want to read</span>
+                            </p>
+                            <dl class="game-play-history">
+                            </dl>
+                            <p class="collection-more-info">
+                              <a href="https://www.goodreads.com/search?q=The&#43;Anarchy+William&#43;Dalrymple" target="_blank" rel="noopener noreferrer">Find on Goodreads <span class="collection-link-context"> (opens in a new tab)</span>
+                            </a>
+                          </p>
+                        </div>
+                      </div>
+                    </details>
+                  </li>
+                  <li id="book-night-watch" data-game-title="Night Watch" data-game-author="Sergei Lukyanenko" data-game-status="planned" data-game-date="" data-game-rating="" data-game-tier="" data-game-tier-label="" data-game-hours="">
+                    <details class="shelf-entry book-entry">
+                      <summary>
+                        <span class="book-cover">
+                        <img src="/images/books/night-watch.webp" alt="Cover of Night Watch" loading="lazy" decoding="async" width="321" height="500">
+                      </span>
+                      <span class="shelf-title">Night Watch</span>
+                      <span class="book-author">Sergei Lukyanenko</span>
+                      <span class="game-arranged-value" hidden>
+                    </span>
+                    <span class="game-hover-preview" aria-hidden="true">
+                    <strong>Night Watch</strong>
+                      <span class="game-hover-status">Sergei Lukyanenko</span>
+                      <span>
+                      <span class="shelf-quiet-note">Not rated yet</span>
+                    </span>
+                  </span>
+                </summary>
+                <div class="shelf-notes">
+                  <div class="game-entry-writing">
+                    <p class="book-detail-author">Sergei Lukyanenko</p>
+                      <dl class="game-verdict">
+                        <div>
+                          <dt class="sr-only">My rating</dt>
+                            <dd>
+                              <span class="shelf-quiet-note">Not rated yet</span>
+                            </dd>
+                          </div>
+                        </dl>
+                        <p class="game-entry-status">
+                          <span class="collection-status">Want to read</span>
+                        </p>
+                        <dl class="game-play-history">
+                        </dl>
+                        <p class="collection-more-info">
+                          <a href="https://www.goodreads.com/search?q=Night&#43;Watch+Sergei&#43;Lukyanenko" target="_blank" rel="noopener noreferrer">Find on Goodreads <span class="collection-link-context"> (opens in a new tab)</span>
+                        </a>
+                      </p>
+                    </div>
+                  </div>
+                </details>
+              </li>
+              <li id="book-murder-on-the-orient-express" data-game-title="Murder on the Orient Express" data-game-author="Agatha Christie" data-game-status="planned" data-game-date="" data-game-rating="" data-game-tier="" data-game-tier-label="" data-game-hours="">
+                <details class="shelf-entry book-entry">
+                  <summary>
+                    <span class="book-cover">
+                    <img src="/images/books/murder-on-the-orient-express.webp" alt="Cover of Murder on the Orient Express" loading="lazy" decoding="async" width="291" height="500">
+                  </span>
+                  <span class="shelf-title">Murder on the Orient Express</span>
+                  <span class="book-author">Agatha Christie</span>
+                  <span class="game-arranged-value" hidden>
+                </span>
+                <span class="game-hover-preview" aria-hidden="true">
+                <strong>Murder on the Orient Express</strong>
+                  <span class="game-hover-status">Agatha Christie</span>
+                  <span>
+                  <span class="shelf-quiet-note">Not rated yet</span>
+                </span>
+              </span>
+            </summary>
+            <div class="shelf-notes">
+              <div class="game-entry-writing">
+                <p class="book-detail-author">Agatha Christie</p>
+                  <dl class="game-verdict">
+                    <div>
+                      <dt class="sr-only">My rating</dt>
+                        <dd>
+                          <span class="shelf-quiet-note">Not rated yet</span>
+                        </dd>
+                      </div>
+                    </dl>
+                    <p class="game-entry-status">
+                      <span class="collection-status">Want to read</span>
+                    </p>
+                    <dl class="game-play-history">
+                    </dl>
+                    <p class="collection-more-info">
+                      <a href="https://www.goodreads.com/search?q=Murder&#43;on&#43;the&#43;Orient&#43;Express+Agatha&#43;Christie" target="_blank" rel="noopener noreferrer">Find on Goodreads <span class="collection-link-context"> (opens in a new tab)</span>
+                    </a>
+                  </p>
+                </div>
+              </div>
+            </details>
+          </li>
+          <li id="book-the-murder-of-roger-ackroyd" data-game-title="The Murder of Roger Ackroyd" data-game-author="Agatha Christie" data-game-status="planned" data-game-date="" data-game-rating="" data-game-tier="" data-game-tier-label="" data-game-hours="">
+            <details class="shelf-entry book-entry">
+              <summary>
+                <span class="book-cover">
+                <img src="/images/books/the-murder-of-roger-ackroyd.webp" alt="Cover of The Murder of Roger Ackroyd" loading="lazy" decoding="async" width="321" height="500">
+              </span>
+              <span class="shelf-title">The Murder of Roger Ackroyd</span>
+              <span class="book-author">Agatha Christie</span>
+              <span class="game-arranged-value" hidden>
+            </span>
+            <span class="game-hover-preview" aria-hidden="true">
+            <strong>The Murder of Roger Ackroyd</strong>
+              <span class="game-hover-status">Agatha Christie</span>
+              <span>
+              <span class="shelf-quiet-note">Not rated yet</span>
+            </span>
+          </span>
+        </summary>
+        <div class="shelf-notes">
+          <div class="game-entry-writing">
+            <p class="book-detail-author">Agatha Christie</p>
+              <dl class="game-verdict">
+                <div>
+                  <dt class="sr-only">My rating</dt>
+                    <dd>
+                      <span class="shelf-quiet-note">Not rated yet</span>
+                    </dd>
+                  </div>
+                </dl>
+                <p class="game-entry-status">
+                  <span class="collection-status">Want to read</span>
+                </p>
+                <dl class="game-play-history">
+                </dl>
+                <p class="collection-more-info">
+                  <a href="https://www.goodreads.com/search?q=The&#43;Murder&#43;of&#43;Roger&#43;Ackroyd+Agatha&#43;Christie" target="_blank" rel="noopener noreferrer">Find on Goodreads <span class="collection-link-context"> (opens in a new tab)</span>
+                </a>
+              </p>
+            </div>
+          </div>
+        </details>
+      </li>
+      <li id="book-stalingrad" data-game-title="Stalingrad" data-game-author="Antony Beevor" data-game-status="planned" data-game-date="" data-game-rating="" data-game-tier="" data-game-tier-label="" data-game-hours="">
+        <details class="shelf-entry book-entry">
+          <summary>
+            <span class="book-cover">
+            <img src="/images/books/stalingrad.webp" alt="Cover of Stalingrad" loading="lazy" decoding="async" width="314" height="475">
+          </span>
+          <span class="shelf-title">Stalingrad</span>
+          <span class="book-author">Antony Beevor</span>
+          <span class="game-arranged-value" hidden>
+        </span>
+        <span class="game-hover-preview" aria-hidden="true">
+        <strong>Stalingrad</strong>
+          <span class="game-hover-status">Antony Beevor</span>
+          <span>
+          <span class="shelf-quiet-note">Not rated yet</span>
+        </span>
+      </span>
+    </summary>
+    <div class="shelf-notes">
+      <div class="game-entry-writing">
+        <p class="book-detail-author">Antony Beevor</p>
+          <dl class="game-verdict">
+            <div>
+              <dt class="sr-only">My rating</dt>
+                <dd>
+                  <span class="shelf-quiet-note">Not rated yet</span>
+                </dd>
+              </div>
+            </dl>
+            <p class="game-entry-status">
+              <span class="collection-status">Want to read</span>
+            </p>
+            <dl class="game-play-history">
+            </dl>
+            <p class="collection-more-info">
+              <a href="https://www.goodreads.com/search?q=Stalingrad+Antony&#43;Beevor" target="_blank" rel="noopener noreferrer">Find on Goodreads <span class="collection-link-context"> (opens in a new tab)</span>
+            </a>
+          </p>
+        </div>
+      </div>
+    </details>
+  </li>
+  <li id="book-the-discovery-of-india" data-game-title="The Discovery of India" data-game-author="Jawaharlal Nehru" data-game-status="planned" data-game-date="" data-game-rating="" data-game-tier="" data-game-tier-label="" data-game-hours="">
+    <details class="shelf-entry book-entry">
+      <summary>
+        <span class="book-cover">
+        <img src="/images/books/the-discovery-of-india.webp" alt="Cover of The Discovery of India" loading="lazy" decoding="async" width="302" height="475">
+      </span>
+      <span class="shelf-title">The Discovery of India</span>
+      <span class="book-author">Jawaharlal Nehru</span>
+      <span class="game-arranged-value" hidden>
+    </span>
+    <span class="game-hover-preview" aria-hidden="true">
+    <strong>The Discovery of India</strong>
+      <span class="game-hover-status">Jawaharlal Nehru</span>
+      <span>
+      <span class="shelf-quiet-note">Not rated yet</span>
+    </span>
+  </span>
+</summary>
+<div class="shelf-notes">
+  <div class="game-entry-writing">
+    <p class="book-detail-author">Jawaharlal Nehru</p>
+      <dl class="game-verdict">
+        <div>
+          <dt class="sr-only">My rating</dt>
+            <dd>
+              <span class="shelf-quiet-note">Not rated yet</span>
+            </dd>
+          </div>
+        </dl>
+        <p class="game-entry-status">
+          <span class="collection-status">Want to read</span>
+        </p>
+        <dl class="game-play-history">
+        </dl>
+        <p class="collection-more-info">
+          <a href="https://www.goodreads.com/search?q=The&#43;Discovery&#43;of&#43;India+Jawaharlal&#43;Nehru" target="_blank" rel="noopener noreferrer">Find on Goodreads <span class="collection-link-context"> (opens in a new tab)</span>
+        </a>
+      </p>
+    </div>
+  </div>
+</details>
+</li>
+</ul>
+</section>
+</div>
+</section>
+<footer class="site-footer">
+  <p>© 2026 karthik</p>
+    <nav aria-label="Footer">
+      <a href="/about">about</a>
+      <a href="/meta">meta</a>
+      <a href="/rss.xml">rss</a>
+    </nav>
+  </footer>
+  <script src="/js/collections.js?v=23">
+  </script>
+</main>
+</div>
+</div>
+</body>
+</html>
